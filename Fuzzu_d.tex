@@ -48,11 +48,7 @@ AD5: Speed and steer based fuzzy controller using the track sensors and consider
 
 The Open Racing Car Simulator) is a free three-dimensional racing video game.
 Even if it has not the graphic quality of commercial games, TORCS allows to play different races, about forty vehicles , on a wide variety of tracks (dusty roads, highways, formula 1 circuits, etc).[\cite{manuel}]. The TORCS project was created by \textit{Eric Espié} and \textit{Christophe Guionneau} and currently \textit{Bernhard Wymann}, \textit{Christos Dimitrakakis}  and other contributors continue to develop it. [\cite{manual}]
-
-
-
-TORCS1 (The Open Racing Car Simulator) is one of the most popular car racing simulators. It is written in C++ and
-is available under GPL license front its web page. TORCS
+TORCS1 (The Open Racing Car Simulator) is one of the most popular car racing simulators. It 
 presents several advantages for academic purposes, such as:
 \begin{enumerate}
 	
@@ -502,13 +498,7 @@ This project was provided by the TORCS software, and it was developed by \textit
 	
 \end{enumerate}
 \section{Fuzzy based controllers design (AD1)}
-%	\subsection{Conception de" AD" dans le cas sans adversaire}
 The proposed controller "AD" has the same modular architecture as the simple driver where the target speed  and speed values are  computed via fuzzy controller using five 5 position sensors.
-
-%	\subsubsection{{\color{red}Approche 1: Conception à l'aide des capteurs}}
-
-%	\paragraph{- Structure du contrôleur floue pour calculer la vitesse cible\\\\}
-
 \begin{figure}[h!]
 	
 	\centering
@@ -587,9 +577,9 @@ The "AD" controller is a Mamdani based fuzzy system (See fig.\ref{AD}) with trap
 
 \begin{enumerate}
 	\item Front = Track[9]  with angle = 0 , the front distance between the car and the border of track.
-	\item max5 = max (Track[8]; Track[10])
+	\item M5 = max (Track[8]; Track[10])
 	the max distance with +5 and  -5 angle.
-	\item max10 = max (track[11]; track[7]) ,	the max distance with +10 and  -10 angle.
+	\item M10 = max (track[11]; track[7]) ,	the max distance with +10 and  -10 angle.
 \end{enumerate}
 \begin{figure}[h!]
 	
@@ -629,10 +619,10 @@ The "AD" controller is a Mamdani based fuzzy system (See fig.\ref{AD}) with trap
 			Input & [0-100] m & Front & trapezoidal & [0-50] & [20-80] &[80-100]
 			\\
 			\hline
-			Input & [0-100] m & max 5 & trapezoidal &[0-40] & [10-70] & [40-100] 
+			Input & [0-100] m & M5 & trapezoidal &[0-40] & [10-70] & [40-100] 
 			\\
 			\hline
-			Input & [0-100] m  & max 10 & trapezoidal & [0-30] & [0-60] & [30-100]
+			Input & [0-100] m  & M10 & trapezoidal & [0-30] & [0-60] & [30-100]
 			\\
 			\hline 
 			Output & [0-200]m/s & TS & singleton & / & / & /
@@ -747,9 +737,7 @@ The "AD" controller is a Mamdani based fuzzy system (See fig.\ref{AD}) with trap
 			\caption{\footnotesize Target speed values.}
 			\label{fontfig}
 		\end{minipage} 
-		\index{tracé}                     %% inclure le mot tracé dans l'index
-		\index{fonction}                  %% include le mot fonction dans l'index
-		
+	
 	\end{figure}
 	
 	\item{\textbf{Fuzzy inference system}}
@@ -760,14 +748,14 @@ The "AD" controller is a Mamdani based fuzzy system (See fig.\ref{AD}) with trap
 		
 		\item If Front is High Then TargetSpeed is TS1
 		\item If Front is Medium Then TargetSpeed is TS2
-		\item If Front is Low and Max5 is High Then TargetSpeed is TS3
-		\item If Front is Low and Max5 is Medium Then TargetSpeed is TS4
-		\item If Front is Low and Max5 is Low and Max10 is High Then TargetSpeed is TS5
-		\item If Front is Low and Max5 is Low and Max10 is Medium Then TargetSpeed is TS6
-		\item  If Front is Low and Max5 is Low and Max10 is Low Then TargetSpeed is TS7
+		\item If Front is Low and M5 is High Then TargetSpeed is TS3
+		\item If Front is Low and M5 is Medium Then TargetSpeed is TS4
+		\item If Front is Low and M5 is Low and M10 is High Then TargetSpeed is TS5
+		\item If Front is Low and M5 is Low and M10 is Medium Then TargetSpeed is TS6
+		\item  If Front is Low and M5 is Low and M10 is Low Then TargetSpeed is TS7
 		\\
 		In addition, a crisp rule is added to rule base to obtain a maximum value of a target speed when the value of the three input variables as far as possible, less than 100 m: \\\\
-		\item If Front = Maxdistspeed or Max5 = Maxdistspeed or Max10 = Maxdistspeed Then TargetSpeed = Maxspeed	
+		\item If Front = Maxdistspeed or M5 = Maxdistspeed or M10 = Maxdistspeed Then TargetSpeed = Maxspeed	
 		
 	\end{enumerate}
 	
@@ -899,7 +887,7 @@ Figure \ref {fig04} represents the path of the turn (right / left), it is cut in
 	
 \end{figure}
 
-The curve used is a circle see Figure \ref {fig05}, in order to have a single look point (the target) possible.
+The used curve  is a circle see Figure \ref {fig05}, in order to have a single look point (the target) possible.
 The coordinates are given relative to the car centre. \\	
 
 \begin{figure}[h!]
@@ -963,7 +951,7 @@ Now it is easy to set up the architecture of our fuzzy controller to determine t
 	
 \end{figure}
 
-\subsubsection{Fuzzyfication}
+\subsubsection{Fuzzification}
 
 In our case we have real input for the two fuzzy controllers which is the turning radius R and as output "The target position TP  for the first one and the target speed TS  for the other one .(Table \ref{fig39}) (see Figure \ref{fig37} \ref{fig38})
 
