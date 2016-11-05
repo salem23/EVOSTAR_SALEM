@@ -70,14 +70,31 @@ The abstract
 %
 \section{Introduction}
 \label{sec:intro}
+The Open Racing Car Simulator (TORCS) is one of the most popular car racing simulators, it was created by \textit{Eric Espié} and \textit{Christophe Guionneau} and currently \textit{Bernhard Wymann}, \textit{Christos Dimitrakakis}  and other contributors continue to develop it \cite{manual}.
+The Open Racing Car Simulator)\cite{WebTORCS} is a free three-dimensional racing video game.
+Even if it has not the graphic quality of commercial games, it presents several advantages for academic purposes, such as\cite{manuel}:
+\begin{enumerate}
+	
+	\item  It lies between an advanced simulator, like recent commercial
+	car racing games, and a fully customizable environment,
+	like the ones typically used by computational
+	intelligence researchers for benchmark purposes.
+	\item  It features a sophisticated physics engine (aerodynamics,
+	fuel consumption, traction,...) as well as a 3D graphics
+	engine for the visualization of the races.
+	\item  It was not conceived as a free alternative to commercial
+	racing games, but it was specifically devised to make it
+	as easy as possible to develop your own controller In fact, controllers are implemented as separated software with modular architecture ,so it is easy to develop a new controller and to plug
+	it into the game.
+	
+\end{enumerate}
+Even in simulation mode, like-human driving a car with a bot is a hard task where the driver has to control several actions such as the steer ,gear and brake/acceleration using the data of car and its environment.\\
+Fuzzy logic \cite{abraham2001} with its adaptation and ability of imitating the human behaviour, is an interesting tool to design automatic TORCS drivers.\\ It could be integrated in any controller module (steer, gear, acceleration and brake, stuck) to give a human character to the bot driver.\\  
 
-
-In this work , we will try to design fuzzy based controllers to drive race cars in TORCS simulator:\\
-AD1: Speed  based fuzzy controller using the track sensors.
-AD2: Speed and steer based fuzzy controller using the track sensors.\\
-AD3: Speed and steer based fuzzy controller using the turning radius.\\
-AD5: Speed and steer based fuzzy controller using the track sensors and consideration of opponents position in the track.
-
+In this work , we will try to design fuzzy based controller to drive race cars in TORCS simulator. The proposed driver computes the steer and the target speed via two fuzzy controllers using the track sensors and consideration of opponents position in the race.\\
+The remainder of this paper is organised as follows:\\
+The second section is dedicated to present a state of the art  and related works while TORCS simulator is described in section 3.\\
+The proposed  fuzzy controller is detailed in Section 4 and the simulation of the fuzzy controller in practice race and time trial and results of comparison with other controllers are given in section 5.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  STATE OF THE ART  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -112,58 +129,17 @@ Some related works
 %
 \section{Problem Description: TORCS}
 \label{subsec:torcs}
-\subsection{TORCS Presentation}
-
-The Open Racing Car Simulator)\cite{WebTORCS} is a free three-dimensional racing video game.
-Even if it has not the graphic quality of commercial games, TORCS allows to play different races, about forty cars , on a wide variety of tracks (dusty roads, highways, formula 1 circuits,..).[\cite{manuel}]. \\
-The TORCS project was created by \textit{Eric Espié} and \textit{Christophe Guionneau} and currently \textit{Bernhard Wymann}, \textit{Christos Dimitrakakis}  and other contributors continue to develop it. [\cite{manual}]
-TORCS1 (The Open Racing Car Simulator) is one of the most popular car racing simulators. It 
-presents several advantages for academic purposes, such as:
+The Open Racing Car Simulator (TORCS)\cite{WebTORCS} is a standalone application where robots are built as separate modules loaded into the main memory when a race takes place \cite{Torcs3}.
+The architecture of TORCS simulator is based on three ways \cite{manual}: 
 \begin{enumerate}
-	
-	\item  It lies between an advanced simulator, like recent commercial
-	car racing games, and a fully customizable environment,
-	like the ones typically used by computational
-	intelligence researchers for benchmark purposes.
-	\item  It features a sophisticated physics engine (aerodynamics,
-	fuel consumption, traction,...) as well as a 3D graphics
-	engine for the visualization of the races.
-	\item  It was not conceived as a free alternative to commercial
-	racing games, but it was specifically devised to make it
-	as easy as possible to develop your own controller In fact, controllers are implemented as separated software
-	modules ,so it is easy to develop a new controller and to plug
-	it into the game.
-	
-\end{enumerate}
-
-
-\subsection {TROCS Architecture}
-The Open Racing Car Simulator (TORCS) is a standalone application where robots are built as separate modules loaded into the main memory when a race takes place. [\cite{Torcs3} ]
-This simulator includes the original architecture of TORCS in three ways: [\cite {manual}]
-\begin{enumerate}
-	\item TORCS is a client-server applications, robots (bots) are run in external processes connected to the server running across by the UDP connections.\\
-	
+	\item TORCS is a client-server application, robots are run in external processes connected to the server running across by the UDP connections.\\
 	\item The simulation is achieved in real time and  game ticks are approximately 20 ms of simulated time, the server sends the current sensors values to each robot and waits 10 ms (real time) to receive an action from the bot.
 	If no action is happened, the simulation continues and the last action will be used.\\
 	
-	\item The "TORCS" software make a physical separation between the driver code and running server, it builds an abstract layer that gives complete freedom of choice of programming language that will be used for robots and limit access only to information defined by the designer (the data encapsulation) See Figure ~\ref{architorcs}.
+	\item The TORCS software make a physical separation between the driver code and running server, it builds an abstract layer that gives complete freedom of choice of programming language that will be used for robots and limit access only to information defined by the designer.
 \end{enumerate}
-\begin{figure}[h!]
-	\centering
-	\includegraphics[width=1.1\textwidth]{fig/arch2.png}
-	\begin{minipage}{10cm}
-		\centering
-		
-		\caption{\footnotesize TORCS Architecture}
-		\label{architorcs}
-	\end{minipage} 
-\end{figure}
-
-\subsection{Sensors and Actuators}
-The TORCS software creates a physical separation between the game engine and driver bots. So to develop a bot, it is not necessary to have any knowledge about the TORCS engine  or internal data structure.[\cite{torcs2012}]\\
-
-In the competition, The robot perceives the racing environment through a number of sensors that provide information about the state of the car (the current speed, fuel level, ...), the state of the race (current lap, the elapsed distance,...), opponents positions and track borders, ... these data enable the designer to form a base of solutions to achieve a typical driving. [\cite{manuel}] [\cite{torcs2}]		\\		
-Tables ~\ref{t1} present a complete list of available sensors with a description of each one.[\cite{Torcs3}]\\
+In competition, The robot perceives the racing environment through a number of sensors that provide information about the state of the car, the state of the race, opponents positions and track borders. These data enable the designer to form a base of solutions to achieve a typical driving. \cite{manuel}, \cite{torcs2}		\\		
+Tables ~\ref{t1} presents a complete list of available sensors with a description of each one \cite{Torcs3}.\\
 
 \begin{table}[h!]
 	
@@ -176,7 +152,7 @@ Tables ~\ref{t1} present a complete list of available sensors with a description
 		\hline
 		1 & Angle & [-$\pi$,+$\pi$ ] & Double\\ 
 		\hline
-		2 & curLapTime & [0,+$\infty$) (s)	& Double\\ 
+		2 & curLapTime & [0,+$\infty$] (s)	& Double\\ 
 		\hline 
 		3 & damage & [0,+$\infty$)(point)& Double\\ 
 		\hline 
@@ -228,11 +204,8 @@ Tables ~\ref{t1} present a complete list of available sensors with a description
 	\caption{Available TORCS sensors Description}
 	\label{t1}
 \end{table}
-\subsubsection{Actuators}
-The driver bot is controlled in the game TORCS through a  typical set of actuators: the steering wheel "Steer", the accelerator "accel" the brake pedal and the gearbox. In addition, a meta-action is available to request a restart of the race to the server. Table~\ref{tab2}  details the available actions and their representation. [\cite {torcs} ]
-
-
-\begin{table}[h!]
+The TORCS driver bot is controlled through a  set of actuators: the steering wheel "Steer", the accelerator "accel", the brake pedal and the gearbox. In addition, a meta-action is available to request a restart of the race to the server. Table~\ref{tab2}  details the available actions and their representation \cite{torcs}.
+\begin{table}[t!]
 	
 	\begin{tabular}{|p{3cm}|p{3 cm}|p{6 cm}|}
 		\hline
@@ -252,22 +225,13 @@ The driver bot is controlled in the game TORCS through a  typical set of actuato
 		Clunch & [-1,+1]	& Double\\
 		\hline
 	\end{tabular}
-	
 	\caption{TORCS Actuators}
 	\label{tab2}
 \end{table}
+A robot is a program run from TORCS that drives a car. It gets as input information about the current state of the car and its situation on the track. These collected data are used to compute actions to do in the next simulation tick; like steer, gear changes, acceleration or brake and clunch. A client may request a restart of the race by sending a special action on the server: Resatart or shutdown. \cite{manual}\\
+The basic architecture of a controller consists of 5 simple modules (fig.\ref{archi}). This modular architecture  is a key factor to achieve good results.
 
-
-
-
-
-\subsection{TORCS Controller Architecture}
-
-A robot is a program run from TORCS that drives a car. It gets as input information about the current state of the car and its situation on the track. These collected data are used to compute actions to do in the next simulation tick; like steer, gear changes, acceleration or brake and clunch. A client may request a restart of the race by sending a special action on the server: Resatart or shutdown.
-[\cite{manual}]
-The basic architecture of a controller consists of 5 simple modules (fig.\ref{archi}). This modular architecture  is a key factor to achieve good results. The basics modules functions  are explained below [\cite{fuzzy}]:
-
-\begin{figure}[h!]
+\begin{figure}
 	
 	\centering
 	\includegraphics[width=0.9\textwidth]{fig/archicontrole2.PNG}
@@ -277,83 +241,23 @@ The basic architecture of a controller consists of 5 simple modules (fig.\ref{ar
 		\label{archi}
 	\end{minipage} 	
 \end{figure}
-\newpage
-
-
-\begin{enumerate}
 	
-	
-	\item The gear control is mainly responsible for switching between first and sixth gear. Its functionality is completed with the task of detecting stuck  situations to apply the reverse.
-	
-	\item The target speed unit affects the speed limit for a track segment.
-	
-	\item speed control uses the results of others modules  to update or maintain certain speed by managing the throttle and the brake pedal. In addition, two techniques are implemented to prevent the car from slipping. A traction control (TCL) and an anti-lock anti-brake system (ABS) that will reduce, if necessary, actions over the accelerator and brake, respectively.
-	
-	\item Steer control module  manages the car's direction by acting on the vehicle wheel.[\cite{fuzzy}]
-	\item The learning module detects segments of the track where the target speed can be increased or decreased with information on the previous laps, straight segments or segments where the car is off the track [\cite{fuzzy2}].
-\end{enumerate}
-\subsection{Simple driver}	
-TORCS  comes with a simple driver often used to validate new designed controllers	 [\cite{torcs}][\cite{torcs2}]. \\
-This project was provided by the TORCS software, and it was developed by \textit{Daniele Loiacono}  in 2007. It presents very basic functions for controlling the race car to give developers an idea of what the controller should look like. It contains simple functions to control the speed, steering angle and speed without dealing with opponents. Below are the driving principles in this system [\cite{torcs}]:\\
-
-\begin{enumerate}
-	
-	
-	\item 	If the car is at an angle that exceeds 30 degrees with the axis of the track  for at least 25 consecutive ticks, then it is considered in stuck.In this case, the simple driver sets the car in reverse with an angle which is the negative of the current angle. It drives the car that way at low speed until the front of the car is facing the border of the track. For example, if the car is on the left side, then it should be turned to the left. At that time, the car moves into first gear and the steering angle is reversed, so that the car can start moving forward again[\cite{torcs2}]. \\
-	\item 	If the car is not in stuck, the simple driver proceeds as follows  [\cite{torcs2}]:\\
-	\begin{itemize}
-		\item 	First, it calculates the target speed. To do this, it gets the forward distance along the axis of the car by the front sensor FS and the sensor at 5 degrees to the left LS and 5 degrees to the right RS, as shown in Figure \ref {fig342}. Suppose RS> FS. Then, the driver made a first estimation of the "Steering angle" as the angle between the tangent to the road so that the car is facing the direction of car to the left else the angle is taken to the right. 
-		
-		\item Then, the target speed is calculated as follows
-		
-		\begin{equation}
-		targetSpeed = \frac{(maxSpeed*FS*\sin(turnAngle))}{maxSpeedDist}
-		\end{equation}	
-		where: 	maxSpeed and maxSpeedDist are constant of the car.
-		\begin{figure}[h!]
-			
-			\centering
-			\includegraphics[width=0.7\textwidth]{fig/sensor02.png}
-			\begin{minipage}{10cm}
-				\centering
-				\caption{\footnotesize Computing steering angle in simple driver.}
-				\label{fig342}
-			\end{minipage} 
-		\end{figure}
-	\end{itemize}		
-	
-\end{enumerate}
-
-
+TORCS comes with a simple driver often used to validate new designed controllers	 \cite{torcs}, \cite{torcs2}. It presents very basic functions for controlling the race car to give developers an idea of what the controller should look like. It includes simple functions to control the speed, steering angle and speed without dealing with opponents. 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%  FUZZY CONTROLLER  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 \section{Proposed Fuzzy Controller}
 \label{subsec:fuzzy_controller}
+The proposed controller has the same modular architecture as the simple driver where the target speed  and steer values are  computed via fuzzy controller using five position sensors.
 
-
-The proposed controller "AD" has the same modular architecture as the simple driver where the target speed  and speed values are  computed via fuzzy controller using five 5 position sensors.
-\begin{figure}[h!]
-	
-	\centering
-	\includegraphics[width=0.8\textwidth]{fig/speedcible3.png}
-	\begin{minipage}{10cm}
-		\centering
-		\caption{\footnotesize Target speed fuzzy control Architecture.}
-		\label{archi2}
-	\end{minipage} 
-\end{figure}
 \subsection{Fuzzy target speed}
 To estimate the target speed  based on fuzzy rules, two cases are considered.
 \begin{enumerate}
-	\item If the car is in straight line, the target speed will take a maximum value (maxSpeed).\\\\
-	\item If it is near a curve, the controller will decrease its current speed to a value included in the interval [minSpeed; maxSpeed] km / h for example if the turn is a strict turn the target speed will have a minimum value and a wide turn, it will have an average value.
-	
+	\item If the car is in straight line, the target speed will take a maximum value (maxSpeed).\\
+	\item If it is near a curve, the controller will decrease its current speed to a value included in the interval [minSpeed; maxSpeed] km/h.
 \end{enumerate}
-In case the car is off the track or near a curve, the brake system is activated, ie the ABS and TCS will be loaded to avoid the car skidding.
+In case the car is off the track or near a curve, the brake system is activated where  the ABS and TCS will be loaded to avoid the car skidding.
 \\
-The obtained target speed will be used in calculating the value of acceleration
-(see fig.\ref{fig32} et fig.\ref{fig33}).
-\\\\
+The obtained target speed will be used in calculating the value of acceleration.
 \begin{equation}	
 Gas(speed-Target_{speed})=-1+\frac{2}{1+e^{speed-Target_{speed}}}	
 \end{equation}
@@ -367,29 +271,25 @@ Our fuzzy controller has 3 input values and one output: the target speed value(S
 		\begin{tikzpicture}[box/.style={draw, fill=white!20,rounded corners,align=center,minimum height=3em, minimum width=5em},thick,->,>= latex]
 		
 		\node[box] (a0) {Fuzzy controller};
-		\node[left=of a0.170,font=\bfseries] (aux01) {$Front$};
-		\node[left=of a0.190,font=\bfseries] (aux02) {$max 5$};
-		\node[left=of a0.210,font=\bfseries] (aux03) {$max10 $};
+		\node[left=of a0.160,font=\bfseries] (aux01) {$Front$};
+		\node[left=of a0.175,font=\bfseries] (aux02) {$M5$};
+		\node[left=of a0.195,font=\bfseries] (aux03) {$M10 $};
 		\node[right=of a0,font=\bfseries] (c0) {$Target speed$};
-		\draw[thick,->,>= latex] (aux01) -- (a0.170);
-		\draw[thick,->,>= latex] (aux02) -- (a0.190);
-		\draw[thick,->,>= latex] (aux03) -- (a0.210);
+		\draw[thick,->,>= latex] (aux01) -- (a0.160);
+		\draw[thick,->,>= latex] (aux02) -- (a0.175);
+		\draw[thick,->,>= latex] (aux03) -- (a0.195);
 		\draw[thick,->,>= latex] (a0) -- (c0);
 		\node[box,below=of a0] (b) {Inference};
 		
 		\node[box, left=of b] (a) {Fuzzification};
-		\node[left=of a.170,font=\bfseries] (aux1) {$Front$};
-		\node[left=of a.190,font=\bfseries] (aux2) {$max10$};
-		\node[left=of a.210,font=\bfseries] (aux3) {$max 5$};
+
 		
 		\node[box,right=of b] (b1) {Defuzzification};
-		\node[right=of b1,font=\bfseries] (c) {$Target speed$};
-		\draw[thick,->,>= latex] (aux1) -- (a.170);
-		\draw[thick,->,>= latex] (aux2) -- (a.190);
-		\draw[thick,->,>= latex] (aux3) -- (a.210);
+
+	
 		\draw[thick,->,>= latex] (a) -- (b);
 		\draw[thick,->,>= latex] (b) -- (b1);
-		\draw[thick,->,>= latex] (b1) -- (c);
+	
 		
 		
 		\draw[thick,->,>= latex] (a0.south west) -- (a.north west);
@@ -404,9 +304,7 @@ Our fuzzy controller has 3 input values and one output: the target speed value(S
 	\label{AD}
 \end{figure}
 
-
-
-The "AD" controller is a Mamdani based fuzzy system (See fig.\ref{AD}) with trapezoidal membership functions for input variables. It uses three values among the 19 of the track sensor (See fig.\ref{fig34}):\\
+The fuzzy driver (FD) is a Mamdani based fuzzy system \cite{Iancu2012} (See fig.\ref{AD}) with trapezoidal membership functions for input variables. It uses three values among the 19 of the track sensor (See fig.\ref{fig34}):
 
 \begin{enumerate}
 	\item Front = Track[9]  with angle = 0 , the front distance between the car and the border of track.
@@ -425,16 +323,10 @@ The "AD" controller is a Mamdani based fuzzy system (See fig.\ref{AD}) with trap
 		\label{fig34}
 	\end{minipage} 		
 \end{figure}
-\newpage
-\begin{enumerate}
+Each input variable is represented by three membership functions Low, Medium and High\\
+The description of fuzzy inputs and output are represented in table \ref{flouevar} .
 	
-	\item{\textbf{Fuzzification}}
-	
-	Each input variable is represented by three membership functions Low, Medium
-	and High as shown in the figures (fig. \ref {forehead} , Fig. \ref{max5} , fig, \ref{max15} , Fig. \ref{fontfig})\\
-	The description of fuzzy inputs and output are represented in table \ref{flouevar} .\\	
-	
-	\begin{table} [h!] 
+	\begin{table}
 		\label{flouevar}
 		\caption{ Fuzzy variables description}
 		\begin{tabular}{ |p{1cm}|p{2cm}|p{1.5cm}|p{2 cm}|p{1 cm}|p{1.5 cm}|p{1.5 cm}|}
@@ -463,122 +355,10 @@ The "AD" controller is a Mamdani based fuzzy system (See fig.\ref{AD}) with trap
 			\hline 
 		\end{tabular} 
 	\end{table}
-	\begin{figure}
-		\begin{center}
-			
-			\begin{tikzpicture}[scale=2]
-			%\draw[->] (0,0) -- node[below] {quantized} (4.5,0) node[below] {Age};
-			%\draw[->] (0,0) -- (0,1.5) node[left] {$\mu$};
-			%\node at (-0.2,0) {0};
-			%\node at (-0.2,1) {1};
-			%\draw[fill=yellow] (0,1) -- (4,1) -- (4,0) -- (0,0) -- cycle;
-			%\foreach \x in {0.5,1,1.5,2,2.2,3.4}
-			%  \draw (\x,0) -- (\x,1);
-			\begin{scope}[xshift=2cm]
-			\draw[thick,->,>= latex] (0,0) -- node[below] {50} (5,0) node[below] {Front};
-			\draw[thick,->,>= latex] (0,0) -- (0,1.5) node[left] {$U(x)$};
-			\node at (-0.2,0) {0};
-			\node at (-0.2,1) {1};
-			\draw (0,1) -- (1,1) -- (2.5,0) -- (0,0) -- cycle;
-			\draw (1,0) -- (2.5,1) -- (2.5,1) -- (4,0) -- cycle;
-			\draw (2.5,0) -- (4,1) -- (4,1) -- (5,1) -- (5,0) -- cycle;
-			
-			%\draw[fill=blue!40] (2.25,0) -- (3,1) -- (4,1) -- (4,0) -- cycle;
-			%\draw[fill=blue!40] (1.25,0) -- (1.8,1) -- (2.3,1) -- (3,0) -- cycle;
-			%\draw (1,1) -- (1.75,0) -- (2.25,0) -- (3,1);
-			\node[above,font=\footnotesize] at (0.5,1) {Low};
-			\node[above,font=\footnotesize] at (2,1) {Meduim};
-			\node[above,font=\footnotesize] at (3.5,1) {High};
-			\end{scope}
-			%\node[anchor=south] at (current bounding box.north)
-			%  {\textbullet\ continuous $\rightarrow$ quantized $\rightarrow$ granulated};
-			\end{tikzpicture}
-			%\includegraphics [width=10cm,height=4cm]{figures/c2/exemple_floue}
-		\end{center}
-		\caption{Membership functions of  "Front".}     % width is 8.4 cm.
-		\label{front}
-	\end{figure}
-	\begin{figure}
-		\begin{center}
-			
-			\begin{tikzpicture}[scale=2]
-			%\draw[->] (0,0) -- node[below] {quantized} (4.5,0) node[below] {Age};
-			%\draw[->] (0,0) -- (0,1.5) node[left] {$\mu$};
-			%\node at (-0.2,0) {0};
-			%\node at (-0.2,1) {1};
-			%\draw[fill=yellow] (0,1) -- (4,1) -- (4,0) -- (0,0) -- cycle;
-			%\foreach \x in {0.5,1,1.5,2,2.2,3.4}
-			%  \draw (\x,0) -- (\x,1);
-			\begin{scope}[xshift=2cm]
-			\draw[thick,->,>= latex] (0,0) -- node[below] {50} (4.5,0) node[below] {Max5};
-			\draw[thick,->,>= latex] (0,0) -- (0,1.5) node[left] {$U(x)$};
-			\node at (-0.2,0) {0};
-			\node at (-0.2,1) {1};
-			\draw (0,1) -- (0.5,1) -- (2,0) -- (0,0) -- cycle;
-			\draw (0.5,0) -- (2,1) -- (2,1) -- (3.5,0) -- cycle;
-			\draw (2,0) -- (3.5,1) -- (3.5,1) -- (5,1) -- (5,0) -- cycle;
-			\node[above,font=\footnotesize] at (0.5,1) {Low};
-			\node[above,font=\footnotesize] at (2,1) {Meduim};
-			\node[above,font=\footnotesize] at (3.5,1) {High};
-			\end{scope}
-			%\node[anchor=south] at (current bounding box.north)
-			%  {\textbullet\ continuous $\rightarrow$ quantized $\rightarrow$ granulated};
-			\end{tikzpicture}
-			%\includegraphics [width=10cm,height=4cm]{figures/c2/exemple_floue}
-		\end{center}
-		\caption{Membership functions of  "Max5".}     % width is 8.4 cm.
-		\label{max5}
-	\end{figure}
-	\begin{figure}
-		\begin{center}
-			
-			\begin{tikzpicture}[scale=2]
-			%\draw[->] (0,0) -- node[below] {quantized} (4.5,0) node[below] {Age};
-			%\draw[->] (0,0) -- (0,1.5) node[left] {$\mu$};
-			%\node at (-0.2,0) {0};
-			%\node at (-0.2,1) {1};
-			%\draw[fill=yellow] (0,1) -- (4,1) -- (4,0) -- (0,0) -- cycle;
-			%\foreach \x in {0.5,1,1.5,2,2.2,3.4}
-			%  \draw (\x,0) -- (\x,1);
-			\begin{scope}[xshift=2cm]
-			\draw[thick,->,>= latex] (0,0) -- node[below] {50} (4.5,0) node[below] {Max10};
-			\draw[thick,->,>= latex] (0,0) -- (0,1.5) node[left] {$U(x)$};
-			\node at (-0.2,0) {0};
-			\node at (-0.2,1) {1};
-			\draw (0,1) -- (0,1) -- (1.5,0) -- (0,0) -- cycle;
-			\draw (0,0) -- (1.5,1) -- (1.5,1) -- (3,0) -- cycle;
-			\draw (1.5,0) -- (3,1) -- (3,1) -- (5,1) -- (5,0) -- cycle;
-			\node[above,font=\footnotesize] at (0.5,1) {Low};
-			\node[above,font=\footnotesize] at (2,1) {Meduim};
-			\node[above,font=\footnotesize] at (3.5,1) {High};
-			\end{scope}
-			%\node[anchor=south] at (current bounding box.north)
-			%  {\textbullet\ continuous $\rightarrow$ quantized $\rightarrow$ granulated};
-			\end{tikzpicture}
-			%\includegraphics [width=10cm,height=4cm]{figures/c2/exemple_floue}
-		\end{center}
-		\caption{Membership functions of  "Max10".}     % width is 8.4 cm.
-		\label{max15}
-	\end{figure}
-	
-	\begin{figure}[h!]
-		
-		\centering
-		\includegraphics[width=0.7\textwidth]{fig/speed.png}
-		\begin{minipage}{10cm}
-			\centering
-			\caption{\footnotesize Target speed values.}
-			\label{fontfig}
-		\end{minipage} 
-		
-	\end{figure}
-	
-	\item{\textbf{Fuzzy inference system}}
-	The rules base is designed on the principle that if the front distance is maximal, then target speed should be maximal, and this value should be less when  the frontal distance is lower. The fuzzy rules are listed below:
+
+	The rules base is designed so that if the front distance is maximal, then target speed should be maximal, and this value should be less when  the frontal distance is lower. The fuzzy rules are listed below:
 	\\
 	\begin{enumerate}
-		
-		
 		\item If Front is High Then TargetSpeed is TS1
 		\item If Front is Medium Then TargetSpeed is TS2
 		\item If Front is Low and M5 is High Then TargetSpeed is TS3
@@ -587,83 +367,50 @@ The "AD" controller is a Mamdani based fuzzy system (See fig.\ref{AD}) with trap
 		\item If Front is Low and M5 is Low and M10 is Medium Then TargetSpeed is TS6
 		\item  If Front is Low and M5 is Low and M10 is Low Then TargetSpeed is TS7
 		\\
-		In addition, a crisp rule is added to rule base to obtain a maximum value of a target speed when the value of the three input variables as far as possible, less than 100 m: \\\\
+		In addition, a crisp rule is added to rule base to obtain a maximum value of the target speed when the three input variables are as big as possible: \\
 		\item If Front = Maxdistspeed or M5 = Maxdistspeed or M10 = Maxdistspeed Then TargetSpeed = Maxspeed	
 		
 	\end{enumerate}
-	
-	\item{\textbf{Deffuzzification}}
 	The output value (target speed) is encoded by seven singletons.
-	This phase is to transform the fuzzy set of output in a real value for the controlled system . \\
 	
-	\subsection{Fuzzy Steer}
+	\subsection{Fuzzy Steer control}	
+	We can use another fuzzy controller to control the Steer to estimate and determine the target position of the car:\\
+	if the car is straight line then it will take as target position half width of the race track.	
 	
-	We can use another fuzzy controller in the control of the Steer to estimate and determine the target position of the car:\\
-	if the car is straight line then it will take as target position half width of the race track.\\
-	
-	
-	\begin{figure}[h!]
-		
-		\centering
-		\includegraphics[width=0.4\textwidth]{fig/speed2.png}
-		\begin{minipage}{10cm}
-			\centering
-			\caption{\footnotesize Steer values.}
-			\label{fontfig6}
-		\end{minipage} 
-	\end{figure}
-	
-	
-	
-	If the car is near a right curve,it will approach the path leading to the right, with a space between the car and the border of the track to avoid the loss of control and shocks .The same if the car is near a left curve (see fig. \ref {steercont} ) \\
+	If the car is near a right curve,it will approach the path leading to the right, with a space between the car and the border of the track to avoid the loss of control and shocks .The same if the car is near a left curve. \\
 	
 	Detection of curves is based on the sensor values (M10, M5, front).
-	
-	\begin{figure}[h!]
-		
-		\centering
-		\includegraphics[width=0.5\textwidth]{fig/steercont.png}
-		\begin{minipage}{10cm}
-			\centering
-			\caption{\footnotesize 'Steer control' of a car in a curve.}
-			\label{steercont}
-		\end{minipage} 
-	\end{figure}
 	the rule base is presented as follows:\\
 	\begin{itemize}
 		
-		\item If Front is High Then steer is S3
-		\item If Front is Medium Then steer is TS2
-		\item If Front is Low and M5 is High Then steer is TS3
-		\item If Front is Low and M5 is Medium Then steer is TS4
-		\item If Front is Low and M5 is Low and M10 is High Then steer is TS5
-		\item If Front is Low and M5 is Low and M10 is Medium Then steer is TS6
-		\item  If Front is Low and M5 is Low and M10 is Low Then steer is TS7
+		\item If Front is High Then steer is S1
+		\item If Front is Medium Then steer is S2
+		\item If Front is Low and M5 is High Then steer is S3
+		\item If Front is Low and M5 is Medium Then steer is S4
+		\item If Front is Low and M5 is Low and M10 is High Then steer is S5
+		\item If Front is Low and M5 is Low and M10 is Medium Then steer is S6
+		\item  If Front is Low and M5 is Low and M10 is Low Then steer is S7
 		\\
 	\end{itemize}	
-\end{enumerate}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  RESULTS  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 \section{Simulation Results}
 \label{subsec:results}
 
-In this section we present all the experiments that we performed in order to measure the performance of our controller "AD".
-We first, describe the methodology we have used and next, we present the experimental results of the implementation of the "AD", with opponents and
+In this section we present all the experiments that we performed in order to measure the performance of our "FD" controller .
+We first, describe the methodology we have used and next, we present the experimental results of the implementation of the Fuzzy driver, with opponents and
 using special criteria in each case. \\
-
-
-We have established a set of tests to measure the performance of the controller "AD". We compared the newly developed Controller with existing methods: the simple driver. We will run every single control car by choosing the car called "SRC-server1" in several race tracks. \\
-
+We have established a set of tests to measure the performance of the controller "AD". We compared the newly developed Controller with existing methods: the simple driver. We will run every controller in several race tracks. 
 \subsection{Simulation settings}
 TORCS provides different tracks to choose from. These race tracks are designed by different developers in order to test the performance of the controllers on different difficulty circuits and on different types of roads.\\
 
 In our case, we chose three of road tracks, a dirt road, and an oval track.\\
 
 
-On oval tracks, E-Track5 (Figure \ref{fig30}) seems to be the most interesting, as it has curves in both directions. On dirt roads, Dirt1 has a good variety of curves. For road tracks, we selected three tracks: Forza, E-Road and CG-Speedway Number1. Table \ref{Tabtrack}  presents the properties and description of each selected track.\\
+On oval tracks, E-Track5 seems to be the most interesting, as it has curves in both directions. On dirt roads, Dirt1 has a good variety of curves. For road tracks, we selected three tracks: Forza, E-Road and CG-Speedway Number1. Table \ref{Tabtrack}  presents the properties and description of each selected track.\\
 
-\begin{table}[h!]
+\begin{table}
 	
 	\caption{Description of Selected tracks}
 	\label{Tabtrack}
@@ -677,11 +424,11 @@ On oval tracks, E-Track5 (Figure \ref{fig30}) seems to be the most interesting, 
 		\\
 		\hline
 		\textbf{Shape}   
-		& fig.\ref{fig3} (4)
-		& fig.\ref{fig3} (2)
-		& fig.\ref{fig3} (3) 
-		& fig.\ref{fig3} (2)
-		& fig.\ref{fig3} (1)
+		& \includegraphics[scale=0.3]{fig/track4.png}
+		& \includegraphics[scale=0.3]{fig/track2.png}
+		& \includegraphics[scale=0.3]{fig/track3.png}
+		&\includegraphics[scale=0.3]{fig/track5.png}
+		& \includegraphics[scale=0.3]{fig/track1.png}
 		
 		\\
 		\hline
@@ -691,16 +438,6 @@ On oval tracks, E-Track5 (Figure \ref{fig30}) seems to be the most interesting, 
 		& Road
 		& Road
 		& Road
-		
-		\\
-		\hline
-		\textbf{Description}   
-		& simple track race
-		
-		& Track for outdoor race
-		& Very fast and smooth
-		& Track race
-		& rhythmic track and fast enough
 		
 		\\
 		\hline
@@ -724,35 +461,12 @@ On oval tracks, E-Track5 (Figure \ref{fig30}) seems to be the most interesting, 
 		\hline
 	\end{tabular} 
 \end{table}
-\begin{figure}[h!]
-	
-	\centering
-	\includegraphics[width=0.7\textwidth]{fig/trackresultat.png}
-	\begin{minipage}{10cm}
-		\centering
-		\caption{\footnotesize Tracks shape.}
-		\label{fig3}
-	\end{minipage} 
-	
-\end{figure}
 \subsubsection{ Cars settings}
 
 SCR 1 server is a NASCAR car and member of the SCR Server team (A team can used different types of car as  car1-stock1, car1-tbr1 ...).\\
 A Sprint Cup Series NASCAR-type car weighs at least 1542 kg for 850 horses with . The engine is a V8 with  $ 5,866 cm ^ 3 $. Its chassis is tubular type. It has a Borg-Warner gearbox with four-speed for road circuits.\\
 
-In our simulations, we used the car "car1-tbr1" see Fig.\ref{car} 
-\begin{figure}[h!]
-	
-	\centering
-	\includegraphics[width=0.8\textwidth]{fig/car1.png}
-	\begin{minipage}{10cm}
-		\centering
-		\caption{\footnotesize car1-trb1 features  .}
-		\label{car}
-	\end{minipage} 
-	
-\end{figure}
-
+In our simulations, we used the car "car1-tbr1" which has a weight of 1150 KG, max fuel: 94 KG, length= 4.25 m and a width of 1.94 m.
 \subsubsection{Controllers settings}
 To validate the fuzzy controllers, we have considered the following controllers:\\
 AD1: Fuzzy target speed  controller \\
@@ -765,9 +479,8 @@ We conducted a series of experiments to measure the performance of the best vers
 \subsection{Results of 20 lap practice race}
 In this case, we tested our controllers in a 20 laps practice race in the four tracks:\\
 	
-In this section, we set the distance to 20 laps for each track and for each controller. \\	
-
-\begin{table} [h!] 
+In this section, we set the distance to 20 laps for each track and for each controller. 
+\begin{table}  
 	
 	\caption{Results for 20 laps}
 	\label{resultat1}
@@ -792,8 +505,6 @@ In this section, we set the distance to 20 laps for each track and for each cont
 		Minspeed & 46 & 44 & 60 & 172 
 		\\
 		\hline 
-		
-		
 		Lastlap	Time  & 01:05:17 & 01:31:36 & 01:02:55 & 30:07
 		\\
 		\hline 
@@ -804,9 +515,6 @@ In this section, we set the distance to 20 laps for each track and for each cont
 		\\
 		\hline 
 		Fuel & 71:22 & 71:25 & 77:45 & 77:02 
-		\\
-		\hline 
-		Lap & 20/20 & 20/20 & 20/20 &20/20
 		\\
 		\hline
 \multicolumn{5}{c}{\textbf{Dirt}}\\	
@@ -840,9 +548,6 @@ In this section, we set the distance to 20 laps for each track and for each cont
 		Fuel & 65:04 & 79:26 & 79:98 & 66:06 
 		\\
 		\hline
-		Lap & 20/20 & 14/20 & 01/20 & 20/20
-		\\
-		\hline
 \multicolumn{5}{c}{\textbf{Forza}}\\	
 		\hline
 		{ \color{blue}\textbf{20 laps} }&
@@ -871,9 +576,6 @@ In this section, we set the distance to 20 laps for each track and for each cont
 		\\
 		\hline 
 		Fuel & 62:61 & 71:88 & 60:55 & 60:55
-		\\
-		\hline 
-		Lap & 20/20 & 20/20 & 04/20 & 20/20
 		\\
 		\hline
 	\multicolumn{5}{c}{\textbf{E-Road}}\\	
@@ -907,9 +609,6 @@ In this section, we set the distance to 20 laps for each track and for each cont
 		\hline 
 		Fuel & 62:11 & 78:25 & 79:25 &  55:22 
 		\\
-		\hline  
-		Lap & 20/20 & 9/20 &20/20 & 20/20
-		\\
 		\hline
 \multicolumn{5}{c}{\textbf{CG-Speedway Number1}}\\	
 		{ \color{blue}\textbf{20 laps} }&
@@ -940,26 +639,20 @@ In this section, we set the distance to 20 laps for each track and for each cont
 		\hline 
 		Fuel & 66:66 & 62:58 & 73:38 & 60:65 
 		\\
-		\hline 
-		Lap & 20/20 & 20/20 & 03/20 & 20/20
-		\\
 		\hline
 	\end{tabular} 
 	\label{Result1r}
 \end{table}
 
-The table (\ref{Result1r} ) above shows that among the four drivers, the minimum time has been reached by the AD5 controller in each of the five tracks, this was due to the steering unit of the target. The target position allows the car to adjust safely the required steering angle  with the maximum speed so the controller AD5 gave the best time.
+The table \ref{Result1r} shows that among the four drivers, the minimum time has been reached by the AD5 controller in each of the five tracks, this was due to the steering unit of the target. The target position allows the car to adjust safely the required steering angle  with the maximum speed so the controller AD5 gave the best time.
 \\
-However, taking a smaller target angle required a greater distance to cover by car by taking a less efficient trajectory. In addition, the number of times the car was off the road on Dir1 and Forza was higher for AD5 and, accordingly, the time that the car has passed out of the track was potentially higher than the other controllers.
-\\	
-
-Thus, higher damages happened after the collision with the outer walls of the track when the car is off the track. The simple driver SD driver and AD1, AD2 especially got less damage compared the version of AD5. The simple SD driver finished the race without damage, while AD5 was able to complete all the tracks safely except the Dir1t4 and Forza circuit where the damage is a little high for the AD1 driver (fig.\ref{resultat1}) .But the result may be more favourable than the other results by SD, DA1, DA2.\\
-For the fuel consumption, it  depends on  shocks rate and category of tracks.
+However, taking a smaller target angle required a greater distance to cover by car by taking a less efficient trajectory. In addition, the number of times the car was off the road on Dir1 and Forza was higher for AD5 and, accordingly, the time that the car has passed out of the track was potentially higher than the other controllers.\\	
+Thus, higher damages happened after the collision with the outer walls of the track when the car is off the track. The simple SD driver finished the race without damage, while AD5 was able to complete all the tracks safely except the Dir1t4 and Forza circuit where the damage is a little high for the AD1 driver (fig.\ref{resultat1}). For the fuel consumption, it  depends on  shocks rate and category of tracks.
 
 \subsection{Time trial race}
-Now, we set the race stopping criterion to 300s.
-we got the results that are shown in Table  \ref{resulta9}.
-\begin{table} [h!] 
+Now, we set the race stopping criterion to 300s, so each controller is run in a time trial race where the race is stopped after 300s and the current distances are compared.
+Results are in Table \ref{resulta9}.
+\begin{table} 
 	
 	\caption{Results of the controllers in 5 minute time trial race}
 	\label{resulta9}
@@ -1052,17 +745,11 @@ we got the results that are shown in Table  \ref{resulta9}.
 		
 	\end{tabular}
 \end{table}
-
 \subsection{Real race}
-\subsubsection{5 laps race}
-In this case, we test our controller "AD5", without considering the variables and opponents sensors.\\
-
 Our main goal is to test the performance of "AD5" in a race, and answer the following questions: Could we have a perfect driving in a race with "AD5" only with the track borders sensors? Can we win the race with AD5?\\
-In this context we tested "AD5" in 5 tracks against berwin,bt, damned, inferno and tita teams.
-\\
-
-After the launch of the race "AD5" against the 10 cars of each team (list in table \ref{resultat30}) for 5 laps in each track we obtained the following results (see table \ref{resultat31})
-\begin{table}[h!]
+In this context we tested "AD5" in 5 tracks against berwin,bt, damned, inferno and tita teams.\\
+After the launch of the race "AD5" against the 10 cars of each team  for 20 laps in each track we obtained the following results (see table \ref{resultat31})
+\begin{table}
 	\caption{Results of AD5  in a real race}
 	\label{resultat31}
 	\begin{tabular}{ |p{3cm}|p{2cm}|p{2cm}|p{2 cm}|p{2 cm}|p{2 cm}|}
@@ -1095,9 +782,7 @@ After the launch of the race "AD5" against the 10 cars of each team (list in tab
 		
 		Pit stops & 0& 0  & 0 & 0 & 0
 		\\
-		\hline 	
-		Lap & 5/5 & 5/5  & 5/5 & 4/5 & 5/5
-		\\
+
 		\hline
 		\hline
 		{ \color{blue}\textbf{Froza} }&
@@ -1128,9 +813,6 @@ After the launch of the race "AD5" against the 10 cars of each team (list in tab
 		
 		Pit stops & 0 & 0 & 0 & 0 & 0
 		\\
-		\hline 
-		Lap & 4/5 & 5/5  & 4/5 & 4/5& 4/5 
-		\\
 		\hline	
 	\end{tabular} 
 	
@@ -1141,12 +823,12 @@ From Table \ref {resultat31}, we noticed that our controller has won a race only
 When our controller is in parallel with his opponent, and the distance between them is smaller, and they are in a smaller width track,  there is a possibility of  damage.
 \\
 
-According to damage results, despite our controller can win the race on the E-track5 but it had a higher crash rates in the majority of cases. We observed also that in the majority of cases our car is very slow compared to the other cars in each team. \\
+According to damage results, despite our controller can win the race on the E-track5 but it had a higher crash rates in the majority of cases. We observed also that in the majority of cases our car is very slow compared to the other cars in each team. 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%  CONCLUSIONS  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-\section{Conclusions and Future Work}
+\section{Conclusions and Future Work} 
 \label{subsec:conclusions}
-
+ 
 
 
 
