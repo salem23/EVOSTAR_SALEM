@@ -64,6 +64,8 @@ This paper is dedicated to design a fuzzy driver for racing car simulator. The p
 The  fuzzy controller is evaluated in practice and time trial races giving good results
 %
 %\keywords{Videogames, Fuzzy Controller, TORCS}
+
+% Antonio - TODO: escribir mucho más completo
 \end{abstract}
 
 %
@@ -71,36 +73,49 @@ The  fuzzy controller is evaluated in practice and time trial races giving good 
 %
 \section{Introduction}
 \label{sec:intro}
-The Open Racing Car Simulator (TORCS) is one of the most popular car racing simulators, it was created by \textit{Eric Espié} and \textit{Christophe Guionneau} and currently \textit{Bernhard Wymann}, \textit{Christos Dimitrakakis}  and other contributors continue to develop it \cite{manual}.
-The Open Racing Car Simulator)\cite{WebTORCS} is a free three-dimensional racing video game.
-Even if it has not the graphic quality of commercial games, it presents several advantages for academic purposes, such as\cite{manuel}:
-\begin{enumerate}
-	
+The Open Racing Car Simulator (TORCS) is one of the most popular car racing simulators among the scientific community. It was created by \textit{Eric Espié} and \textit{Christophe Guionneau}, and due to its open-source philosophy, there are several designers and programmers constantly improving it \cite{manualTORCS}.
+TORCS \cite{WebTORCS} is a three-dimensional racing video game, mainly aimed to serve as a framework to develop and test Artificial Intelligence (AI) models for autonomous drivers, named \textit{controllers} or \textit{bots}.
+
+Even if it has not the graphic quality of commercial games, it presents several advantages for academic purposes, such as \cite{manualTORCS}:
+
+\begin{itemize}
 	\item  It lies between an advanced simulator, like recent commercial
-	car racing games, and a fully customizable environment,
+	car racing games, and a fully customisable environment,
 	like the ones typically used by computational
 	intelligence researchers for benchmark purposes.
 	\item  It features a sophisticated physics engine (aerodynamics,
-	fuel consumption, traction,...) as well as a 3D graphics
-	engine for the visualization of the races.
+	fuel consumption, traction) as well as a 3D graphics
+	engine for the visualisation of the races.
 	\item  It was not conceived as a free alternative to commercial
 	racing games, but it was specifically devised to make it
-	as easy as possible to develop your own controller In fact, controllers are implemented as separated software with modular architecture ,so it is easy to develop a new controller and to plug
+	as easy as possible to develop and test your own controller. 
+   In fact, controllers are implemented as separated software pieces with 		 
+   modular architecture, so it is easy to develop a new one and to plug 
 	it into the game.
-	
-\end{enumerate}
-Even in simulation mode, like-human driving a car with a bot is a hard task where the driver has to control several actions such as the steer ,gear and brake/acceleration using the data of car and its environment.\\
-Fuzzy logic \cite{abraham2001} with its adaptation and ability of imitating the human behaviour, is an interesting tool to design automatic TORCS drivers.\\ It could be integrated in any controller module (steer, gear, acceleration and brake, stuck) to give a human character to the bot driver \cite{CarRacing_Pelta09}, \cite{Guadarrama2008}.\\  
+\end{itemize}
 
-In this work , we will try to design fuzzy based controller to drive race cars in TORCS simulator. The proposed driver computes the steer and the target speed via two fuzzy controllers using the track sensors and consideration of opponents position in the race.\\
-The remainder of this paper is organised as follows:\\
-The second section is dedicated to present a state of the art  and related works while TORCS simulator is described in section 3.\\
-The proposed  fuzzy controller is detailed in Section 4 and the simulation of the fuzzy controller in practice race and time trial and results of comparison with other controllers are given in section 5.
+Even in simulation mode, driving a car with a bot as a human would do is a hard task, because the agent has to control several actions such as the steer, gear and brake/acceleration using the data related to the car and its environment (detected by means of sensors).
+
+Fuzzy logic \cite{abraham2001} with its adaptation and ability of imitating the human behaviour, is an interesting tool to design automatic TORCS drivers. It could be integrated in any controller module (steer, gear, acceleration and brake, stuck) to give a human-like character to the bot driver \cite{CarRacing_Pelta09,Guadarrama2008}.\\  
+
+% Antonio - contar algo más del problema y justificar la necesidad de este trabajo respecto a lo que hay hasta ahora (motivation). ¿Por qué usar Fuzzy Logic es una mejor idea que a las otras que hay? 
+% Así como lo que aportará al estado del arte y cómo lo hará avanzar (contribution). ¿No hay nada parecido?¿Abre una nueva línea de investigación?
+% Como sí hay otros trabajos que aplican FL para crear controladores, hay que diferenciar este de los otros y justificar por qué este es mejor. ;)
+% Aquí se hace un pequeño resumen de esto y en el estado del arte se hace una comparativa más profunda respecto a los trabajos existentes.
+
+Thus, in this work, we present a novel fuzzy-based controller to drive cars in races inside TORCS. The proposed bot computes the steer and the target speed using two fuzzy sub-controllers, which consider the track sensors and the opponents' position in the race.
+% Antonio - comentar un poco (entre paréntesis, por ejemplo) los sensores de la pista considerados. ¿No se usan sensores del coche?¿Por qué?
+
+The remainder of this paper is organised as follows:
+The next section presents the state of the art and related works, and comments their differences with regard to this study, along with its contribution to advance in this research line. TORCS simulator is described in Section \ref{sec:torcs}.
+The proposed fuzzy controller (and its sub-controllers) is detailed in Section \ref{sec:fuzzy_controller}, whereas it is tested in `real' (simulated) races in Section \ref{sec:results}. Obtained results are analysed and compared 
+with other controllers are given in the same section. Finally, the conclusions and future lines of work are included in Section \ref{sec:conclusions}.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  STATE OF THE ART  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 \section{Background and State of the Art}
-\label{subsec:soa}
+\label{sec:soa}
 
 A very good controller for TORCS is \cite{CarRacing_Pelta09}...
 
@@ -112,9 +127,10 @@ Authors of \cite{Fujii2008} had examined the performance of fuzzy rule-based sys
  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 \section{Problem Description: TORCS}
-\label{subsec:torcs}
+\label{sec:torcs}
+
 The Open Racing Car Simulator (TORCS)\cite{WebTORCS} is a standalone application where robots are built as separate modules loaded into the main memory when a race takes place \cite{Torcs3}.
-The architecture of TORCS simulator is based on three ways \cite{manual}: 
+The architecture of TORCS simulator is based on three ways \cite{manualTORCS}: 
 \begin{enumerate}
 	\item TORCS is a client-server application, robots are run in external processes connected to the server running across by the UDP connections.\\
 	\item The simulation is achieved in real time and  game ticks are approximately 20 ms of simulated time, the server sends the current sensors values to each robot and waits 10 ms (real time) to receive an action from the bot.
@@ -122,7 +138,7 @@ The architecture of TORCS simulator is based on three ways \cite{manual}:
 	
 	\item The TORCS software make a physical separation between the driver code and running server, it builds an abstract layer that gives complete freedom of choice of programming language that will be used for robots and limit access only to information defined by the designer.
 \end{enumerate}
-In competition, The robot perceives the racing environment through a number of sensors that provide information about the state of the car, the state of the race, opponents positions and track borders. These data enable the designer to form a base of solutions to achieve a typical driving. \cite{manuel}, \cite{torcs2}		\\		
+In competition, The robot perceives the racing environment through a number of sensors that provide information about the state of the car, the state of the race, opponents positions and track borders. These data enable the designer to form a base of solutions to achieve a typical driving. \cite{manualTORCS}, \cite{torcs2}		\\		
 Tables ~\ref{t1} presents a complete list of available sensors with a description of each one \cite{Torcs3}.\\
 
 \begin{table}[h!]
@@ -212,7 +228,7 @@ The TORCS driver bot is controlled through a  set of actuators: the steering whe
 	\caption{TORCS Actuators}
 	\label{tab2}
 \end{table}
-A robot is a program run from TORCS that drives a car. It gets as input information about the current state of the car and its situation on the track. These collected data are used to compute actions to do in the next simulation tick; like steer, gear changes, acceleration or brake and clunch. A client may request a restart of the race by sending a special action on the server: Resatart or shutdown. \cite{manual}\\
+A robot is a program run from TORCS that drives a car. It gets as input information about the current state of the car and its situation on the track. These collected data are used to compute actions to do in the next simulation tick; like steer, gear changes, acceleration or brake and clunch. A client may request a restart of the race by sending a special action on the server: Resatart or shutdown. \cite{manualTORCS}\\
 The basic architecture of a controller consists of 5 simple modules (fig.\ref{archi}). This modular architecture  is a key factor to achieve good results.
 
 \begin{figure}
@@ -227,10 +243,12 @@ The basic architecture of a controller consists of 5 simple modules (fig.\ref{ar
 \end{figure}
 	
 TORCS comes with a simple driver often used to validate new designed controllers	 \cite{torcs}, \cite{torcs2}. It presents very basic functions for controlling the race car to give developers an idea of what the controller should look like. It includes simple functions to control the speed, steering angle and speed without dealing with opponents. 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%  FUZZY CONTROLLER  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 \section{Proposed Fuzzy Controller}
-\label{subsec:fuzzy_controller}
+\label{sec:fuzzy_controller}
+
 The proposed controller has the same modular architecture as the simple driver where the target speed  and steer values are  computed via fuzzy controller using five position sensors.
 
 \subsection{Fuzzy target speed}
@@ -380,7 +398,7 @@ The description of fuzzy inputs and output are represented in table \ref{floueva
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  RESULTS  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 \section{Simulation Results}
-\label{subsec:results}
+\label{sec:results}
 
 In this section we present all the experiments that we performed in order to measure the performance of our "FD" controller .
 We first, describe the methodology we have used and next, we present the experimental results of the implementation of the Fuzzy driver, with opponents and
@@ -811,7 +829,7 @@ According to damage results, despite our controller can win the race on the E-tr
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%  CONCLUSIONS  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 \section{Conclusions and Future Work} 
-\label{subsec:conclusions}
+\label{sec:conclusions}
  
 
 
