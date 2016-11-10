@@ -100,9 +100,12 @@ Fuzzy logic \cite{abraham2001} with its adaptation and ability of imitating the 
 
 In each simulation tick, the autonomous driver must make a decision, for instance, to direct the car (steer) on the track and select a target speed. This problem is much harder when the car is near to a curve where it has to choose a compromise between going faster and avoiding the car slips and goes out of the track. The overall idea is to move the car towards the farthest track border to avoid prematurely breaking.
 
-This complex problem could be solved by means of fuzzy logic, due to its adaptive control and dealing with noise and uncertainty. 
+This complex problem could be solved by means of fuzzy logic, due to its adaptive control and dealing with noise ( in sensors \cite{manualTORCS}) and uncertainty of opponents decisions in the race. 
+% Salem - revised
 % Antonio - Aclarar qué es ruido o qué tipo de ruido hay en el problema. Igual con la incertidumbre. ;)
-Indeed, many researchers have taken advantage of this technique to design TORCS controllers: \cite{Guadarrama2008,neurone,CarRacing_Pelta09}. In the latter, for instance, a fuzzy controller was designed to obtain the target position and the steer was computed through a crisp formula. 
+Indeed, many researchers have taken advantage of this technique to design TORCS controllers: \cite{Guadarrama2008,CarRacing_Pelta09}. 
+In \cite{Guadarrama2008}, two fuzzy controllers were designed: the first one to compute the acceleration using the velocity and distance and the second one to get the turning angle. In the latter, for instance, a fuzzy controller was designed to obtain the target position and the steer was computed through a crisp formula. 
+%Salem, He reescrito esto, y he borrado el otro , usa redes neuronales
 % Antonio - ¿y en los dos trabajos anteriores qué se hace? Hay que destacar las diferencias de este estudio con respecto a todos los que hay en la literatura del mismo tipo (controladores fuzzy). Para así destacar por qué se ha hecho este y por qué es mejor y avanza el estado del arte. ;)
 % Salem - 
 % Antonio - contar algo más del problema y justificar la necesidad de este trabajo respecto a lo que hay hasta ahora (motivation). ¿Por qué usar Fuzzy Logic es una mejor idea que a las otras que hay? 
@@ -771,7 +774,7 @@ Results are in Table \ref{resulta9}.
 \end{table}
 \subsection{Real race}
 Our main goal is to test the performance of "AD5" in a race, and answer the following questions: Could we have a perfect driving in a race with "AD5" only with the track borders sensors? Can we win the race with AD5?\\
-In this context we tested "AD5" in 5 tracks against berwin,bt, damned, inferno and tita teams.\\
+In this context we tested "AD5" in 5 tracks against berniw, bt, damned, inferno and tita teams.\\
 After the launch of the race "AD5" against the 10 cars of each team  for 20 laps in each track we obtained the following results (see table \ref{resultat31})
 \begin{table}
 	\caption{Results of AD5  in a real race}
@@ -779,7 +782,7 @@ After the launch of the race "AD5" against the 10 cars of each team  for 20 laps
 	\begin{tabular}{ |p{3cm}|p{2cm}|p{2cm}|p{2 cm}|p{2 cm}|p{2 cm}|}
 		\hline
 		{ \color{blue}\textbf{E-Track5} }&
-		{ \color{red}\textbf{Against berwin team }}&  
+		{ \color{red}\textbf{Against berniw team }}&  
 		{ \color{red} \textbf{Against bt team} } &
 		{ \color{red} \textbf{Against damned team} } &
 		{ \color{red} \textbf{Against inferno team} }&
@@ -809,8 +812,8 @@ After the launch of the race "AD5" against the 10 cars of each team  for 20 laps
 
 		\hline
 		\hline
-		{ \color{blue}\textbf{Froza} }&
-		{ \color{red}\textbf{Against berwin team }}&  
+		{ \color{blue}\textbf{Forza} }&
+		{ \color{red}\textbf{Against berniw team }}&  
 		{ \color{red} \textbf{Against bt team} } &
 		{ \color{red} \textbf{Against damned team} } &
 		{ \color{red} \textbf{Against inferno team} }&
@@ -847,18 +850,21 @@ From Table \ref {resultat31}, we noticed that our controller has won a race only
 When our controller is in parallel with his opponent, and the distance between them is smaller, and they are in a smaller width track,  there is a possibility of  damage.
 \\
 
-According to damage results, despite our controller can win the race on the E-track5 but it had a higher crash rates in the majority of cases. We observed also that in the majority of cases our car is very slow compared to the other cars in each team. 
+According to damage results, despite our controller can win the race on the E-track5 but it had a higher crash rates in the some cases. We observed also that in the majority of cases our car is very slow compared to the other cars in each team. \\
+The obtained results are due to the optimal trajectory in curves and braking as late as possible.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%  CONCLUSIONS  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 \section{Conclusions and Future Work} 
 \label{sec:conclusions}
  
+A fuzzy driver was designed in this work to drive a racing car in TORCS using two sub-fuzzy controllers to compute the steer and the target speed respectively,
+The aim of the proposed controller is to direct the car to the farthest side of the track in curves so to keep the target speed as high as possible. \\ 
 
-
-
+The designed driver was evaluated in a time trial race to validate the sub controllers and in a real race against TORCS teams.The obtained results were encouraging where the proposed fuzzy driver was ranked  in the first positions in some tracks due to its early braking in curves following then an optimal trajectory, however its drawbacks were clearly visible in the dirty track.\\
+ In future works, the proposed controller which is a start point to designing an intelligent racing car driver, could be enhanced by tuning its parameters using an evolution algorithm or/and combine it with a learning tool (neural networks) to recognize the track parts. 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section*{Acknowledgments}
+\section*{Acknowledgements}
 
 Omitted for Blind reviews.
 
