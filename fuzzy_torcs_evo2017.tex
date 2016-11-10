@@ -98,12 +98,16 @@ Even in simulation mode, driving a car with a bot as a human would do is a hard 
 
 Fuzzy logic \cite{abraham2001} with its adaptation and ability of imitating the human behaviour, is an interesting tool to design automatic TORCS drivers. It could be integrated in any controller module (steer, gear, acceleration and brake, stuck) to give a human-like character to the bot driver \cite{CarRacing_Pelta09,Guadarrama2008}.\\  
 
+In each simulation tick, the driver must make a decision to direct the car (steer) on the track and select a target speed, this problem is much harder when the car is near a curve where it has to make a compromise between go faster and secure the car to avoid slipping and go out of the track. The idea is to position  the car toward the farthest track border to avoid early breaking.\\
+This complex and uncertain problem could be solved  by fuzzy logic due to its adaptive control and dealing with noise and uncertainties. Indeed, many researchers have token advantage of this technique to design TORCS controllers \cite{Guadarrama2008},\cite{neurone} so in \cite{CarRacing_Pelta09}, a fuzzy controller was designed to obtain the target position and the steer was computed through a crisp formula. 
+% Salem - 
 % Antonio - contar algo más del problema y justificar la necesidad de este trabajo respecto a lo que hay hasta ahora (motivation). ¿Por qué usar Fuzzy Logic es una mejor idea que a las otras que hay? 
 % Así como lo que aportará al estado del arte y cómo lo hará avanzar (contribution). ¿No hay nada parecido?¿Abre una nueva línea de investigación?
 % Como sí hay otros trabajos que aplican FL para crear controladores, hay que diferenciar este de los otros y justificar por qué este es mejor. ;)
 % Aquí se hace un pequeño resumen de esto y en el estado del arte se hace una comparativa más profunda respecto a los trabajos existentes.
 
-Thus, in this work, we present a novel fuzzy-based controller to drive cars in races inside TORCS. The proposed bot computes the steer and the target speed using two fuzzy sub-controllers, which consider the track sensors and the opponents' position in the race.
+Thus, in this work, and in difference with \cite{CarRacing_Pelta09}, we present a novel fuzzy-based controller to drive cars in races inside TORCS. The proposed bot computes the steer and the target speed using two fuzzy sub-controllers, which consider the track sensors and the opponents' position in the race (track sensor to find the farthest border and opponents sensors for collusion avoidance and overtaking ).
+% Salem - 
 % Antonio - comentar un poco (entre paréntesis, por ejemplo) los sensores de la pista considerados. ¿No se usan sensores del coche?¿Por qué?
 
 The remainder of this paper is organised as follows:
@@ -119,7 +123,7 @@ with other controllers are given in the same section. Finally, the conclusions a
 
 % Antonio - TODO: by Antonio and Fergu (Work in progess)
 
-A very good controller for TORCS is \cite{CarRacing_Pelta09}...
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  TORCS 
 In the last years, several researchers have focused on driving a racing car using computational intelligence techniques \cite{evol},\cite{torcs2012}, \cite{neurone}  and especially fuzzy logic where \cite{CarRacing_Pelta09} tried to design a fuzzy controller for the the target speed while the other car actions were obtained by simple functions while in\cite{ho2008}, a  previous fuzzy controller was enhanced using context-dependent fuzzy set, the obtained controller was compared to existing driving 
@@ -208,7 +212,7 @@ Table \ref{t1} presents a complete list of available sensors with a description 
 	\label{t1}
 \end{table}
 
-Every TORCS driver bot is controlled by means of a set of actuators: the steering wheel ``Steer'', the accelerator ``accel'', the brake pedal and the gearbox. In addition, a meta-action is available to request a restart of the race to the server. Table \ref{tab2} details the available actions/actuators and their representation.
+Every TORCS driver bot is controlled by means of a set of actuators: the steering wheel 'Steer', the accelerator 'accel', the brake pedal and the gearbox. In addition, a meta-action is available to request a restart of the race to the server. Table \ref{tab2} details the available actions/actuators and their representation.
 
 \begin{table}[t!]
 	
