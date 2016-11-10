@@ -117,6 +117,8 @@ with other controllers are given in the same section. Finally, the conclusions a
 \section{Background and State of the Art}
 \label{sec:soa}
 
+% Antonio - TODO: by Antonio and Fergu (Work in progess)
+
 A very good controller for TORCS is \cite{CarRacing_Pelta09}...
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  TORCS 
@@ -129,17 +131,18 @@ Authors of \cite{Fujii2008} had examined the performance of fuzzy rule-based sys
 \section{Problem Description: TORCS}
 \label{sec:torcs}
 
-The Open Racing Car Simulator (TORCS)\cite{WebTORCS} is a standalone application where robots are built as separate modules loaded into the main memory when a race takes place \cite{Torcs3}.
-The architecture of TORCS simulator is based on three ways \cite{manualTORCS}: 
-\begin{enumerate}
-	\item TORCS is a client-server application, robots are run in external processes connected to the server running across by the UDP connections.\\
-	\item The simulation is achieved in real time and  game ticks are approximately 20 ms of simulated time, the server sends the current sensors values to each robot and waits 10 ms (real time) to receive an action from the bot.
-	If no action is happened, the simulation continues and the last action will be used.\\
-	
-	\item The TORCS software make a physical separation between the driver code and running server, it builds an abstract layer that gives complete freedom of choice of programming language that will be used for robots and limit access only to information defined by the designer.
-\end{enumerate}
-In competition, The robot perceives the racing environment through a number of sensors that provide information about the state of the car, the state of the race, opponents positions and track borders. These data enable the designer to form a base of solutions to achieve a typical driving. \cite{manualTORCS}, \cite{torcs2}		\\		
-Tables ~\ref{t1} presents a complete list of available sensors with a description of each one \cite{Torcs3}.\\
+The Open Racing Car Simulator (TORCS)\cite{WebTORCS} is a standalone application mainly designed as a framework or testbed for bots/controllers, which are built as separate modules loaded into the main memory when a race takes place \cite{Torcs3}, so they are quite independent fro the game engine itself.
+The main features of the architecture of TORCS are \cite{manualTORCS}: 
+
+\begin{itemize}
+	\item TORCS is a client-server application, where the bots are run as external processes connected to the server through UDP connections.
+	\item The simulation is achieved in real time with 20 ms per game tick. So, the server sends the values of the sensors to every controller and waits 10 ms (real time) to receive an action to conduct from the bot.
+	If there is not a new action, the simulation continues and the last action is repeated.
+	\item The TORCS software makes a physical separation between the driver code and the simulator itself. Hence, it defines an abstract layer that gives complete freedom of choice of the programming language used to implement the bots, and just gives access to some information.
+\end{itemize}
+
+There are several competitions which use TORCS as base. During a competition, the bot perceives the race environment by means of a number of sensors, that provide information such as the status of the car, the status of the race, opponents positions and track borders \cite{manualTORCS,torcs2}.
+Table \ref{t1} presents a complete list of available sensors with a description of each one.
 
 \begin{table}[h!]
 	
@@ -150,7 +153,7 @@ Tables ~\ref{t1} presents a complete list of available sensors with a descriptio
 		{\textbf{Range} (unit)} &  
 		{\textbf{Data type}}\\ 
 		\hline
-		1 & Angle & [-$\pi$,+$\pi$ ] & Double\\ 
+		1 & angle & [-$\pi$,+$\pi$ ] & Double\\ 
 		\hline
 		2 & curLapTime & [0,+$\infty$] (s)	& Double\\ 
 		\hline 
@@ -201,10 +204,12 @@ Tables ~\ref{t1} presents a complete list of available sensors with a descriptio
 		\hline
 		
 	\end{tabular}
-	\caption{Available TORCS sensors Description}
+	\caption{Description of available sensors in TORCS \cite{Torcs3}.}
 	\label{t1}
 \end{table}
-The TORCS driver bot is controlled through a  set of actuators: the steering wheel "Steer", the accelerator "accel", the brake pedal and the gearbox. In addition, a meta-action is available to request a restart of the race to the server. Table~\ref{tab2}  details the available actions and their representation \cite{torcs}.
+
+Every TORCS driver bot is controlled by means of a set of actuators: the steering wheel ``Steer'', the accelerator ``accel'', the brake pedal and the gearbox. In addition, a meta-action is available to request a restart of the race to the server. Table \ref{tab2} details the available actions/actuators and their representation.
+
 \begin{table}[t!]
 	
 	\begin{tabular}{|p{3cm}|p{3 cm}|p{6 cm}|}
@@ -222,14 +227,18 @@ The TORCS driver bot is controlled through a  set of actuators: the steering whe
 		\hline
 		Steer & [-1,+1]	& Double\\
 		\hline
-		Clunch & [-1,+1]	& Double\\
+		Clutch & [-1,+1]	& Double\\
 		\hline
 	\end{tabular}
-	\caption{TORCS Actuators}
+	\caption{TORCS Actuators \cite{torcs}}
 	\label{tab2}
 \end{table}
-A robot is a program run from TORCS that drives a car. It gets as input information about the current state of the car and its situation on the track. These collected data are used to compute actions to do in the next simulation tick; like steer, gear changes, acceleration or brake and clunch. A client may request a restart of the race by sending a special action on the server: Resatart or shutdown. \cite{manualTORCS}\\
-The basic architecture of a controller consists of 5 simple modules (fig.\ref{archi}). This modular architecture  is a key factor to achieve good results.
+
+Hence, a controller is a program, which run inside TORCS, that automatically drives a car. It gets as input information about the current state of the car and its situation on the track. These collected data are used to compute actions to do in the next simulation tick; like steer, gear changes, acceleration or brake and clutch. A client may request a restart of the race by sending a special action on the server: Restart or shutdown \cite{manualTORCS}.
+
+The basic architecture of a controller consists of five simple modules (see Figure \ref{archi}). 
+% This modular architecture is a key factor to achieve good results.
+% Antonio - ¿por qué?
 
 \begin{figure}
 	
@@ -242,7 +251,11 @@ The basic architecture of a controller consists of 5 simple modules (fig.\ref{ar
 	\end{minipage} 	
 \end{figure}
 	
-TORCS comes with a simple driver often used to validate new designed controllers	 \cite{torcs}, \cite{torcs2}. It presents very basic functions for controlling the race car to give developers an idea of what the controller should look like. It includes simple functions to control the speed, steering angle and speed without dealing with opponents. 
+TORCS comes with a simple example driver often used to validate new designed controllers \cite{torcs,torcs2}. 
+%It presents very basic functions for controlling the race car to give developers an idea of what the controller should look like. It includes simple functions to control the speed, steering angle and speed without dealing with opponents. 
+% Antonio - lo quito para ahorrar espacio
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%  FUZZY CONTROLLER  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
