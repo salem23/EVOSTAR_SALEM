@@ -96,17 +96,22 @@ Even if it has not the graphic quality of commercial games, it presents several 
 
 Even in simulation mode, driving a car with a bot as a human would do is a hard task, because the agent has to control several actions such as the steer, gear and brake/acceleration using the data related to the car and its environment (detected by means of sensors).
 
-Fuzzy logic \cite{abraham2001} with its adaptation and ability of imitating the human behaviour, is an interesting tool to design automatic TORCS drivers. It could be integrated in any controller module (steer, gear, acceleration and brake, stuck) to give a human-like character to the bot driver \cite{CarRacing_Pelta09,Guadarrama2008}.\\  
+Fuzzy logic \cite{abraham2001} with its adaptation and ability of imitating the human behaviour, is an interesting tool to design automatic TORCS drivers. It could be integrated in any controller module (steer, gear, acceleration and brake, stuck) to give a human-like `appeal' to the bot driver \cite{CarRacing_Pelta09,Guadarrama2008}. 
 
-In each simulation tick, the driver must make a decision to direct the car (steer) on the track and select a target speed, this problem is much harder when the car is near a curve where it has to make a compromise between go faster and secure the car to avoid slipping and go out of the track. The idea is to position  the car toward the farthest track border to avoid early breaking.\\
-This complex and uncertain problem could be solved  by fuzzy logic due to its adaptive control and dealing with noise and uncertainties. Indeed, many researchers have token advantage of this technique to design TORCS controllers \cite{Guadarrama2008},\cite{neurone} so in \cite{CarRacing_Pelta09}, a fuzzy controller was designed to obtain the target position and the steer was computed through a crisp formula. 
+In each simulation tick, the autonomous driver must make a decision, for instance, to direct the car (steer) on the track and select a target speed. This problem is much harder when the car is near to a curve where it has to choose a compromise between going faster and avoiding the car slips and goes out of the track. The overall idea is to move the car towards the farthest track border to avoid prematurely breaking.
+
+This complex problem could be solved by means of fuzzy logic, due to its adaptive control and dealing with noise and uncertainty. 
+% Antonio - Aclarar qué es ruido o qué tipo de ruido hay en el problema. Igual con la incertidumbre. ;)
+Indeed, many researchers have taken advantage of this technique to design TORCS controllers: \cite{Guadarrama2008,neurone,CarRacing_Pelta09}. In the latter, for instance, a fuzzy controller was designed to obtain the target position and the steer was computed through a crisp formula. 
+% Antonio - ¿y en los dos trabajos anteriores qué se hace? Hay que destacar las diferencias de este estudio con respecto a todos los que hay en la literatura del mismo tipo (controladores fuzzy). Para así destacar por qué se ha hecho este y por qué es mejor y avanza el estado del arte. ;)
 % Salem - 
 % Antonio - contar algo más del problema y justificar la necesidad de este trabajo respecto a lo que hay hasta ahora (motivation). ¿Por qué usar Fuzzy Logic es una mejor idea que a las otras que hay? 
 % Así como lo que aportará al estado del arte y cómo lo hará avanzar (contribution). ¿No hay nada parecido?¿Abre una nueva línea de investigación?
 % Como sí hay otros trabajos que aplican FL para crear controladores, hay que diferenciar este de los otros y justificar por qué este es mejor. ;)
 % Aquí se hace un pequeño resumen de esto y en el estado del arte se hace una comparativa más profunda respecto a los trabajos existentes.
 
-Thus, in this work, and in difference with \cite{CarRacing_Pelta09}, we present a novel fuzzy-based controller to drive cars in races inside TORCS. The proposed bot computes the steer and the target speed using two fuzzy sub-controllers, which consider the track sensors and the opponents' position in the race (track sensor to find the farthest border and opponents sensors for collusion avoidance and overtaking ).
+However, in this work we present a novel fuzzy-based controller, which computes the steer and target speed using two specialised fuzzy sub-controllers.
+They consider the track sensors (to find the farthest border) and the opponents' position in the race (for collision avoidance and overtaking).
 % Salem - 
 % Antonio - comentar un poco (entre paréntesis, por ejemplo) los sensores de la pista considerados. ¿No se usan sensores del coche?¿Por qué?
 
