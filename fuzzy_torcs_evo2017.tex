@@ -24,7 +24,8 @@
 
 
 % a short form should be given in case it is too long for the running head
-\titlerunning{There can be only one}
+\titlerunning{Fuzzy Controller for TORCS}
+% Antonio - Poner el nombre corto
 
 % the name(s) of the author(s) follow(s) next
 %
@@ -61,7 +62,7 @@
 %
 \begin{abstract}
 This paper is dedicated to design a fuzzy driver for racing car simulator. The proposed driver uses two fuzzy controller to obtain the steer and the target speed of the car using track borders sensors as inputs.\\
-The  fuzzy controller is evaluated in practice and time trial races giving good results
+The  fuzzy controller is evaluated in practise and time trial races giving good results
 %
 %\keywords{Videogames, Fuzzy Controller, TORCS}
 
@@ -100,11 +101,10 @@ Fuzzy logic \cite{abraham2001} with its adaptation and ability of imitating the 
 
 In each simulation tick, the autonomous driver must make a decision, for instance, to direct the car (steer) on the track and select a target speed. This problem is much harder when the car is near to a curve where it has to choose a compromise between going faster and avoiding the car slips and goes out of the track. The overall idea is to move the car towards the farthest track border to avoid prematurely breaking.
 
-This complex problem could be solved by means of fuzzy logic, due to its adaptive control and dealing with noise ( in sensors \cite{manualTORCS}) and uncertainty of opponents decisions in the race. 
-% Salem - revised
-% Antonio - Aclarar qué es ruido o qué tipo de ruido hay en el problema. Igual con la incertidumbre. ;)
-Indeed, many researchers have taken advantage of this technique to design TORCS controllers: \cite{Guadarrama2008,CarRacing_Pelta09}. 
-In \cite{Guadarrama2008}, two fuzzy controllers were designed: the first one to compute the acceleration using the velocity and distance and the second one to get the turning angle. In the latter, for instance, a fuzzy controller was designed to obtain the target position and the steer was computed through a crisp formula. 
+This complex problem could be solved by means of fuzzy logic, due to its adaptive control and ability to deal with noise (in sensors \cite{manualTORCS}) and uncertainty (non-deterministic opponents' decisions in the race). 
+
+Indeed, several researchers have taken advantage of this technique to design TORCS controllers, such as \cite{Guadarrama2008,CarRacing_Pelta09}. 
+% Antonio - esto sigue sin estar bien así. No deberíamos poner ejemplos concretos, ya que habrá muchos más. Sino decir, en general qué han hecho otros autores y qué has hecho tú que sea diferente del resto. Y por qué lo que has hecho es mejor que lo que hicieron los demás o en qué se diferencia a grandes rasgos. Esto que has puesto lo muevo al estado del arte, que cas mejor. ;)
 %Salem, He reescrito esto, y he borrado el otro , usa redes neuronales
 % Antonio - ¿y en los dos trabajos anteriores qué se hace? Hay que destacar las diferencias de este estudio con respecto a todos los que hay en la literatura del mismo tipo (controladores fuzzy). Para así destacar por qué se ha hecho este y por qué es mejor y avanza el estado del arte. ;)
 % Salem - 
@@ -115,8 +115,6 @@ In \cite{Guadarrama2008}, two fuzzy controllers were designed: the first one to 
 
 However, in this work we present a novel fuzzy-based controller, which computes the steer and target speed using two specialised fuzzy sub-controllers.
 They consider the track sensors (to find the farthest border) and the opponents' position in the race (for collision avoidance and overtaking).
-% Salem - 
-% Antonio - comentar un poco (entre paréntesis, por ejemplo) los sensores de la pista considerados. ¿No se usan sensores del coche?¿Por qué?
 
 The remainder of this paper is organised as follows:
 The next section presents the state of the art and related works, and comments their differences with regard to this study, along with its contribution to advance in this research line. TORCS simulator is described in Section \ref{sec:torcs}.
@@ -136,9 +134,22 @@ with other controllers are given in the same section. Finally, the conclusions a
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  TORCS 
 In the last years, several researchers have focused on driving a racing car using computational intelligence techniques \cite{evol},\cite{torcs2012}, \cite{neurone}  and especially fuzzy logic where \cite{CarRacing_Pelta09} tried to design a fuzzy controller for the the target speed while the other car actions were obtained by simple functions while in\cite{ho2008}, a  previous fuzzy controller was enhanced using context-dependent fuzzy set, the obtained controller was compared to existing driving 
 techniques showing better performance.\\
-In \cite{Guadarrama2008}, a fuzzy rule-based car controller for Car Racing Competition was built and tuned with coevolutionary genetic algorithms. Its results had been compared with  cooperative and competitive approaches to tuning parameters.
+In \cite{Guadarrama2008}, a fuzzy rule-based car controller for Car Racing Competition was built and tuned with coevolutionary genetic algorithms. Indeed, two fuzzy controllers were designed: the first one to compute the acceleration using the velocity and distance and the second one to get the turning angle. Their results had been compared with cooperative and competitive approaches to tuning parameters.
 Authors of \cite{Fujii2008} had examined the performance of fuzzy rule-based systems in  high-level decision making of a car and the effect of sensory information. 
+In \cite{CarRacing_Pelta09}, for instance, a fuzzy controller was designed to obtain the target position and the steer was computed through a crisp formula.
  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Antonio - habría que estructurar esta sección, por ejemplo:
+%
+% - controladores de coches en general (de todo tipo)
+% - controladores dentro de TORCS (de todo tipo)
+% - controladores de coches que usen Fuzzy
+% - esta propuesta y las diferencias con el resto. Contribución al estado del %
+%   arte.
+%
+% Además, en cada bloque, habría que señalar las diferencias con este trabajo y por qué lo que se presenta aquí es mejor.
+
+
 %
 \section{Problem Description: TORCS}
 \label{sec:torcs}
@@ -220,7 +231,7 @@ Table \ref{t1} presents a complete list of available sensors with a description 
 	\label{t1}
 \end{table}
 
-Every TORCS driver bot is controlled by means of a set of actuators: the steering wheel 'Steer', the accelerator 'accel', the brake pedal and the gearbox. In addition, a meta-action is available to request a restart of the race to the server. Table \ref{tab2} details the available actions/actuators and their representation.
+Every TORCS driver bot is controlled by means of a set of actuators: the steering wheel `Steer', the accelerator `accel', the brake pedal and the gearbox. In addition, a meta-action is available to request a restart of the race to the server. Table \ref{tab2} details the available actions/actuators and their representation.
 
 \begin{table}[t!]
 	
@@ -258,10 +269,11 @@ The basic architecture of a controller consists of five simple modules (see Figu
 	\includegraphics[width=0.9\textwidth]{fig/archicontrole2.PNG}
 	\begin{minipage}{10cm}
 		\centering
-		\caption{\footnotesize Controller's Architecture.}
+		\caption{\footnotesize Basic architecture of a controller.}
 		\label{archi}
 	\end{minipage} 	
 \end{figure}
+% Antonio - hay que mejorar esta figura, tiene poca calidad, con algunos píxeles coloreados aleatoriamente, la flecha entre 'target speed' y 'pedal control' torcida y pone 'envirenment' en lugar de 'environment'. ;)
 	
 TORCS comes with a simple example driver often used to validate new designed controllers \cite{torcs,torcs2}. 
 %It presents very basic functions for controlling the race car to give developers an idea of what the controller should look like. It includes simple functions to control the speed, steering angle and speed without dealing with opponents. 
@@ -274,23 +286,43 @@ TORCS comes with a simple example driver often used to validate new designed con
 \section{Proposed Fuzzy Controller}
 \label{sec:fuzzy_controller}
 
-The proposed controller has the same modular architecture as the simple driver where the target speed  and steer values are  computed via fuzzy controller using five position sensors.
+The proposed controller has the same modular architecture as the simple driver. 
+However, the target speed and steering angle are computed by means of two specialised fuzzy controllers, which consider five position sensors.
 
-\subsection{Fuzzy target speed}
-To estimate the target speed  based on fuzzy rules, two cases are considered.
-\begin{enumerate}
-	\item If the car is in straight line, the target speed will take a maximum value (maxSpeed).\\
-	\item If it is near a curve, the controller will decrease its current speed to a value included in the interval [minSpeed; maxSpeed] km/h.
-\end{enumerate}
-In case the car is off the track or near a curve, the brake system is activated where  the ABS and TCS will be loaded to avoid the car skidding.
-\\
-The obtained target speed will be used in calculating the value of acceleration.
+In the following sections each sub-controller is described.
+
+%-----------------------------------------------
+
+\subsection{Fuzzy target speed sub-controller}
+
+The first proposed fuzzy sub-controller aims to estimate the optimal speed...
+% Antonio - Introducir mejor el controlador. Su objetivo o utilidad principal.
+
+In order to do this estimation, it is based on fuzzy rules, so two general cases are considered:
+
+\begin{itemize}
+	\item If the car is in a straight line, the target speed will take a maximum value (\textit{maxSpeed} km/h).
+	\item If it is close to a curve, the controller will decrease the current speed to a value included in the interval \textit{[minSpeed; maxSpeed]} km/h.
+\end{itemize}
+
+In case the car is out of the track or near a curve, 
+% Antonio - ¿near a curve? Eso es lo del segundo caso que has puesto arriba, ¿no?
+the brake system is activated and ABS and TCS 
+% Pon entre paréntesis qué significan ABS y TCS. ;)
+will be loaded to avoid the car skidding.
+% ¿Esto lo hace el controlador tuyo o lo hacía el controlador simple ya?
+
+
+The obtained target speed will be used for computing the value of acceleration, following the expression:
+
 \begin{equation}	
 Gas(speed-Target_{speed})=-1+\frac{2}{1+e^{speed-Target_{speed}}}	
 \end{equation}
+% Antonio - explicar un poco la formula, o decir si es del simulador que la define así.
 
-Gas is for acceleration, Speed is the  current speed of the car.\\
-Our fuzzy controller has 3 input values and one output: the target speed value(See figure \ref{AD}):
+\textit{Gas} function refers to acceleration, \textit{speed} is the current speed of the car.
+
+This fuzzy controller has three input values and one output: the target speed value (see Figure \ref{AD}):
 
 \begin{figure}
 	\begin{center}
@@ -301,7 +333,7 @@ Our fuzzy controller has 3 input values and one output: the target speed value(S
 		\node[left=of a0.160,font=\bfseries] (aux01) {$Front$};
 		\node[left=of a0.175,font=\bfseries] (aux02) {$M5$};
 		\node[left=of a0.195,font=\bfseries] (aux03) {$M10 $};
-		\node[right=of a0,font=\bfseries] (c0) {$Target speed$};
+		\node[right=of a0,font=\bfseries] (c0) {$Target_{speed}$};
 		\draw[thick,->,>= latex] (aux01) -- (a0.160);
 		\draw[thick,->,>= latex] (aux02) -- (a0.175);
 		\draw[thick,->,>= latex] (aux03) -- (a0.195);
@@ -327,18 +359,23 @@ Our fuzzy controller has 3 input values and one output: the target speed value(S
 		
 		%\includegraphics [width=10cm,height=4cm]{figures/c2/sif}
 	\end{center}
-	\caption{Fuzzy control of target speed.}     % width is 8.4 cm.
+	\caption{Fuzzy controller of target speed.}     % width is 8.4 cm.
 	\label{AD}
 \end{figure}
 
-The fuzzy driver (FD) is a Mamdani based fuzzy system \cite{Iancu2012} (See fig.\ref{AD}) with trapezoidal membership functions for input variables. It uses three values among the 19 of the track sensor (See fig.\ref{fig34}):
+The fuzzy driver (FD) presented in that figure is a Mamdani-based fuzzy system \cite{iancu2012} with trapezoidal Membership Functions (MF) for input variables. 
+% Antonio - justificar por qué se usa esa función de pertenencia (membership)
 
-\begin{enumerate}
-	\item Front = Track[9]  with angle = 0 , the front distance between the car and the border of track.
-	\item M5 = max (Track[8]; Track[10])
-	the max distance with +5 and  -5 angle.
-	\item M10 = max (track[11]; track[7]) ,	the max distance with +10 and  -10 angle.
-\end{enumerate}
+It considers three values among the 19 track sensors (see Figure \ref{fig34}):
+
+\begin{itemize}
+	\item Front = Track[9]: the front distance between the car and the border of the track (angle 0º).
+	\item M5 = max (Track[8], Track[10]): the max distance to the track limits in an angle of +5º and -5º with respect to Front.
+	\item M10 = max (track[7], track[11]): the max distance to the border in an angle of +10º and -10º.
+\end{itemize}
+
+% Antonio - Hay que justificar muy bien por qué se han elegido esos sensores en concreto. ¿Se probaron todos y estos fueron los mejores?¿se ha seguido alguna regla heurística para elegirlos?
+
 \begin{figure}[h!]
 	
 	\centering
@@ -346,21 +383,25 @@ The fuzzy driver (FD) is a Mamdani based fuzzy system \cite{Iancu2012} (See fig.
 	\includegraphics[width=0.9\textwidth]{fig/front.png}
 	\begin{minipage}{10cm}
 		\centering
-		\caption{\footnotesize Fuzzy inputs.}
+		\caption{Inputs considered in the target speed sub-controller.}
 		\label{fig34}
 	\end{minipage} 		
 \end{figure}
-Each input variable is represented by three membership functions Low, Medium and High\\
-The description of fuzzy inputs and output are represented in table \ref{flouevar} .
+% Antonio - la figura hay que mejorarla también, es un poco fea. Los recuadros de texto sobre el coche tienen la letra cortada a veces. Además, los ángulos creo que no están bien, deberían ser -5º y +5º; y -10º y +10º, ¿no?
+% Arriba pone sensor '9' y en los otros '08' y '07'.
+% TODO - [FERGU] hacer la figura con más calidad
+
+
+Each input variable is represented by three membership functions: Low, Medium and High. The description of fuzzy inputs and output are represented in Table \ref{tab:flouevar}.
 	
 	\begin{table}
-		\label{flouevar}
-		\caption{ Fuzzy variables description}
-		\begin{tabular}{ |p{1cm}|p{2cm}|p{1.5cm}|p{2 cm}|p{1 cm}|p{1.5 cm}|p{1.5 cm}|}
+		\label{tab:flouevar}
+		\caption{Fuzzy variables description.}
+		\begin{tabular}{ |p{1.5cm}|p{2cm}|p{2cm}|p{2 cm}|p{1 cm}|p{1.5 cm}|p{1.5 cm}|}
 			\hline
 			{ \color{red} Variable }&
-			{ \color{red}Range }&
-			{ \color{red}Name}&  
+			{ \color{red} Range }&
+			{ \color{red} Name}&  
 			{ \color{red} MF } &
 			{ \color{red} Low } &
 			{ \color{red} Medium }&
@@ -377,29 +418,37 @@ The description of fuzzy inputs and output are represented in table \ref{floueva
 			Input & [0-100] m  & M10 & trapezoidal & [0-30] & [0-60] & [30-100]
 			\\
 			\hline 
-			Output & [0-200]m/s & TS & singleton & / & / & /
+			Output & [0-200] m/s & TargetSpeed & singleton & / & / & /
 			\\
 			\hline 
 		\end{tabular} 
 	\end{table}
 
-	The rules base is designed so that if the front distance is maximal, then target speed should be maximal, and this value should be less when  the frontal distance is lower. The fuzzy rules are listed below:
-	\\
-	\begin{enumerate}
-		\item If Front is High Then TargetSpeed is TS1
-		\item If Front is Medium Then TargetSpeed is TS2
-		\item If Front is Low and M5 is High Then TargetSpeed is TS3
-		\item If Front is Low and M5 is Medium Then TargetSpeed is TS4
-		\item If Front is Low and M5 is Low and M10 is High Then TargetSpeed is TS5
-		\item If Front is Low and M5 is Low and M10 is Medium Then TargetSpeed is TS6
-		\item  If Front is Low and M5 is Low and M10 is Low Then TargetSpeed is TS7
-		\\
+% Antonio - Revisar los valores, ¿estan bien los de M10? Low está incluido en Medium...
+
+	The base of rules is designed so that if the frontal distance is maximal, then the target speed should be the maximum. Its value should be lower when the frontal distance is shorter. Thus, the fuzzy rules are listed below:
+% Antonio - ¿Cómo se ha obtenido estas reglas? ¿De forma manual o se han generado con alguna técnica?¿Se han descartado otras?
+
+	\begin{itemize}
+		\item IF Front is High THEN TargetSpeed is TS1
+		\item IF Front is Medium THEN TargetSpeed is TS2
+		\item IF Front is Low and M5 is High THEN TargetSpeed is TS3
+		\item IF Front is Low and M5 is Medium THEN TargetSpeed is TS4
+		\item IF Front is Low and M5 is Low and M10 is High THEN TargetSpeed is TS5
+		\item IF Front is Low and M5 is Low and M10 is Medium THEN TargetSpeed is TS6
+		\item IF Front is Low and M5 is Low and M10 is Low THEN TargetSpeed is TS7
 		In addition, a crisp rule is added to rule base to obtain a maximum value of the target speed when the three input variables are as big as possible: \\
-		\item If Front = Maxdistspeed or M5 = Maxdistspeed or M10 = Maxdistspeed Then TargetSpeed = Maxspeed	
-		
-	\end{enumerate}
-	The output value (target speed) is encoded by seven singletons.
-	
+		\item IF Front = MAXDISTSPEED or M5 = MAXDISTSPEED or M10 = MAXDISTSPEED THEN TargetSpeed = MAXSPEED		
+	\end{itemize}
+
+MAXDISTSPEED is...
+% Antonio - aclarar esto
+
+The output value (target speed) is encoded by seven singletons.
+
+% Antonio - ¿Qué valores tienen?
+
+%-----------------------------------------------
 	\subsection{Fuzzy Steer control}	
 	We can use another fuzzy controller to control the Steer to estimate and determine the target position of the car:\\
 	if the car is straight line then it will take as target position half width of the race track.	
