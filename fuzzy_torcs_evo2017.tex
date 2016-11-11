@@ -519,15 +519,32 @@ The output value (target speed) is encoded by seven singletons.
 In this section we present all the experiments that we performed in order to measure the performance of our "FD" controller .
 We first, describe the methodology we have used and next, we present the experimental results of the implementation of the Fuzzy driver, with opponents and
 using special criteria in each case. \\
-We have established a set of tests to measure the performance of the controller "AD". We compared the newly developed Controller with existing methods: the simple driver. We will run every controller in several race tracks. 
+We have established a set of tests to measure the performance of the
+controller "AD". We compared the newly developed Controller with
+existing methods: the simple driver. We will run every controller in
+several race tracks.  % What do those tests imply? Are the like the
+                      % best way of toing that? The usual way? A
+                      % reference? Why 20 laps? - JJ
+
 \subsection{Simulation settings}
-TORCS provides different tracks to choose from. These race tracks are designed by different developers in order to test the performance of the controllers on different difficulty circuits and on different types of roads.\\
+TORCS provides different tracks to choose from. These race tracks are
+designed by different developers in order to test the performance of
+the controllers on different difficulty circuits and on different
+types of roads.\\
 
-In our case, we chose three of road tracks, a dirt road, and an oval track.\\
+
+In our case, we chose three of road tracks, a dirt road, and an oval
+track. %Why did you choose them? 
 
 
-On oval tracks, E-Track5 seems to be the most interesting, as it has curves in both directions. On dirt roads, Dirt1 has a good variety of curves. For road tracks, we selected three tracks: Forza, E-Road and CG-Speedway Number1. Table \ref{Tabtrack}  presents the properties and description of each selected track.\\
-
+On oval tracks, E-Track5 seems to be the most interesting, as it has
+curves in both directions. On dirt roads, Dirt1 has a good variety of
+curves. For road tracks, we selected three tracks: Forza, E-Road and
+CG-Speedway Number1. Table \ref{Tabtrack}  presents the properties and
+description of each selected track.\\ 
+% But does this mean you are trying to design a controller that is
+% good in all kind of roads, unlike these controllers?  Shouldn't that
+% go to the introduction?- JJ
 \begin{table}
 	
 	\caption{Description of Selected tracks}
@@ -578,24 +595,52 @@ On oval tracks, E-Track5 seems to be the most interesting, as it has curves in b
 		\\
 		\hline
 	\end{tabular} 
+% But you should say how representative they are, what kind of
+% controllers work well in every one and, in general, talk about them- JJ
 \end{table}
 \subsubsection{ Cars settings}
 
 SCR 1 server is a NASCAR car and member of the SCR Server team (A team can used different types of car as  car1-stock1, car1-tbr1 ...).\\
 A Sprint Cup Series NASCAR-type car weighs at least 1542 kg for 850 horses with . The engine is a V8 with  $ 5,866 cm ^ 3 $. Its chassis is tubular type. It has a Borg-Warner gearbox with four-speed for road circuits.\\
 
-In our simulations, we used the car "car1-tbr1" which has a weight of 1150 KG, max fuel: 94 KG, length= 4.25 m and a width of 1.94 m.
-\subsubsection{Controllers settings}
-To validate the fuzzy controllers, we have considered the following controllers:\\
-AD1: Fuzzy target speed  controller \\
-AD2: Fuzzy steer and speed controller \\
-AD5: Fuzzy target speed  controller with opponent consideration \\
-SD: Simple driver \\
+In our simulations, we used the car "car1-tbr1" which has a weight of
+1150 KG, max fuel: 94 KG, length= 4.25 m and a width of 1.94 m. % Why
+                                % this one? Does that mean that
+                                % results apply only to this kind of
+                                % car? - JJ
 
-We conducted a series of experiments to measure the performance of the best version control in some race tracks (05 tracks in table \ref{Tabtrack} ).
+\subsubsection{Controllers settings}
+
+%In order to test the different controller features in a separated way
+%to see which one has the most influence on the success or failure of
+%the controller, we have tested them this way...
+% Or something like that. You have to justify everything. It's not a
+% description of what you've done, it's a justification - JJ
+To validate the fuzzy controllers, we have considered the following
+controllers:\begin{itemize}
+\item AD1: Fuzzy target speed  controller 
+\item AD2: Fuzzy steer and speed controller 
+\item AD5: Fuzzy target speed controller that takes the opponent into
+  account 
+\item SD: Simple driver 
+\end{itemize}
+% Some reviewer could say why don't you take the copponent into
+% account with steering only or with target only, and also check only
+% fuzzy steering without controlling speed. You have to consider the
+% whole range of possibilities, and there are 6; you have considered
+% only 3. - JJ
+
+We conducted a series of experiments to measure the performance of the
+best version control in some race tracks (05 tracks in table
+\ref{Tabtrack} ). 
 
 \subsection{Results of 20 lap practice race}
-In this case, we tested our controllers in a 20 laps practice race in the four tracks:\\
+
+In this case, we tested our controllers in a 20 laps practice race in
+the four tracks:\\
+% Why 20? What did you want to prove with this? You should add a
+% Because... and then at the end of the section actually check that
+% that's true. -- JJ
 	
 In this section, we set the distance to 20 laps for each track and for each controller. 
 \begin{table}  
@@ -762,14 +807,31 @@ In this section, we set the distance to 20 laps for each track and for each cont
 	\label{Result1r}
 \end{table}
 
-The table \ref{Result1r} shows that among the four drivers, the minimum time has been reached by the AD5 controller in each of the five tracks, this was due to the steering unit of the target. The target position allows the car to adjust safely the required steering angle  with the maximum speed so the controller AD5 gave the best time.
+The table \ref{Result1r} shows that among the four drivers, the
+minimum time has been achieved by the AD5 controller in each of the
+five tracks. This was due to the steering unit of the target. % what
+                                % does that mean and how do you know that?
+The
+target position allows the car to adjust safely the required steering
+angle  with the maximum speed so the controller AD5 gave the best
+time. 
 \\
-However, taking a smaller target angle required a greater distance to cover by car by taking a less efficient trajectory. In addition, the number of times the car was off the road on Dir1 and Forza was higher for AD5 and, accordingly, the time that the car has passed out of the track was potentially higher than the other controllers.\\	
-Thus, higher damages happened after the collision with the outer walls of the track when the car is off the track. The simple SD driver finished the race without damage, while AD5 was able to complete all the tracks safely except the Dir1t4 and Forza circuit where the damage is a little high for the AD1 driver (fig.\ref{resultat1}). For the fuel consumption, it  depends on  shocks rate and category of tracks.
+However, taking a smaller target angle required a greater distance to
+cover by car by taking a less efficient trajectory. In addition, the
+number of times the car was off the road on Dir1 and Forza was higher
+for AD5 and, accordingly, the time that the car has passed out of the
+track was potentially higher than the other controllers. 	
+Thus, bigger damage happened after the collision with the outer walls
+of the track when the car is off the track. The simple SD driver
+finished the race without damage, while AD5 was able to complete all
+the tracks safely except the Dir1t4 and Forza circuit where the damage
+is a little high for the AD1 driver (fig.\ref{resultat1}). For the
+fuel consumption, it  depends on  shocks rate and category of tracks. 
 
 \subsection{Time trial race}
 Now, we set the race stopping criterion to 300s, so each controller is run in a time trial race where the race is stopped after 300s and the current distances are compared.
-Results are in Table \ref{resulta9}.
+Results are in Table \ref{resulta9}. % YOu have to comment the
+                                % results. !!!! - JJ
 \begin{table} 
 	
 	\caption{Results of the controllers in 5 minute time trial race}
@@ -863,6 +925,8 @@ Results are in Table \ref{resulta9}.
 		
 	\end{tabular}
 \end{table}
+
+
 \subsection{Real race}
 Our main goal is to test the performance of "AD5" in a race, and answer the following questions: Could we have a perfect driving in a race with "AD5" only with the track borders sensors? Can we win the race with AD5?\\
 In this context we tested "AD5" in 5 tracks against berniw, bt, damned, inferno and tita teams.\\
