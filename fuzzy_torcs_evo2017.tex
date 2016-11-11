@@ -77,18 +77,33 @@ The  fuzzy controller is evaluated in practise and time trial races giving good 
 %
 \section{Introduction}
 \label{sec:intro}
-The Open Racing Car Simulator (TORCS) is one of the most popular car racing simulators among the scientific community. It was created by \textit{Eric Espié} and \textit{Christophe Guionneau}, and due to its open-source philosophy, there are several designers and programmers constantly improving it \cite{manualTORCS}.
-TORCS \cite{WebTORCS} is a three-dimensional racing video game, mainly aimed to serve as a framework to develop and test Artificial Intelligence (AI) models for autonomous drivers, named \textit{controllers} or \textit{bots}.
 
-Even if it has not the graphic quality of commercial games, it presents several advantages for academic purposes, such as \cite{manualTORCS}:
+%Primero hay que decir qué problema quieres resolver. TORCS no es el
+%problema, es el medio que vas a usar para resolverlo. 
+
+The Open Racing Car Simulator (TORCS) \cite{WebTORCS} is a
+three-dimensional racing video game created by \textit{Eric Espié} and
+\textit{Christophe Guionneau}, whose objective  is to be used as a
+framework to develop and test Artificial Intelligence (AI) models for
+autonomous drivers, named \textit{controllers} or \textit{bots}. It is
+one of the most popular car racing simulators among the scientific
+community, and due to its open-source philosophy, there are
+several designers and programmers constantly improving it
+\cite{manualTORCS}. 
+ 
+
+Even if it does not have the graphic quality of commercial games, it
+presents several advantages for academic purposes, such as
+\cite{manualTORCS}: 
 
 \begin{itemize}
-	\item  It lies between an advanced simulator, like recent commercial
+	\item  Its complexity lies between an advanced simulator, like recent commercial
 	car racing games, and a fully customisable environment,
 	like the ones typically used by computational
 	intelligence researchers for benchmark purposes.
-	\item  It features a sophisticated physics engine (aerodynamics,
-	fuel consumption, traction) as well as a 3D graphics
+	\item  It features a sophisticated physics engine  that
+          includes aerodynamics,
+	fuel consumption, traction, as well as a 3D graphics
 	engine for the visualisation of the races.
 	\item  It was not conceived as a free alternative to commercial
 	racing games, but it was specifically devised to make it
@@ -98,13 +113,32 @@ Even if it has not the graphic quality of commercial games, it presents several 
 	it into the game.
 \end{itemize}
 
-Even in simulation mode, driving a car with a bot as a human would do is a hard task, because the agent has to control several actions such as the steer, gear and brake/acceleration using the data related to the car and its environment (detected by means of sensors).
+Even in simulation mode, driving a car with a bot as a human would do
+is a hard task, because the agent has to control several actions such
+as the steer, gear and brake/acceleration using the data related to
+the car and its environment (detected by means of sensors). 
 
-Fuzzy logic \cite{abraham2001} with its adaptation and ability of imitating the human behaviour, is an interesting tool to design automatic TORCS drivers. It could be integrated in any controller module (steer, gear, acceleration and brake, stuck) to give a human-like `appeal' to the bot driver \cite{CarRacing_Pelta09,Guadarrama2008}. 
+%Hey what's happened here? We were talking about TORCS and all of a
+%sudden... fuzzy logic! What???? - JJ
+Fuzzy logic \cite{abraham2001} with its adaptation and ability of
+imitating the human behaviour, is an interesting tool to design
+automatic TORCS drivers. It could be integrated in any controller
+module (steer, gear, acceleration and brake, stuck) to give a
+human-like `appeal' to the bot driver
+\cite{CarRacing_Pelta09,Guadarrama2008}.  
 
-In each simulation tick, the autonomous driver must make a decision, for instance, to direct the car (steer) on the track and select a target speed. This problem is much harder when the car is near to a curve where it has to choose a compromise between going faster and avoiding the car slips and goes out of the track. The overall idea is to move the car towards the farthest track border to avoid prematurely breaking.
+In each simulation tick, the autonomous driver must make a decision,
+for instance, to direct the car (steer) on the track and select a
+target speed. This problem is much harder when the car is near to a
+curve where it has to choose a compromise between going faster and
+avoiding the car slips and goes out of the track. The overall idea is
+to move the car towards the farthest track border to avoid prematurely
+breaking. 
 
-This complex problem could be solved by means of fuzzy logic, due to its adaptive control and ability to deal with noise (in sensors \cite{manualTORCS}) and uncertainty (non-deterministic opponents' decisions in the race). 
+This complex problem could be solved by means of fuzzy logic, due to
+its adaptive control and ability to deal with noise (in sensors
+\cite{manualTORCS}) and uncertainty (non-deterministic opponents'
+decisions in the race).  
 
 Indeed, several researchers have taken advantage of this technique to design TORCS controllers, such as \cite{Guadarrama2008,CarRacing_Pelta09}. 
 % Antonio - esto sigue sin estar bien así. No deberíamos poner ejemplos concretos, ya que habrá muchos más. Sino decir, en general qué han hecho otros autores y qué has hecho tú que sea diferente del resto. Y por qué lo que has hecho es mejor que lo que hicieron los demás o en qué se diferencia a grandes rasgos. Esto que has puesto lo muevo al estado del arte, que cas mejor. ;)
@@ -116,10 +150,15 @@ Indeed, several researchers have taken advantage of this technique to design TOR
 % Como sí hay otros trabajos que aplican FL para crear controladores, hay que diferenciar este de los otros y justificar por qué este es mejor. ;)
 % Aquí se hace un pequeño resumen de esto y en el estado del arte se hace una comparativa más profunda respecto a los trabajos existentes.
 
-However, in this work we present a novel fuzzy-based controller, which computes the steer and target speed using two specialised fuzzy sub-controllers.
-They consider the track sensors (to find the farthest border) and the opponents' position in the race (for collision avoidance and overtaking).
+However, in this work we present a novel fuzzy-based controller, which
+computes the steer %steer? steerage? steering? - JJ
+ and target speed using two specialised fuzzy sub-controllers.
+They consider the track sensors (to find the farthest border) and the
+opponents' position in the race (for collision avoidance and
+overtaking). %please avoid parentheses. You should not use them at all
+             %- JJ
 
-The remainder of this paper is organised as follows:
+The rest of this paper is organised as follows:
 The next section presents the state of the art and related works, and comments their differences with regard to this study, along with its contribution to advance in this research line. TORCS simulator is described in Section \ref{sec:torcs}.
 The proposed fuzzy controller (and its sub-controllers) is detailed in Section \ref{sec:fuzzy_controller}, whereas it is tested in `real' (simulated) races in Section \ref{sec:results}. Obtained results are analysed and compared 
 with other controllers are given in the same section. Finally, the conclusions and future lines of work are included in Section \ref{sec:conclusions}.
