@@ -79,8 +79,9 @@ The  fuzzy controller is evaluated in practise and time trial races giving good 
 \label{sec:intro}
 
 %Primero hay que decir qué problema quieres resolver. TORCS no es el
-%problema, es el medio que vas a usar para resolverlo. 
-
+%problema, es el medio que vas a usar para resolverlo.
+% Antonio - bueno, el problema se comenta debajo, esto es la parte inicial de la introducción 
+ 
 The Open Racing Car Simulator (TORCS) \cite{WebTORCS} is a
 three-dimensional racing video game created by \textit{Eric Espié} and
 \textit{Christophe Guionneau}, whose objective  is to be used as a
@@ -120,12 +121,9 @@ the car and its environment (detected by means of sensors).
 
 %Hey what's happened here? We were talking about TORCS and all of a
 %sudden... fuzzy logic! What???? - JJ
-Fuzzy logic \cite{abraham2001} with its adaptation and ability of
-imitating the human behaviour, is an interesting tool to design
-automatic TORCS drivers. It could be integrated in any controller
-module (steer, gear, acceleration and brake, stuck) to give a
-human-like `appeal' to the bot driver
-\cite{CarRacing_Pelta09,Guadarrama2008}.  
+% Antonio - I have connected them
+
+Hence, Computational Intelligence (CI) methods are interesting to be applied to the problem of implementing a car controller in TORCS. Among these techniques, Fuzzy logic \cite{abraham2001} with its adaptation and ability of imitating the human behaviour, is an interesting tool to design these drivers. It could be integrated in any controller module (steering, gear change, acceleration and brake, stuck) to give a human-like `appeal' to the bot driver \cite{CarRacing_Pelta09,Guadarrama2008}.  
 
 In each simulation tick, the autonomous driver must make a decision,
 for instance, to direct the car (steer) on the track and select a
@@ -151,12 +149,10 @@ Indeed, several researchers have taken advantage of this technique to design TOR
 % Aquí se hace un pequeño resumen de esto y en el estado del arte se hace una comparativa más profunda respecto a los trabajos existentes.
 
 However, in this work we present a novel fuzzy-based controller, which
-computes the steer %steer? steerage? steering? - JJ
- and target speed using two specialised fuzzy sub-controllers.
-They consider the track sensors (to find the farthest border) and the
-opponents' position in the race (for collision avoidance and
-overtaking). %please avoid parentheses. You should not use them at all
+computes the steering and target speed using two specialised fuzzy sub-controllers. They consider the track sensors, to find the farthest border; and the opponents' position in the race, for collision avoidance and
+overtaking. %please avoid parentheses. You should not use them at all
              %- JJ
+            % Antonio - done
 
 The rest of this paper is organised as follows:
 The next section presents the state of the art and related works, and comments their differences with regard to this study, along with its contribution to advance in this research line. TORCS simulator is described in Section \ref{sec:torcs}.
@@ -405,7 +401,7 @@ This fuzzy controller has three input values and one output: the target speed va
 	\label{AD}
 \end{figure}
 
-The fuzzy driver (FD) presented in that figure is a Mamdani-based fuzzy system \cite{iancu2012} with trapezoidal Membership Functions (MF) for input variables. 
+The Fuzzy Driver (FD) presented in that figure is a Mamdani-based fuzzy system \cite{iancu2012} with trapezoidal Membership Functions (MF) for input variables. 
 % Antonio - justificar por qué se usa esa función de pertenencia (membership)
 
 It considers three values among the 19 track sensors (see Figure \ref{fig34}):
@@ -469,7 +465,7 @@ Each input variable is represented by three membership functions: Low, Medium an
 % Antonio - Revisar los valores, ¿estan bien los de M10? Low está incluido en Medium...
 
 	The base of rules is designed so that if the frontal distance is maximal, then the target speed should be the maximum. Its value should be lower when the frontal distance is shorter. Thus, the fuzzy rules are listed below:
-% Antonio - ¿Cómo se ha obtenido estas reglas? ¿De forma manual o se han generado con alguna técnica?¿Se han descartado otras?
+% Antonio - ¿Cómo se han obtenido estas reglas? ¿De forma manual o se han generado con alguna técnica?¿Se han descartado otras?
 
 	\begin{itemize}
 		\item IF Front is High THEN TargetSpeed is TS1
@@ -491,68 +487,79 @@ The output value (target speed) is encoded by seven singletons.
 % Antonio - ¿Qué valores tienen?
 
 %-----------------------------------------------
-	\subsection{Fuzzy Steer control}	
-	We can use another fuzzy controller to control the Steer to estimate and determine the target position of the car:\\
-	if the car is straight line then it will take as target position half width of the race track.	
+
+\subsection{Fuzzy steering control sub-controller}	
+
+In addition to the speed sub-controller, another fuzzy approach has been applied to control the steering, estimating and determining the target position of the car.
+
+Then, if the car is in a straight line, it will set as target position half width of the race track (central position of the lane).	
+Whereas, if the car is near a right curve, it will approach the path leading to the right, with a space between the car and the border of the track to avoid the loss of control. The same approach is considered if the car is near a left curve.
 	
-	If the car is near a right curve,it will approach the path leading to the right, with a space between the car and the border of the track to avoid the loss of control and shocks .The same if the car is near a left curve. \\
-	
-	Detection of curves is based on the sensor values (M10, M5, front).
-	the rule base is presented as follows:\\
-	\begin{itemize}
-		
-		\item If Front is High Then steer is S1
-		\item If Front is Medium Then steer is S2
-		\item If Front is Low and M5 is High Then steer is S3
-		\item If Front is Low and M5 is Medium Then steer is S4
-		\item If Front is Low and M5 is Low and M10 is High Then steer is S5
-		\item If Front is Low and M5 is Low and M10 is Medium Then steer is S6
-		\item  If Front is Low and M5 is Low and M10 is Low Then steer is S7
-		\\
+In order to detect the curves, the controller focuses on the sensor values (M10, M5, and Front).
+% Antonio - ¿y qué hace para detectar las curvas?¿comprueba las distancias en dos instantes consecutivos? Explicarlo.
+
+The base of rules for this controller is:
+
+	\begin{itemize}		
+		\item IF Front is High THEN steer is S1
+		\item IF Front is Medium THEN steer is S2
+		\item IF Front is Low AND M5 is High THEN steer is S3
+		\item IF Front is Low AND M5 is Medium THEN steer is S4
+		\item IF Front is Low AND M5 is Low AND M10 is High THEN steer is S5
+		\item IF Front is Low AND M5 is Low AND M10 is Medium THEN steer is S6
+		\item IF Front is Low AND M5 is Low AND M10 is Low THEN steer is S7
 	\end{itemize}	
+
+% Antonio - Explicar cómo se han obtenido las reglas (igual que en el caso anterior). Comentar por qué son así, qué objetivo general tienen (como se hizo en el otro controlador).
+% Decir lo de los singletons de steer (qué valores tienen)
+
+Once the controllers have been described, they will be tested and compared with the standard one y several races. The obtained results are presented in the following section.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  RESULTS  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 \section{Simulation Results}
 \label{sec:results}
 
-In this section we present all the experiments that we performed in order to measure the performance of our "FD" controller .
+In this section we present all the experiments that we performed in order to measure the performance of our FD controller .
 We first, describe the methodology we have used and next, we present the experimental results of the implementation of the Fuzzy driver, with opponents and
 using special criteria in each case. \\
 We have established a set of tests to measure the performance of the
-controller "AD". We compared the newly developed Controller with
-existing methods: the simple driver. We will run every controller in
+controller AD. We compared the newly developed Controller with
+the simple driver included in TORCS. We will run every controller in
 several race tracks.  % What do those tests imply? Are the like the
                       % best way of toing that? The usual way? A
                       % reference? Why 20 laps? - JJ
 
+% ------------------------------------------
 \subsection{Simulation settings}
+
 TORCS provides different tracks to choose from. These race tracks are
 designed by different developers in order to test the performance of
 the controllers on different difficulty circuits and on different
-types of roads.\\
+types of roads.
 
-
-In our case, we chose three of road tracks, a dirt road, and an oval
+In our case, we chose three road tracks, a dirt road, and an oval
 track. %Why did you choose them? 
 
 
-On oval tracks, E-Track5 seems to be the most interesting, as it has
-curves in both directions. On dirt roads, Dirt1 has a good variety of
-curves. For road tracks, we selected three tracks: Forza, E-Road and
-CG-Speedway Number1. Table \ref{Tabtrack}  presents the properties and
-description of each selected track.\\ 
+On oval tracks, \textit{E-Track5} seems to be the most interesting, as it has
+curves in both directions. On dirt roads, \textit{Dirt1} has a good variety of
+curves. For road tracks, we selected three tracks: \textit{Forza}, \textit{E-Road} and \textit{CG-Speedway Number1}. Table \ref{Tabtrack} presents the properties and description of each selected track.\\ 
 % But does this mean you are trying to design a controller that is
 % good in all kind of roads, unlike these controllers?  Shouldn't that
 % go to the introduction?- JJ
+% Antonio - Yes, if it is a novelty with respect to previous controllers, it must be calrified in the introduction and in the State of the Art. Is it, Mohammed?
+
+
 \begin{table}
 	
 	\caption{Description of Selected tracks}
 	\label{Tabtrack}
-	\begin{tabular}{ |p{2cm}|p{2 cm}|p{2 cm}|p{2 cm}|p{2 cm}|p{2 cm}|}
+	\begin{tabular}{ |p{2cm}|p{1.9 cm}|p{2.2 cm}|p{2.3 cm}|p{2.1 cm}|p{2.2 cm}|}
 		\hline
 		\textbf{Track name}    & E-Track5
-		& Dir1 4 
+		& Dirt1 
 		& Forza
 		& E-Road
 		& CG-Speedway Number1
@@ -562,7 +569,7 @@ description of each selected track.\\
 		& \includegraphics[scale=0.3]{fig/track4.png}
 		& \includegraphics[scale=0.3]{fig/track2.png}
 		& \includegraphics[scale=0.3]{fig/track3.png}
-		&\includegraphics[scale=0.3]{fig/track5.png}
+		& \includegraphics[scale=0.3]{fig/track5.png}
 		& \includegraphics[scale=0.3]{fig/track1.png}
 		
 		\\
@@ -597,17 +604,25 @@ description of each selected track.\\
 	\end{tabular} 
 % But you should say how representative they are, what kind of
 % controllers work well in every one and, in general, talk about them- JJ
+% Antonio - I agree. And what does 'width' refer to?
 \end{table}
-\subsubsection{ Cars settings}
 
-SCR 1 server is a NASCAR car and member of the SCR Server team (A team can used different types of car as  car1-stock1, car1-tbr1 ...).\\
-A Sprint Cup Series NASCAR-type car weighs at least 1542 kg for 850 horses with . The engine is a V8 with  $ 5,866 cm ^ 3 $. Its chassis is tubular type. It has a Borg-Warner gearbox with four-speed for road circuits.\\
+% ----------------------------------------------
 
-In our simulations, we used the car "car1-tbr1" which has a weight of
+\subsubsection{Cars settings}
+
+SCR 1 server is a NASCAR car and member of the SCR Server team (a team can use different types of car as car1-stock1, car1-tbr1, etc).
+
+A Sprint Cup Series NASCAR-type car weighs at least 1542 kg for 850 horses with. The engine is a V8 with  $ 5866 cm^3 $. Its chassis is tubular type. It has a Borg-Warner gearbox with four-speed for road circuits.
+% Antonio - ¿Por qué se comenta esto?¿Es importante?
+
+In our simulations, we used the car ``car1-tbr1'' which has a weight of
 1150 KG, max fuel: 94 KG, length= 4.25 m and a width of 1.94 m. % Why
                                 % this one? Does that mean that
                                 % results apply only to this kind of
                                 % car? - JJ
+
+% ----------------------------------------------
 
 \subsubsection{Controllers settings}
 
@@ -616,15 +631,15 @@ In our simulations, we used the car "car1-tbr1" which has a weight of
 %the controller, we have tested them this way...
 % Or something like that. You have to justify everything. It's not a
 % description of what you've done, it's a justification - JJ
-To validate the fuzzy controllers, we have considered the following
-controllers:\begin{itemize}
-\item AD1: Fuzzy target speed  controller 
+In order to validate the proposed fuzzy controllers, we have considered the following bots in the experiments:
+\begin{itemize}
+\item AD1: Fuzzy target speed controller 
 \item AD2: Fuzzy steer and speed controller 
 \item AD5: Fuzzy target speed controller that takes the opponent into
   account 
 \item SD: Simple driver 
 \end{itemize}
-% Some reviewer could say why don't you take the copponent into
+% Some reviewer could say why don't you take the opponent into
 % account with steering only or with target only, and also check only
 % fuzzy steering without controlling speed. You have to consider the
 % whole range of possibilities, and there are 6; you have considered
@@ -632,9 +647,14 @@ controllers:\begin{itemize}
 
 We conducted a series of experiments to measure the performance of the
 best version control in some race tracks (05 tracks in table
-\ref{Tabtrack} ). 
+\ref{Tabtrack}). 
+% Antonio - No sé qué quieres decir con 05 tracks. ADemás la tabla a la que te refieres es la de la descripción de pistas, no la de resultados.
 
-\subsection{Results of 20 lap practice race}
+% ----------------------------------------------
+
+\subsection{Results of 20 laps practice race}
+
+% Antonio - hay que introducir la sección... We firstly test our controllers in an easier scenario/race... and so on.
 
 In this case, we tested our controllers in a 20 laps practice race in
 the four tracks:\\
@@ -643,6 +663,7 @@ the four tracks:\\
 % that's true. -- JJ
 	
 In this section, we set the distance to 20 laps for each track and for each controller. 
+
 \begin{table}  
 	
 	\caption{Results for 20 laps}
@@ -680,7 +701,7 @@ In this section, we set the distance to 20 laps for each track and for each cont
 		Fuel & 71:22 & 71:25 & 77:45 & 77:02 
 		\\
 		\hline
-\multicolumn{5}{c}{\textbf{Dirt}}\\	
+\multicolumn{5}{c}{\textbf{Dirt1}}\\	
 		\hline
 		{ \color{blue}\textbf{20 laps} }&
 		{ \color{red}\textbf{SD}}&  
@@ -815,7 +836,7 @@ The
 target position allows the car to adjust safely the required steering
 angle  with the maximum speed so the controller AD5 gave the best
 time. 
-\\
+
 However, taking a smaller target angle required a greater distance to
 cover by car by taking a less efficient trajectory. In addition, the
 number of times the car was off the road on Dir1 and Forza was higher
@@ -855,7 +876,7 @@ Results are in Table \ref{resulta9}. % YOu have to comment the
 		AD5 & 29:30&32600&199 
 		\\
 		\hline 
-		\multicolumn{4}{c}{\textbf{Dir1}}\\			
+		\multicolumn{4}{c}{\textbf{Dirt1}}\\			
 		\hline
 		{ \color{blue}\textbf{} }&
 		{ \color{red}\textbf{Best Time} }&
@@ -872,7 +893,7 @@ Results are in Table \ref{resulta9}. % YOu have to comment the
 		AD5 & 00:00 &620,25& 153 
 		\\
 		\hline 
-		\multicolumn{4}{c}{\textbf{Froza}}\\		\hline
+		\multicolumn{4}{c}{\textbf{Forza}}\\		\hline
 		{ \color{blue}\textbf{} }&
 		{ \color{red}\textbf{Best Time} }&
 		{ \color{red} \textbf{Distance(m) } } &
@@ -926,13 +947,18 @@ Results are in Table \ref{resulta9}. % YOu have to comment the
 	\end{tabular}
 \end{table}
 
+% ----------------------------------------------
 
 \subsection{Real race}
-Our main goal is to test the performance of "AD5" in a race, and answer the following questions: Could we have a perfect driving in a race with "AD5" only with the track borders sensors? Can we win the race with AD5?\\
-In this context we tested "AD5" in 5 tracks against berniw, bt, damned, inferno and tita teams.\\
-After the launch of the race "AD5" against the 10 cars of each team  for 20 laps in each track we obtained the following results (see table \ref{resultat31})
+
+Our main goal is to test the performance of AD5 in a race, and answer the following questions: Could we have a perfect driving in a race with AD5 only with the track borders sensors? Can we win the race with AD5?
+
+In this context we tested "AD5" in 5 tracks against berniw, bt, damned, inferno and tita teams.
+% Antonio - ¿Quienes son esos controladores? ¿de alguna competiticón? Poner citas y explicarlos brevemente (hacer una lista itemize) y poner un párrafo de cada uno. ;)
+
+After the launch of the race AD5 against the 10 cars of each team  for 20 laps in each track we obtained the following results (see table \ref{resultat31})
 \begin{table}
-	\caption{Results of AD5  in a real race}
+	\caption{Results of AD5 in a real race}
 	\label{resultat31}
 	\begin{tabular}{ |p{3cm}|p{2cm}|p{2cm}|p{2 cm}|p{2 cm}|p{2 cm}|}
 		\hline
@@ -1000,13 +1026,17 @@ After the launch of the race "AD5" against the 10 cars of each team  for 20 laps
 	
 \end{table}
 
-From Table \ref {resultat31}, we noticed that our controller has won a race only in some types of tracks such as "E-track5" category "Oval track".\\
+From Table \ref {resultat31}, we noticed that our controller has won a race only in some types of tracks such as "E-track5" category "Oval track".
 
 When our controller is in parallel with his opponent, and the distance between them is smaller, and they are in a smaller width track,  there is a possibility of  damage.
-\\
 
-According to damage results, despite our controller can win the race on the E-track5 but it had a higher crash rates in the some cases. We observed also that in the majority of cases our car is very slow compared to the other cars in each team. \\
+According to damage results, despite our controller can win the race on the E-track5 but it had a higher crash rates in the some cases. We observed also that in the majority of cases our car is very slow compared to the other cars in each team. 
+
 The obtained results are due to the optimal trajectory in curves and braking as late as possible.
+% Antonio - Esto habría que justificarlo mejor. Es muy breve. ;)
+
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%  CONCLUSIONS  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 \section{Conclusions and Future Work} 
