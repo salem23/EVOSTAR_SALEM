@@ -524,7 +524,10 @@ The base of rules for this controller is:
 		\item IF Front is Low AND M5 is Low AND M10 is Medium THEN steer is S6
 		\item IF Front is Low AND M5 is Low AND M10 is Low THEN steer is S7
 	\end{itemize}	
+%%%%%
 
+
+%salem - A verlo  
 % Antonio - Explicar cómo se han obtenido las reglas (igual que en el caso anterior). Comentar por qué son así, qué objetivo general tienen (como se hizo en el otro controlador).
 % Decir lo de los singletons de steer (qué valores tienen)
 
@@ -972,14 +975,16 @@ Results are in Table \ref{resulta9}. % YOu have to comment the
 		
 	\end{tabular}
 \end{table}
+% salem- comments added
+From the Table \ref{resulta9}, the AD5 controller has obtained the best time in the E-Track5 oval track  and in road tracks but it was a disaster in dirty tracks where it damages the car leading to a small covered distance and 
 
 % ----------------------------------------------
 
 \subsection{Real race}
 
 Our main goal is to test the performance of AD5 in a race, and answer the following questions: Could we have a perfect driving in a race with AD5 only with the track borders sensors? Can we win the race with AD5?
-
-In this context we tested "AD5" in 5 tracks against berniw, bt, damned, inferno and tita teams.
+In this context we tested "AD5" in 5 tracks against berniw, bt, damned, inferno and tita teams which are integrated TORCS bots with different strategies and slighter modifications \cite{oponnents2010}.
+%salem - done
 % Antonio - ¿Quienes son esos controladores? ¿de alguna competiticón? Poner citas y explicarlos brevemente (hacer una lista itemize) y poner un párrafo de cada uno. ;)
 
 After the launch of the race AD5 against the 10 cars of each team  for 20 laps in each track we obtained the following results (see table \ref{resultat31})
@@ -1057,8 +1062,7 @@ From Table \ref {resultat31}, we noticed that our controller has won a race only
 When our controller is in parallel with his opponent, and the distance between them is smaller, and they are in a smaller width track,  there is a possibility of  damage.
 
 According to damage results, despite our controller can win the race on the E-track5 but it had a higher crash rates in the some cases. We observed also that in the majority of cases our car is very slow compared to the other cars in each team. 
-
-The obtained results are due to the optimal trajectory in curves and braking as late as possible.
+The obtained results are due to the optimal trajectory in curves and braking as late as possible. Indeed, the proposed controller has given best ranking against powerful TORCS teams in the oval track but in the other one, it shocks with the track borders which has led to more damage rate.   
 % Antonio - Esto habría que justificarlo mejor. Es muy breve. ;)
 
 
