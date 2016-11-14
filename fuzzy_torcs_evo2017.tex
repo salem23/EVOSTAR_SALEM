@@ -19,10 +19,10 @@
 \mainmatter  % start of an individual contribution
 
 % first the title is needed
-\title{MascaFuzzy: driving in TORCS using fuzzy controllers}
+\title{Driving in TORCS using modular fuzzy controllers}
 
 % a short form should be given in case it is too long for the running head
-\titlerunning{Fuzzy Controller for TORCS}
+\titlerunning{Driving in TORCS using modular fuzzy controllers}
 % Antonio - Poner el nombre corto
 
 % the name(s) of the author(s) follow(s) next
@@ -208,7 +208,7 @@ The main features of the architecture of TORCS are \cite{manualTORCS}:
 There are several competitions which use TORCS as base. During a competition, the bot perceives the race environment by means of a number of sensors, that provide information such as the status of the car, the status of the race, opponents positions and track borders \cite{manualTORCS,torcs2}.
 Table \ref{t1} presents a complete list of available sensors with a description of each one.
 
-\begin{table}[h!]
+\begin{table}[ht!]
 	
 	\begin{tabular}{|p{2cm}|p{3cm}|p{3 cm}|p{4 cm}|}
 		\hline
@@ -294,7 +294,7 @@ Every TORCS driver bot is controlled by means of a set of actuators: the steerin
 		Clutch & [-1,+1]	& Double\\
 		\hline
 	\end{tabular}
-	\caption{TORCS Actuators \cite{torcs}}
+	\caption{TORCS Actuators \cite{torcs_Onieva2011}}
 	\label{tab2}
 \end{table}
 
@@ -317,7 +317,7 @@ The basic architecture of a controller consists of five simple modules (see Figu
 % Antonio - hay que mejorar esta figura, tiene poca calidad, con algunos píxeles coloreados aleatoriamente, la flecha entre 'target speed' y 'pedal control' torcida y pone 'envirenment' en lugar de 'environment'. ;)
 	
 TORCS comes with a simple example driver often used to validate new
-designed controllers \cite{torcs,torcs2}. It presents very basic
+designed controllers \cite{torcs_Onieva2011,torcs2}. It presents very basic
 functions for controlling the race car to give developers an idea of
 what the controller should look like. It includes simple functions to
 control the speed, steering angle and speed without dealing with
@@ -332,8 +332,8 @@ see later on.
 \section{Proposed Fuzzy Controller}
 \label{sec:fuzzy_controller}
 
-The proposed controller has the same modular architecture as the simple driver. 
-However, the target speed and steering angle are computed by means of two specialised fuzzy controllers, which consider five position sensors.
+The proposed controller has the same modular architecture as the simple driver, and has some common functions of this approach. 
+However, the target speed and steering angle are computed by means of two modular and specialised fuzzy controllers, which consider five position sensors.
 
 In the following sections each sub-controller is described.
 
@@ -341,37 +341,26 @@ In the following sections each sub-controller is described.
 
 \subsection{Fuzzy target speed sub-controller}
 
-The first proposed fuzzy sub-controller aims to estimate the optimal target speed of the car in straight parts and curves of the rack where the main goal is to go as faster as possible and secure the car.
-%salem- done; well, I think
-% Antonio - Introducir mejor el controlador. Su objetivo o utilidad principal.
+The first proposed fuzzy sub-controller aims to estimate the optimal target speed of the car, both in straight parts and curves of the track, taking into account two criteria: moving as faster as possible and secure the car.
 
-In order to do this estimation, it is based on fuzzy rules, so two general cases are considered:
+This estimation is based on fuzzy rules, so two general cases are considered, following the simple driver approach:
 
 \begin{itemize}
 	\item If the car is in a straight line, the target speed will take a maximum value (\textit{maxSpeed} km/h).
 	\item If it is close to a curve, the controller will decrease the current speed to a value included in the interval \textit{[minSpeed; maxSpeed]} km/h.
 \end{itemize}
 
-% salem - done by the simple driver  and maintained by our controller
-%In case the car is out of the track or near a curve, 
-% Antonio - ¿near a curve? Eso es lo del segundo caso que has puesto arriba, ¿no?
-%the brake system is activated and ABS and TCS 
-% Pon entre paréntesis qué significan ABS y TCS. ;)
-%will be loaded to avoid the car skidding.
-% ¿Esto lo hace el controlador tuyo o lo hacía el controlador simple ya?
+Thus, in case the car is out of the track or near a curve, the brake system is activated, and ABS (Anti-Block System) and TCL (Traction Control Limit) will be loaded to avoid the car skidding.
 
+The obtained target speed will be used for computing the value of acceleration, following - as the simple driver do - the expression:
 
-The obtained target speed will be used for computing the value of acceleration.
-%salem- 
+\begin{equation}	
+Gas(speed-Target_{speed})=-1+\frac{2}{1+e^{speed-Target_{speed}}}	
+\end{equation}
 
-%\begin{equation}	
-%Gas(speed-Target_{speed})=-1+\frac{2}{1+e^{speed-Target_{speed}}}	
-%\end{equation}
-% Antonio - explicar un poco la formula, o decir si es del simulador que la define así.
+\textit{Gas} function refers to acceleration, \textit{speed} is the current speed of the car.
 
-%\textit{Gas} function refers to acceleration, \textit{speed} is the current speed of the car.
-
-This fuzzy controller has three input values and one output: the target speed value (see Figure \ref{AD}):
+This fuzzy controller has three input values and one output: the target speed (see Figure \ref{AD}).
 
 \begin{figure}
 	\begin{center}
@@ -411,22 +400,20 @@ This fuzzy controller has three input values and one output: the target speed va
 	\caption{Fuzzy controller of target speed.}     % width is 8.4 cm.
 	\label{AD}
 \end{figure}
-The fuzzy driver (FD) presented in that figure is a Mamdani-based fuzzy system \cite{iancu2012} with trapezoidal Membership Functions (MF) for input variables  because it avoids sudden changes in input values.
-% salem- 
-
-% Antonio - justificar por qué se usa esa función de pertenencia (membership)
+%
+The fuzzy driver (FD) presented in that figure is a Mamdani-based fuzzy system \cite{iancu2012} with trapezoidal Membership Functions (MF) for input variables,  because it avoids sudden changes in input values.
 
 It considers three values among the 19 track sensors (see Figure \ref{fig34}):
 
 \begin{itemize}
 	\item Front = Track[9]: the front distance between the car and the border of the track (angle 0º).
 	\item M5 = max (Track[8], Track[10]): the max distance to the track limits in an angle of +5º and -5º with respect to Front.
-	\item M10 = max (track[7], track[11]): the max distance to the border in an angle of +10º and -10º.
+	\item M10 = max (Track[7], Track[11]): the max distance to the border in an angle of +10º and -10º.
 \end{itemize}
 
-% Antonio - Hay que justificar muy bien por qué se han elegido esos sensores en concreto. ¿Se probaron todos y estos fueron los mejores?¿se ha seguido alguna regla heurística para elegirlos?
+The set of sensors was chosen considering those used in previous works \cite{torcs_Onieva2011}, but refining it after an exhaustive systematic experimentation phase. Thus, the final set of sensors are those which yielded the best results in a wider amount of tracks.
 
-\begin{figure}[h!]
+\begin{figure}[ht!]
 	
 	\centering
 	\includegraphics[width=0.9\textwidth]{fig/sensor22-new.png}
@@ -437,10 +424,6 @@ It considers three values among the 19 track sensors (see Figure \ref{fig34}):
 		\label{fig34}
 	\end{minipage} 		
 \end{figure}
-% Antonio - la figura hay que mejorarla también, es un poco fea. Los recuadros de texto sobre el coche tienen la letra cortada a veces. Además, los ángulos creo que no están bien, deberían ser -5º y +5º; y -10º y +10º, ¿no?
-% Arriba pone sensor '9' y en los otros '08' y '07'.
-% TODO - [FERGU] hacer la figura con más calidad
-
 
 Each input variable is represented by three membership functions: Low, Medium and High. The description of fuzzy inputs and output are represented in Table \ref{tab:flouevar}.
 	
@@ -460,7 +443,7 @@ Each input variable is represented by three membership functions: Low, Medium an
 			\\
 			\hline
 			\hline
-			Input & [0-100] m & Front & trapezoidal & [0-50] & [20-80] &[60-100]
+			Input & [0-100] m & Front & trapezoidal & [0-50] & [20-80] & [60-100]
 			\\
 			\hline
 			Input & [0-100] m & M5 & trapezoidal &[0-40] & [10-70] & [50-100] 
@@ -474,13 +457,9 @@ Each input variable is represented by three membership functions: Low, Medium an
 			\hline 
 		\end{tabular} 
 	\end{table}
-%salem done
-% Antonio - Revisar los valores, ¿estan bien los de M10? Low está incluido en Medium...
 
-	The base of rules is designed so that if the frontal distance is maximal, then the target speed should be the maximum. Its value should be lower when the frontal distance is shorter. Thus, the fuzzy rules are listed below:
-		% salem he obtenido estas reglas imitando el comportamiento de un conductor
-		
-% Antonio - ¿Cómo se han obtenido estas reglas? ¿De forma manual o se han generado con alguna técnica?¿Se han descartado otras?
+The base of rules has been composed modelling the behaviour of a human expert driver, refining them also. Thus, this set is designed so that if the frontal distance is maximal, then the target speed should be the maximum. Its value should be lower when the frontal distance is shorter. 
+The fuzzy rules are listed below:
 
 	\begin{itemize}
 		\item IF Front is High THEN TargetSpeed is TS1
@@ -489,31 +468,28 @@ Each input variable is represented by three membership functions: Low, Medium an
 		\item IF Front is Low and M5 is Medium THEN TargetSpeed is TS4
 		\item IF Front is Low and M5 is Low and M10 is High THEN TargetSpeed is TS5
 		\item IF Front is Low and M5 is Low and M10 is Medium THEN TargetSpeed is TS6
-		\item IF Front is Low and M5 is Low and M10 is Low THEN TargetSpeed is TS7
-		In addition, a crisp rule is added to rule base to obtain a maximum value of the target speed when the three input variables are as big as possible: \\
+		\item IF Front is Low and M5 is Low and M10 is Low THEN TargetSpeed is TS7\\
+
+		In addition, a crisp rule is added to rule base to obtain a maximum value of the target speed when the three input variables are as big as possible: 
 		\item IF Front = MAXDISTSPEED or M5 = MAXDISTSPEED or M10 = MAXDISTSPEED THEN TargetSpeed = MAXSPEED		
 	\end{itemize}
-MAXDISTSPEED is the a longest track sensors possible value and MAXSPEED is a car variable of the maximal car speed, in case of car-trb1 model, MAXSPEED=300.
-% Antonio - aclarar esto
 
-The output value is encoded by seven singletons [30, 60,120,180,220, 240, 280].
+MAXDISTSPEED is the a longest possible value for the track sensors, and MAXSPEED, which is related to the car's properties, is the maximal car speed. For example in the case of car-trb1 model, MAXSPEED=300.
 
-% Antonio - ¿Qué valores tienen?
+The output value is encoded by seven singletons TS1 to TS7, being: 280, 240, 220, 180, 120, 60 and 30.
 
 %-----------------------------------------------
 
 \subsection{Fuzzy steering control sub-controller}	
 
-In addition to the speed sub-controller, another fuzzy approach has been applied to control the steering, estimating and determining the target position of the car.
+In addition to the speed sub-controller, another fuzzy approach has been applied to control the steering, estimating and determining the target position of the car. 
 
 Then, if the car is in a straight line, it will set as target position half width of the race track (central position of the lane).	
 Whereas, if the car is near a right curve, it will approach the path leading to the right, with a space between the car and the border of the track to avoid the loss of control. The same approach is considered if the car is near a left curve.
 	
-In order to detect the curves, the controller focuses on the sensor values (M10, M5, and Front).
- % salem si  el sensor de frente es mas grande , hay linea recta, si los de derecha ( M10 Y M5  hay curva a la derecha)
-% Antonio - ¿y qué hace para detectar las curvas?¿comprueba las distancias en dos instantes consecutivos? Explicarlo.
+In order to detect the curves, the controller focuses on the sensor values (M10, M5, and Front). So, if the value on Front sensor is the longest, there is a straight road; whereas if the values of M5 and M10 with positive angles (+5 and +10) are the longest, there is right curve; and the other way round.
 
-The base of rules for this controller is:
+The base of rules has been defined again modelling the behaviour of a human driver, so, for this controller is:
 
 	\begin{itemize}		
 		\item IF Front is High THEN steer is S1
@@ -526,12 +502,12 @@ The base of rules for this controller is:
 	\end{itemize}	
 %%%%%
 
-
 %salem - A verlo  
-% Antonio - Explicar cómo se han obtenido las reglas (igual que en el caso anterior). Comentar por qué son así, qué objetivo general tienen (como se hizo en el otro controlador).
-% Decir lo de los singletons de steer (qué valores tienen)
+The values for S1 to S7 are respectively: [0, -1, -0.5, -0.25, 0, 0.25, 0.5, 1]
+% Antonio - TODO: poner los valores en orden
 
 Once the controllers have been described, they will be tested and compared with the standard one y several races. The obtained results are presented in the following section.
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  RESULTS  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -682,7 +658,7 @@ the controller, we have tested them In order to validate the proposed fuzzy cont
 \subsection{Results of 20 laps practice race}
 % Antonio - hay que introducir la sección... We firstly test our controllers in an easier scenario/race... and so on.
 
-We firstly test our controllers in an easier scenario/race , we considered a 20 laps practice race in the five track to check the behaviour of the proposed controllers.
+We firstly test our controllers in an easier scenario/race, we considered a 20 laps practice race in the five tracks to check the behaviour of the proposed controllers. We considered 20 as it is the maximum number of laps a car can perform without doing a pit stop, because our controller is not prepared to plan and manage this event. 
 % salem - I choose 20 laps because we have to test them in a long race and 20  is enough , no in any case, I can change it
 % Why 20? What did you want to prove with this? You should add a
 % Because... and then at the end of the section actually check that
