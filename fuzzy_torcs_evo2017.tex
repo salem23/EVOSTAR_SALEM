@@ -20,6 +20,8 @@
 
 % first the title is needed
 \title{Driving in TORCS using modular fuzzy controllers}
+% Antonio - hemos elegido este título entre Mohammed y yo. :D
+
 
 % a short form should be given in case it is too long for the running head
 \titlerunning{Driving in TORCS using modular fuzzy controllers}
@@ -62,21 +64,13 @@
 When driving a car it is essential to take into account all possible
 factors; even more so when, like in the TORCS simulated race game, the
 objective is not only to avoid collisions, but also to win the race
-within a limited budget. In this paper, we present the design of a
-driver for racing car in a simulated race. Unlike previous
-controllers, that only used fuzzy controllers for either accelaration
-or steering, the proposed driver uses
-two fuzzy controllers for steering and computing the target speed of the
-car using the track border sensors as inputs; besides, for enhanced
-safety, we have also taken into account the position of the other
-competitors.
-The  fuzzy controller is evaluated in practise and timed races
+within a limited budget. In this paper, we present the design of an autonomous
+driver for racing car in a simulated race. Unlike previous controllers, that only used fuzzy logic approaches for either acceleration or steering, the proposed driver uses simultaneously two fuzzy controllers for steering and computing the target speed of the car at every moment of the race. They use the track border sensors as inputs and besides, for enhanced safety, it has also taken into account the relative position of the other competitors.
+The proposed fuzzy driver is evaluated in practise and timed races
 giving good results across a wide variety of racing tracks, mainly
 those that have that have many turning points.  
-%
-%\keywords{Videogames, Fuzzy Controller, TORCS}
 
-
+\keywords{Videogames, Fuzzy Controller, TORCS, Steering control, Speed computation}
 \end{abstract}
 
 %
@@ -90,10 +84,10 @@ those that have that have many turning points.
 % Antonio - bueno, el problema se comenta debajo, esto es la parte inicial de la introducción 
  
 The Open Racing Car Simulator (TORCS) \cite{WebTORCS} is a
-three-dimensional racing video game created by \textit{Eric Espié} and
-\textit{Christophe Guionneau}, whose objective  is to be used as a
+three-dimensional racing video game created by Eric Espié and
+Christophe Guionneau, whose objective  is to be used as a
 framework to develop and test Artificial Intelligence (AI) models for
-autonomous drivers, named \textit{controllers} or \textit{bots}. It is
+autonomous drivers, named \textit{controllers} or bots. It is
 one of the most popular car racing simulators among the scientific
 community, and due to its open-source philosophy, there are
 several designers and programmers constantly improving it
@@ -143,19 +137,12 @@ breaking.
 This complex problem could be solved by means of fuzzy logic, due to
 its adaptive control and ability to deal with noise (in sensors
 \cite{manualTORCS}) and uncertainty (non-deterministic opponents'
-decisions in the race). Indeed, several researchers have taken advantage of this technique to design TORCS controllers, such as \cite{Guadarrama2008,CarRacing_Pelta09}. 
-% Antonio - esto sigue sin estar bien así. No deberíamos poner ejemplos concretos, ya que habrá muchos más. Sino decir, en general qué han hecho otros autores y qué has hecho tú que sea diferente del resto. Y por qué lo que has hecho es mejor que lo que hicieron los demás o en qué se diferencia a grandes rasgos. Esto que has puesto lo muevo al estado del arte, que cas mejor. ;)
-%Salem, He reescrito esto, y he borrado el otro , usa redes neuronales
-% Antonio - ¿y en los dos trabajos anteriores qué se hace? Hay que destacar las diferencias de este estudio con respecto a todos los que hay en la literatura del mismo tipo (controladores fuzzy). Para así destacar por qué se ha hecho este y por qué es mejor y avanza el estado del arte. ;)
-% Salem - 
-% Antonio - contar algo más del problema y justificar la necesidad de este trabajo respecto a lo que hay hasta ahora (motivation). ¿Por qué usar Fuzzy Logic es una mejor idea que a las otras que hay? 
-% Así como lo que aportará al estado del arte y cómo lo hará avanzar (contribution). ¿No hay nada parecido?¿Abre una nueva línea de investigación?
-% Como sí hay otros trabajos que aplican FL para crear controladores, hay que diferenciar este de los otros y justificar por qué este es mejor. ;)
-% Aquí se hace un pequeño resumen de esto y en el estado del arte se hace una comparativa más profunda respecto a los trabajos existentes.
+decisions in the race). Indeed, several researchers have taken advantage of this technique to design TORCS controllers, for example \cite{Guadarrama2008,CarRacing_Pelta09}. 
+% Antonio - TODO: poner más citas de controladores difusos
+All the existing works used a specific fuzzy module with a concrete objective inside the controller's operation, such as computing the optimal acceleration, turning angle, or speed at every moment.
 
-However, in this work we present a novel fuzzy-based controller, which
-computes the steering and target speed using two specialised fuzzy sub-controllers. They consider the track sensors, to find the farthest border; and the opponents' position in the race, for collision avoidance and
-overtaking. 
+However, this work presents a novel fuzzy-based controller, which implements two modular sub-controllers, each of them devoted to infer a specific target, namely: maximum speed and optimal steering for the car at every simulation tick.
+They consider the track sensors, to find the farthest border; and the opponents' position in the race, for collision avoidance and overtaking. 
 
 The rest of this paper is organised as follows:
 The next section presents the state of the art and related works, and comments their differences with regard to this study, along with its contribution to advance in this research line. TORCS simulator is described in Section \ref{sec:torcs}.
@@ -420,7 +407,7 @@ The set of sensors was chosen considering those used in previous works \cite{tor
 	\includegraphics[width=0.9\textwidth]{fig/front.png}
 	\begin{minipage}{10cm}
 		\centering
-		\caption{Inputs considered in the target speed sub-controller.}
+		\caption{Inputs considered in the fuzzy sub-controllers.}
 		\label{fig34}
 	\end{minipage} 		
 \end{figure}
@@ -476,7 +463,7 @@ The fuzzy rules are listed below:
 
 MAXDISTSPEED is the a longest possible value for the track sensors, and MAXSPEED, which is related to the car's properties, is the maximal car speed. For example in the case of car-trb1 model, MAXSPEED=300.
 
-The output value is encoded by seven singletons TS1 to TS7, being: 280, 240, 220, 180, 120, 60 and 30.
+The output value is encoded by seven singletons TS1 to TS7, being respectively: 280, 240, 220, 180, 120, 60 and 30.
 
 %-----------------------------------------------
 
@@ -500,9 +487,7 @@ The base of rules has been defined again modelling the behaviour of a human driv
 		\item IF Front is Low AND M5 is Low AND M10 is Medium THEN steer is S6
 		\item IF Front is Low AND M5 is Low AND M10 is Low THEN steer is S7
 	\end{itemize}	
-%%%%%
 
-%salem - A verlo  
 The values for S1 to S7 are respectively: [0, -1, -0.5, -0.25, 0, 0.25, 0.5, 1]
 % Antonio - TODO: poner los valores en orden
 
@@ -515,43 +500,31 @@ Once the controllers have been described, they will be tested and compared with 
 \section{Simulation Results}
 \label{sec:results}
 
-In this section we present all the experiments that we performed in order to measure the performance of our FD controller .
-We first, describe the methodology we have used and next, we present the experimental results of the implementation of the Fuzzy driver, with opponents and
-using special criteria in each case. \\
-We have established a set of tests to measure the performance of the
-controller AD. We compared the newly developed Controller with
-the simple driver included in TORCS. We will run every controller in
-several race tracks.
-%salem -  the strength of our controller is in detecting curves and late braking so it does not waste time in turning, to verify this, we run them in different tracks 
+In this section we present all the experiments that we performed in order to measure the performance of our FD controller.
+We first, describe the methodology we have used and next, we present the experimental results of the implementation of the fuzzy driver, including opponents and using special criteria in each case.
 
-  % What do those tests imply? Are the like the
-                      % best way of toing that? The usual way? A
-                      % reference? Why 20 laps? - JJ
+%We have established a set of tests to measure the performance of the controller AD. 
+% Antonio - ¿Qué significa AD? No se ha dicho antes.
+
+We have compared the proposed controller with the simple driver included in TORCS, so we have run every controller in several races in different tracks.
+% Antonio - describir un poco mejor los tests siguiendo también el comentario de JJ 
+% What do those tests imply? Are they like the
+% best way of doing that? The usual way? A
+% reference? Why 20 laps? - JJ
 
 % ------------------------------------------
 \subsection{Simulation settings}
 
-TORCS provides different tracks to choose from. These race tracks are
-designed by different developers in order to test the performance of
-the controllers on different difficulty circuits and on different
-types of roads.
+TORCS provides several tracks to choose which have been designed in order to test the performance of the controllers on different difficulty circuits and on different types of roads.
+In our case, we chose five circuits:
 
-In our case, we chose three road tracks, a dirt road, and an oval
-track. %Why did you choose them? 
-
-
-On oval tracks, \textit{E-Track5} seems to be the most interesting, as it has
-curves in both directions. On dirt roads, \textit{Dirt1} has a good variety of
-curves. For road tracks, we selected three tracks: \textit{Forza}, \textit{E-Road} and \textit{CG-Speedway Number1}. Table \ref{Tabtrack} presents the properties and description of each selected track.\\ 
-% salem, no it's not a global controller, but we must check if it works in different tracks
-% to do that, we could optimize the parameters in future works 
-% But does this mean you are trying to design a controller that is
-% good in all kind of roads, unlike these controllers?  Shouldn't that
-% go to the introduction?- JJ
-%salem- previous controllers have computed the speed with fuzzy but not the steer, is what our controller do, 
- 
-% Antonio - Yes, if it is a novelty with respect to previous controllers, it must be calrified in the introduction and in the State of the Art. Is it, Mohammed?
-
+\begin{itemize}
+\item Three road tracks: \textit{Forza}, \textit{E-Road} and \textit{CG-Speedway Number1}, with a different associated difficulty, regarding the amount of curves and width of the road. Concretely \textit{E-Road} has been selected to check the performance of our controller on sinuous circuits, which are normally the hardest for other approaches. 
+\item A dirt road track: which increases the difficulty due to the lower grip of the dirty asphalt. \textit{Dirt1} has a good variety of curves, which also add an extra difficulty.
+\item An oval track: \textit{E-Track5} seems to be the most interesting, as it has curves in both directions.
+\end{itemize}
+% Antonio - he escrito la justificación de las pistas según he creido que se hizo. A ver si es así, Mohammed. ;D
+Table \ref{Tabtrack} presents the properties and description of each selected track.
 
 \begin{table}
 	
@@ -603,12 +576,12 @@ curves. For road tracks, we selected three tracks: \textit{Forza}, \textit{E-Roa
 		\\
 		\hline
 	\end{tabular} 
-	
-% But you should say how representative they are, what kind of
-% controllers work well in every one and, in general, talk about them- JJ
-%salem- width of the track, steer is computed reffering to this 
-% Antonio - I agree. And what does 'width' refer to?
+
+% Antonio - Ok, I have commented this before. Check it out.
 \end{table}
+
+The aim of this selection is to test the value of the controller in a wide set of situations, in order to check its potential as a global controller.
+
 
 % ----------------------------------------------
 
@@ -951,16 +924,14 @@ Results are in Table \ref{resulta9}. % YOu have to comment the
 		
 	\end{tabular}
 \end{table}
-% salem- comments added
-From the Table \ref{resulta9}, the AD5 controller has obtained the best time in the E-Track5 oval track  and in road tracks but it was a disaster in dirty tracks where it damages the car leading to a small covered distance and 
 
 % ----------------------------------------------
 
 \subsection{Real race}
 
 Our main goal is to test the performance of AD5 in a race, and answer the following questions: Could we have a perfect driving in a race with AD5 only with the track borders sensors? Can we win the race with AD5?
-In this context we tested "AD5" in 5 tracks against berniw, bt, damned, inferno and tita teams which are integrated TORCS bots with different strategies and slighter modifications \cite{oponnents2010}.
-%salem - done
+
+In this context we tested "AD5" in 5 tracks against berniw, bt, damned, inferno and tita teams.
 % Antonio - ¿Quienes son esos controladores? ¿de alguna competiticón? Poner citas y explicarlos brevemente (hacer una lista itemize) y poner un párrafo de cada uno. ;)
 
 After the launch of the race AD5 against the 10 cars of each team  for 20 laps in each track we obtained the following results (see table \ref{resultat31})
@@ -1038,7 +1009,8 @@ From Table \ref {resultat31}, we noticed that our controller has won a race only
 When our controller is in parallel with his opponent, and the distance between them is smaller, and they are in a smaller width track,  there is a possibility of  damage.
 
 According to damage results, despite our controller can win the race on the E-track5 but it had a higher crash rates in the some cases. We observed also that in the majority of cases our car is very slow compared to the other cars in each team. 
-The obtained results are due to the optimal trajectory in curves and braking as late as possible. Indeed, the proposed controller has given best ranking against powerful TORCS teams in the oval track but in the other one, it shocks with the track borders which has led to more damage rate.   
+
+The obtained results are due to the optimal trajectory in curves and braking as late as possible.
 % Antonio - Esto habría que justificarlo mejor. Es muy breve. ;)
 
 
@@ -1053,6 +1025,12 @@ The aim of the proposed controller is to direct the car to the farthest side of 
 
 The designed driver was evaluated in a time trial race to validate the sub controllers and in a real race against TORCS teams.The obtained results were encouraging where the proposed fuzzy driver was ranked  in the first positions in some tracks due to its early braking in curves following then an optimal trajectory, however its drawbacks were clearly visible in the dirty track.\\
  In future works, the proposed controller which is a start point to designing an intelligent racing car driver, could be enhanced by tuning its parameters using an evolution algorithm or/and combine it with a learning tool (neural networks) to recognize the track parts. 
+
+%salem -  the strength of our controller is in detecting curves and late braking so it does not waste time in turning, to verify this, we run them in different tracks 
+% Antonio - podemos decir esto aquí
+
+% Antonio - decir que, de acuerdo a los resultados, se podría obtener un controlador 'universal' o 'global' refinando los parámetros con algún tipo de optimización (EAs)
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section*{Acknowledgements}
