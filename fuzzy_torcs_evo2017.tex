@@ -624,6 +624,7 @@ curves. For road tracks, we selected three tracks: \textit{Forza}, \textit{E-Roa
 		\\
 		\hline
 	\end{tabular} 
+	
 % But you should say how representative they are, what kind of
 % controllers work well in every one and, in general, talk about them- JJ
 %salem- width of the track, steer is computed reffering to this 
@@ -635,12 +636,13 @@ curves. For road tracks, we selected three tracks: \textit{Forza}, \textit{E-Roa
 \subsubsection{Cars settings}
 
 SCR 1 server is a NASCAR car and member of the SCR Server team (a team can use different types of car as car1-stock1, car1-tbr1, etc).
-
-A Sprint Cup Series NASCAR-type car weighs at least 1542 kg for 850 horses with. The engine is a V8 with  $ 5866 cm^3 $. Its chassis is tubular type. It has a Borg-Warner gearbox with four-speed for road circuits.
+% salem , he borrado eso 
 % Antonio - ¿Por qué se comenta esto?¿Es importante?
 
-In our simulations, we used the car ``car1-tbr1'' which has a weight of
-1150 KG, max fuel: 94 KG, length= 4.25 m and a width of 1.94 m. % Why
+In our simulations, we used the car 'car1-tbr1' which has a weight of
+1150 KG, max fuel: 94 KG, length= 4.25 m and a width of 1.94 m. 
+% salem, no , bu we have to choose a car  the MAXSPEED  will get a concrete value
+% Why
                                 % this one? Does that mean that
                                 % results apply only to this kind of
                                 % car? - JJ
@@ -649,12 +651,13 @@ In our simulations, we used the car ``car1-tbr1'' which has a weight of
 
 \subsubsection{Controllers settings}
 
-%In order to test the different controller features in a separated way
-%to see which one has the most influence on the success or failure of
-%the controller, we have tested them this way...
+In order to test the different sub-controller features in a separated way
+to see which one has the most influence on the success or failure of
+the controller, we have tested them In order to validate the proposed fuzzy controllers, we have considered the following bots in the experiments.
+
+% salem , tienes razon
 % Or something like that. You have to justify everything. It's not a
 % description of what you've done, it's a justification - JJ
-In order to validate the proposed fuzzy controllers, we have considered the following bots in the experiments:
 \begin{itemize}
 \item AD1: Fuzzy target speed controller 
 \item AD2: Fuzzy steer and speed controller 
@@ -662,31 +665,26 @@ In order to validate the proposed fuzzy controllers, we have considered the foll
   account 
 \item SD: Simple driver 
 \end{itemize}
+% salem,  I validate the speed  controller and steer-speed one in alone race to  check the strength of the steer sub-controller  
 % Some reviewer could say why don't you take the opponent into
 % account with steering only or with target only, and also check only
 % fuzzy steering without controlling speed. You have to consider the
 % whole range of possibilities, and there are 6; you have considered
 % only 3. - JJ
 
-We conducted a series of experiments to measure the performance of the
-best version control in some race tracks (05 tracks in table
-\ref{Tabtrack}). 
 % Antonio - No sé qué quieres decir con 05 tracks. ADemás la tabla a la que te refieres es la de la descripción de pistas, no la de resultados.
 
 % ----------------------------------------------
 
 \subsection{Results of 20 laps practice race}
-
 % Antonio - hay que introducir la sección... We firstly test our controllers in an easier scenario/race... and so on.
 
-In this case, we tested our controllers in a 20 laps practice race in
-the four tracks:\\
+We firstly test our controllers in an easier scenario/race , we considered a 20 laps practice race in the five track to check the behaviour of the proposed controllers.
+% salem - I choose 20 laps because we have to test them in a long race and 20  is enough , no in any case, I can change it
 % Why 20? What did you want to prove with this? You should add a
 % Because... and then at the end of the section actually check that
 % that's true. -- JJ
 	
-In this section, we set the distance to 20 laps for each track and for each controller. 
-
 \begin{table}  
 	
 	\caption{Results for 20 laps}
@@ -853,7 +851,9 @@ In this section, we set the distance to 20 laps for each track and for each cont
 
 The table \ref{Result1r} shows that among the four drivers, the
 minimum time has been achieved by the AD5 controller in each of the
-five tracks. This was due to the steering unit of the target. % what
+five tracks. This was due to the steering unit of the target. 
+% salem - Late braking  and maintaining a maximal speed -with the steer controller- will allow us to follow optimal pathes and earn race time.
+% what
                                 % does that mean and how do you know that?
 The
 target position allows the car to adjust safely the required steering
@@ -862,19 +862,22 @@ time.
 
 However, taking a smaller target angle required a greater distance to
 cover by car by taking a less efficient trajectory. In addition, the
-number of times the car was off the road on Dir1 and Forza was higher
+number of times the car was off the road on Dirt1 and Forza was higher
 for AD5 and, accordingly, the time that the car has passed out of the
 track was potentially higher than the other controllers. 	
 Thus, bigger damage happened after the collision with the outer walls
 of the track when the car is off the track. The simple SD driver
 finished the race without damage, while AD5 was able to complete all
-the tracks safely except the Dir1t4 and Forza circuit where the damage
+the tracks safely except the Dirt1 and Forza circuit where the damage
 is a little high for the AD1 driver (fig.\ref{resultat1}). For the
 fuel consumption, it  depends on  shocks rate and category of tracks. 
 
 \subsection{Time trial race}
 Now, we set the race stopping criterion to 300s, so each controller is run in a time trial race where the race is stopped after 300s and the current distances are compared.
 Results are in Table \ref{resulta9}. % YOu have to comment the
+
+
+
                                 % results. !!!! - JJ
 \begin{table} 
 	
@@ -907,13 +910,13 @@ Results are in Table \ref{resulta9}. % YOu have to comment the
 		{ \color{red} \textbf{Top speed} }
 		\\
 		\hline
-		AD1 & 52:27 & 7825,032&126  
+		AD1 & 04:49:12 & 7825,032&126  
 		\\
 		\hline
-		AD2 & 00:00 &5202,99& 134
+		AD2 & 03:45:02 &5202,99& 134
 		\\
 		\hline 
-		AD5 & 00:00 &620,25& 153 
+		AD5 & 01:36:14 &620,25& 153 
 		\\
 		\hline 
 		\multicolumn{4}{c}{\textbf{Forza}}\\		\hline
