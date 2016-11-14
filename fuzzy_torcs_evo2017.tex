@@ -388,7 +388,7 @@ This fuzzy controller has three input values and one output: the target speed (s
 	\label{AD}
 \end{figure}
 %
-The fuzzy driver (FD) presented in that figure is a Mamdani-based fuzzy system \cite{iancu2012} with trapezoidal Membership Functions (MF) for input variables,  because it avoids sudden changes in input values.
+The automatic driver (AD) presented in that figure is a Mamdani-based fuzzy system \cite{iancu2012} with trapezoidal Membership Functions (MF) for input variables,  because it avoids sudden changes in input values.
 
 It considers three values among the 19 track sensors (see Figure \ref{fig34}):
 
@@ -480,15 +480,17 @@ The base of rules has been defined again modelling the behaviour of a human driv
 
 	\begin{itemize}		
 		\item IF Front is High THEN steer is S1
-		\item IF Front is Medium THEN steer is S2
-		\item IF Front is Low AND M5 is High THEN steer is S3
-		\item IF Front is Low AND M5 is Medium THEN steer is S4
-		\item IF Front is Low AND M5 is Low AND M10 is High THEN steer is S5
-		\item IF Front is Low AND M5 is Low AND M10 is Medium THEN steer is S6
-		\item IF Front is Low AND M5 is Low AND M10 is Low THEN steer is S7
-	\end{itemize}	
+		\item IF Front is Medium AND M10 is High THEN  steer is S2
+		\item IF Front is Medium AND M10 is Medium AND M5 is Medium THEN steer is S2
+		\item IF Front is Medium AND M10 is Medium AND M5 is Low THEN steer is S3
+		\item IF Front is Low AND M10 is High THEN steer is S3
+		\item IF Front is Low AND M10 is Medium AND M5 is Medium THEN steer is S4
+		\item IF Front is Low AND M10 is Medium AND M5 is Low THEN steer is S4
+		\end{itemize}	
 
-The values for S1 to S7 are respectively: [0, -1, -0.5, -0.25, 0, 0.25, 0.5, 1]
+The values for S1 to S4 are respectively: [0, 0.25, 0.5, 1]
+when M10=track[7] we will take negative values of the steer (sterr=-steer)
+%Mohzammed--- habia un error en las reglas, he metido los mismos que las del speed
 % Antonio - TODO: poner los valores en orden
 
 Once the controllers have been described, they will be tested and compared with the standard one y several races. The obtained results are presented in the following section.
@@ -500,10 +502,11 @@ Once the controllers have been described, they will be tested and compared with 
 \section{Simulation Results}
 \label{sec:results}
 
-In this section we present all the experiments that we performed in order to measure the performance of our FD controller.
+In this section we present all the experiments that we performed in order to measure the performance of our AD controller.
 We first, describe the methodology we have used and next, we present the experimental results of the implementation of the fuzzy driver, including opponents and using special criteria in each case.
 
 %We have established a set of tests to measure the performance of the controller AD. 
+%salem -automatic driver , ya le he metido
 % Antonio - ¿Qué significa AD? No se ha dicho antes.
 
 We have compared the proposed controller with the simple driver included in TORCS, so we have run every controller in several races in different tracks.
@@ -523,6 +526,7 @@ In our case, we chose five circuits:
 \item A dirt road track: which increases the difficulty due to the lower grip of the dirty asphalt. \textit{Dirt1} has a good variety of curves, which also add an extra difficulty.
 \item An oval track: \textit{E-Track5} seems to be the most interesting, as it has curves in both directions.
 \end{itemize}
+% Mohammed lo es,  Antonio 
 % Antonio - he escrito la justificación de las pistas según he creido que se hizo. A ver si es así, Mohammed. ;D
 Table \ref{Tabtrack} presents the properties and description of each selected track.
 
@@ -800,7 +804,7 @@ We firstly test our controllers in an easier scenario/race, we considered a 20 l
 
 The table \ref{Result1r} shows that among the four drivers, the
 minimum time has been achieved by the AD5 controller in each of the
-five tracks. This was due to the steering unit of the target. 
+five tracks. This was due to the steering unit of the controller. 
 % salem - Late braking  and maintaining a maximal speed -with the steer controller- will allow us to follow optimal pathes and earn race time.
 % what
                                 % does that mean and how do you know that?
@@ -823,7 +827,11 @@ fuel consumption, it  depends on  shocks rate and category of tracks.
 
 \subsection{Time trial race}
 Now, we set the race stopping criterion to 300s, so each controller is run in a time trial race where the race is stopped after 300s and the current distances are compared.
-Results are in Table \ref{resulta9}. % YOu have to comment the
+Results are in Table \ref{resulta9} where it could be seen that the the AD5  controller has given good results in th e oval and road tracks but in the Dirty one was a disaster, it suffers from damage and the TORCS  simulator had to stop it.
+This is due to the lack of grip in this kind of tracks and the damages are caused by the shocks with the track border due to a dysfunction
+ of the steer module.
+% Mohammed, Done well I think so
+ % YOu have to comment the
 
 
 
@@ -865,7 +873,7 @@ Results are in Table \ref{resulta9}. % YOu have to comment the
 		AD2 & 03:45:02 &5202,99& 134
 		\\
 		\hline 
-		AD5 & 01:36:14 &620,25& 153 
+		AD5 & 01:36:14 &4620,25& 153 
 		\\
 		\hline 
 		\multicolumn{4}{c}{\textbf{Forza}}\\		\hline
@@ -928,7 +936,9 @@ Results are in Table \ref{resulta9}. % YOu have to comment the
 
 Our main goal is to test the performance of AD5 in a race, and answer the following questions: Could we have a perfect driving in a race with AD5 only with the track borders sensors? Can we win the race with AD5?
 
-In this context we tested "AD5" in 5 tracks against berniw, bt, damned, inferno and tita teams.
+In this context we tested "AD5" in 5 tracks against berniw, bt, damned, inferno and tita teams which are integrated TORCS controllers with different strategies and slighter modifications. Also , bt controller comes with advance machine learning \cite{oponnents2010}. 
+%Mohammed ,  hecho
+
 % Antonio - ¿Quienes son esos controladores? ¿de alguna competiticón? Poner citas y explicarlos brevemente (hacer una lista itemize) y poner un párrafo de cada uno. ;)
 
 After the launch of the race AD5 against the 10 cars of each team  for 20 laps in each track we obtained the following results (see table \ref{resultat31})
@@ -960,11 +970,7 @@ After the launch of the race AD5 against the 10 cars of each team  for 20 laps i
 		
 		Damage & 2267 & 7939 &  5888 & 5232& 8043
 		\\
-		\hline 
-		
-		
-		Pit stops & 0& 0  & 0 & 0 & 0
-		\\
+
 
 		\hline
 		\hline
@@ -993,10 +999,6 @@ After the launch of the race AD5 against the 10 cars of each team  for 20 laps i
 		\\
 		\hline 
 		
-		
-		Pit stops & 0 & 0 & 0 & 0 & 0
-		\\
-		\hline	
 	\end{tabular} 
 	
 \end{table}
@@ -1008,6 +1010,8 @@ When our controller is in parallel with his opponent, and the distance between t
 According to damage results, despite our controller can win the race on the E-track5 but it had a higher crash rates in the some cases. We observed also that in the majority of cases our car is very slow compared to the other cars in each team. 
 
 The obtained results are due to the optimal trajectory in curves and braking as late as possible.
+In E-track5, the controller has win the race because the used track has different curves so the car can follow an optimal path given by the steer module furthermore, the target speed sub-controller allowed to go as faster as possible.  However, in the Forza track which is characterized by a small width and less curves, the drawbacks of the proposed controller had clearly affected the results.
+%Mohammed - done
 % Antonio - Esto habría que justificarlo mejor. Es muy breve. ;)
 
 
