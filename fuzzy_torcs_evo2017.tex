@@ -333,7 +333,8 @@ In the following sections each sub-controller is described.
 
 \subsection{Fuzzy target speed sub-controller}
 
-The first proposed fuzzy sub-controller aims to estimate the optimal speed...
+The first proposed fuzzy sub-controller aims to estimate the optimal target speed of the car in straight parts and curves of the rack where the main goal is to go as faster as possible and secure the car.
+%salem- done; well, I think
 % Antonio - Introducir mejor el controlador. Su objetivo o utilidad principal.
 
 In order to do this estimation, it is based on fuzzy rules, so two general cases are considered:
@@ -343,22 +344,24 @@ In order to do this estimation, it is based on fuzzy rules, so two general cases
 	\item If it is close to a curve, the controller will decrease the current speed to a value included in the interval \textit{[minSpeed; maxSpeed]} km/h.
 \end{itemize}
 
-In case the car is out of the track or near a curve, 
+% salem - done by the simple driver  and maintained by our controller
+%In case the car is out of the track or near a curve, 
 % Antonio - ¿near a curve? Eso es lo del segundo caso que has puesto arriba, ¿no?
-the brake system is activated and ABS and TCS 
+%the brake system is activated and ABS and TCS 
 % Pon entre paréntesis qué significan ABS y TCS. ;)
-will be loaded to avoid the car skidding.
+%will be loaded to avoid the car skidding.
 % ¿Esto lo hace el controlador tuyo o lo hacía el controlador simple ya?
 
 
-The obtained target speed will be used for computing the value of acceleration, following the expression:
+The obtained target speed will be used for computing the value of acceleration.
+%salem- 
 
-\begin{equation}	
-Gas(speed-Target_{speed})=-1+\frac{2}{1+e^{speed-Target_{speed}}}	
-\end{equation}
+%\begin{equation}	
+%Gas(speed-Target_{speed})=-1+\frac{2}{1+e^{speed-Target_{speed}}}	
+%\end{equation}
 % Antonio - explicar un poco la formula, o decir si es del simulador que la define así.
 
-\textit{Gas} function refers to acceleration, \textit{speed} is the current speed of the car.
+%\textit{Gas} function refers to acceleration, \textit{speed} is the current speed of the car.
 
 This fuzzy controller has three input values and one output: the target speed value (see Figure \ref{AD}):
 
@@ -400,8 +403,9 @@ This fuzzy controller has three input values and one output: the target speed va
 	\caption{Fuzzy controller of target speed.}     % width is 8.4 cm.
 	\label{AD}
 \end{figure}
+The fuzzy driver (FD) presented in that figure is a Mamdani-based fuzzy system \cite{iancu2012} with trapezoidal Membership Functions (MF) for input variables  because it avoids sudden changes in input values.
+% salem- 
 
-The Fuzzy Driver (FD) presented in that figure is a Mamdani-based fuzzy system \cite{iancu2012} with trapezoidal Membership Functions (MF) for input variables. 
 % Antonio - justificar por qué se usa esa función de pertenencia (membership)
 
 It considers three values among the 19 track sensors (see Figure \ref{fig34}):
@@ -447,13 +451,14 @@ Each input variable is represented by three membership functions: Low, Medium an
 			
 			\\
 			\hline
-			Input & [0-100] m & Front & trapezoidal & [0-50] & [20-80] &[80-100]
+			\hline
+			Input & [0-100] m & Front & trapezoidal & [0-50] & [20-80] &[60-100]
 			\\
 			\hline
-			Input & [0-100] m & M5 & trapezoidal &[0-40] & [10-70] & [40-100] 
+			Input & [0-100] m & M5 & trapezoidal &[0-40] & [10-70] & [50-100] 
 			\\
 			\hline
-			Input & [0-100] m  & M10 & trapezoidal & [0-30] & [0-60] & [30-100]
+			Input & [0-100] m  & M10 & trapezoidal & [0-30] & [20-60] & [50-100]
 			\\
 			\hline 
 			Output & [0-200] m/s & TargetSpeed & singleton & / & / & /
@@ -461,10 +466,12 @@ Each input variable is represented by three membership functions: Low, Medium an
 			\hline 
 		\end{tabular} 
 	\end{table}
-
+%salem done
 % Antonio - Revisar los valores, ¿estan bien los de M10? Low está incluido en Medium...
 
 	The base of rules is designed so that if the frontal distance is maximal, then the target speed should be the maximum. Its value should be lower when the frontal distance is shorter. Thus, the fuzzy rules are listed below:
+		% salem he obtenido estas reglas imitando el comportamiento de un conductor
+		
 % Antonio - ¿Cómo se han obtenido estas reglas? ¿De forma manual o se han generado con alguna técnica?¿Se han descartado otras?
 
 	\begin{itemize}
@@ -478,11 +485,10 @@ Each input variable is represented by three membership functions: Low, Medium an
 		In addition, a crisp rule is added to rule base to obtain a maximum value of the target speed when the three input variables are as big as possible: \\
 		\item IF Front = MAXDISTSPEED or M5 = MAXDISTSPEED or M10 = MAXDISTSPEED THEN TargetSpeed = MAXSPEED		
 	\end{itemize}
-
-MAXDISTSPEED is...
+MAXDISTSPEED is the a longest track sensors possible value and MAXSPEED is a car variable of the maximal car speed, in case of car-trb1 model, MAXSPEED=300.
 % Antonio - aclarar esto
 
-The output value (target speed) is encoded by seven singletons.
+The output value is encoded by seven singletons [30, 60,120,180,220, 240, 280].
 
 % Antonio - ¿Qué valores tienen?
 
@@ -496,6 +502,7 @@ Then, if the car is in a straight line, it will set as target position half widt
 Whereas, if the car is near a right curve, it will approach the path leading to the right, with a space between the car and the border of the track to avoid the loss of control. The same approach is considered if the car is near a left curve.
 	
 In order to detect the curves, the controller focuses on the sensor values (M10, M5, and Front).
+ % salem si  el sensor de frente es mas grande , hay linea recta, si los de derecha ( M10 Y M5  hay curva a la derecha)
 % Antonio - ¿y qué hace para detectar las curvas?¿comprueba las distancias en dos instantes consecutivos? Explicarlo.
 
 The base of rules for this controller is:
@@ -527,7 +534,10 @@ using special criteria in each case. \\
 We have established a set of tests to measure the performance of the
 controller AD. We compared the newly developed Controller with
 the simple driver included in TORCS. We will run every controller in
-several race tracks.  % What do those tests imply? Are the like the
+several race tracks.
+%salem -  the strength of our controller is in detecting curves and late braking so it does not waste time in turning, to verify this, we run them in different tracks 
+
+  % What do those tests imply? Are the like the
                       % best way of toing that? The usual way? A
                       % reference? Why 20 laps? - JJ
 
@@ -546,9 +556,13 @@ track. %Why did you choose them?
 On oval tracks, \textit{E-Track5} seems to be the most interesting, as it has
 curves in both directions. On dirt roads, \textit{Dirt1} has a good variety of
 curves. For road tracks, we selected three tracks: \textit{Forza}, \textit{E-Road} and \textit{CG-Speedway Number1}. Table \ref{Tabtrack} presents the properties and description of each selected track.\\ 
+% salem, no it's not a global controller, but we must check if it works in different tracks
+% to do that, we could optimize the parameters in future works 
 % But does this mean you are trying to design a controller that is
 % good in all kind of roads, unlike these controllers?  Shouldn't that
 % go to the introduction?- JJ
+%salem- previous controllers have computed the speed with fuzzy but not the steer, is what our controller do, 
+ 
 % Antonio - Yes, if it is a novelty with respect to previous controllers, it must be calrified in the introduction and in the State of the Art. Is it, Mohammed?
 
 
@@ -604,6 +618,7 @@ curves. For road tracks, we selected three tracks: \textit{Forza}, \textit{E-Roa
 	\end{tabular} 
 % But you should say how representative they are, what kind of
 % controllers work well in every one and, in general, talk about them- JJ
+%salem- width of the track, steer is computed reffering to this 
 % Antonio - I agree. And what does 'width' refer to?
 \end{table}
 
