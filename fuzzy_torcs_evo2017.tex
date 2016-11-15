@@ -34,7 +34,7 @@
 % the running heads and the author index.
 %
 
-%\author{M. Salem \and A.M Mora \and \and J. J. Merelo \inst{1}}
+%\author{M. Salem \and A.M Mora \and J. J. Merelo \inst{1} \and P. García-Sánchez \inst{2}}
 \author{A. N. Onymous\inst{1}%
 \thanks{No Institute}}
 % Antonio - Los autores que participen
@@ -78,10 +78,6 @@ those that have that have many turning points.
 %
 \section{Introduction}
 \label{sec:intro}
-
-%Primero hay que decir qué problema quieres resolver. TORCS no es el
-%problema, es el medio que vas a usar para resolverlo.
-% Antonio - bueno, el problema se comenta debajo, esto es la parte inicial de la introducción 
  
 The Open Racing Car Simulator (TORCS) \cite{WebTORCS} is a
 three-dimensional racing video game created by Eric Espié and
@@ -120,10 +116,6 @@ is a hard task, because the agent has to control several actions such
 as the steer, gear and brake/acceleration using the data related to
 the car and its environment (detected by means of sensors). 
 
-%Hey what's happened here? We were talking about TORCS and all of a
-%sudden... fuzzy logic! What???? - JJ
-% Antonio - I have connected them
-
 Hence, Computational Intelligence (CI) methods are interesting to be applied to the problem of implementing a car controller in TORCS. Among these techniques, Fuzzy logic \cite{abraham2001} with its adaptation and ability of imitating the human behaviour, is an interesting tool to design these drivers. It could be integrated in any controller module (steering, gear change, acceleration and brake, stuck) to give a human-like `appeal' to the bot driver \cite{CarRacing_Pelta09,Guadarrama2008}.  
 
 In each simulation tick, the autonomous driver must make a decision,
@@ -160,21 +152,27 @@ with other controllers are given in the same section. Finally, the conclusions a
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  TORCS 
-In the last years, several researchers have focused on driving a racing car using computational intelligence techniques \cite{evol},\cite{torcs2012}, \cite{neurone}  %and especially fuzzy logic where \cite{CarRacing_Pelta09} tried to design a fuzzy controller for the the target speed while the other car actions were obtained by simple functions while in\cite{ho2008}, a  previous fuzzy controller was enhanced using context-dependent fuzzy set, the obtained controller was compared to existing driving techniques showing better performance. %PABLO: estos papers han sido comentado ya en la sección fuzzy (ho2008 lo he re-leido yo :/)
+In the last years, several researchers have focused on driving a racing car using computational intelligence techniques \cite{evol},\cite{torcs2012}, \cite{neurone}.  %and especially fuzzy logic where \cite{CarRacing_Pelta09} tried to design a fuzzy controller for the the target speed while the other car actions were obtained by simple functions while in\cite{ho2008}, a  previous fuzzy controller was enhanced using context-dependent fuzzy set, the obtained controller was compared to existing driving techniques showing better performance. %PABLO: estos papers han sido comentado ya en la sección fuzzy (ho2008 lo he re-leido yo :/)
 
 %TORCS + NN
-Neural networks have been applied successfully in recent years. Using supervised methods it is possible to create better controllers imitating an existent bot \cite{CardamoneImitation09}. However, performance decreases when using circuits not used for training. Human data can also be used for training the networks, for example to model a human-like controller \cite{MunozHumanLike10}. Although several scripts can be used to avoid noise, the problem to create a human-like driver is difficult, and, as in the previous work, the performance in circuits not used for training may be reduced.
-%TORCS+EA
-Evolutionary algorithms have been applied to optimize the hand-coded strategies parameters \cite{ButzCMAES09}, optimizing several modules, and creating bots that can win competitions.
+Among them, Artificial Neural Networks (ANN) have been one of the most prolific techniques applied successfully to this problem. For instance, using supervised methods it is possible to create controllers by the imitation of an existing bot \cite{CardamoneImitation09}. However, their performance decreases if they drive on circuits not previously used for training. 
+
+Human data can also be used for training these networks, or for example, to model a human-like controller \cite{MunozHumanLike10}. Although several scripts can be used to avoid noise, the problem to create a human-like driver is difficult, and again, their performance in circuits not known will be reduced.
+
+%TORCS + EA
+These models can be improved using meta-optimisation techniques, such as Evolutionary Algorithms (EAs). These have been applied to `refine' the parameters \cite{ButzCMAES09} considered in the different methods (being them hand-coded or not); optimising then controllers' behavioural modules, and yielding bots that can even win competitions [REFs].
 
 %FUZZY
-Fuzzy logic has been used widely since the year 2008. Authors of \cite{Fujii2008} had examined the performance of fuzzy rule-based systems in  high-level decision making of a car and the effect of sensory information. 
-In \cite{CarRacing_Pelta09}, for instance, a fuzzy controller was designed to obtain the target position and the steer was computed through a crisp formula.
+Another prolific technique has been Fuzzy Logic (FL), which has been widely used since the year 2008. For instance, Fujii et al. in \cite{Fujii2008} examined the performance of fuzzy rule-based systems for high-level decision making in a controller, along with the effect and influence of sensory information.
+In \cite{CarRacing_Pelta09}, a fuzzy controller was designed to obtain the target position for the car, whereas the steering was computed using a crisp formula. This work and its improvement \cite{torcs2012} have some common points with our proposal, as the controller is pretty similar, however in this work two different specialised fuzzy modules have been implemented instead of just one.
 
-Some approaches are based on context-dependant hybrid fuzzy-sets, avoiding training and dealing with input variables \cite{ThangCIG08}. Authors claim that using Machine Learning techniques and fuzzy approaches may reduce the  training time. %PABLO: ojo, no usa TORCS
+Some approaches are based on context-dependant hybrid fuzzy-sets, avoiding training and dealing with input variables \cite{ThangCIG08,ThangG08}. Authors claim that using Machine Learning techniques and fuzzy approaches may reduce the  training time. %PABLO: ojo, no usa TORCS
 
 %FUZZY + EAs
-Genetic algorithms have been also used to optimize the fuzzy set parameters, although the maximum values of the sets may not be achieved \cite{PerezEvolvingFuzzy09}. In \cite{Guadarrama2008}, a fuzzy rule-based car controller for Car Racing Competition was built and tuned with coevolutionary genetic algorithms. Indeed, two fuzzy controllers were designed: the first one to compute the acceleration using the velocity and distance and the second one to get the turning angle. Their results had been compared with cooperative and competitive approaches to tuning parameters.
+Genetic algorithms have been also used to optimise the fuzzy set parameters, although the maximum values of the sets may not be achieved \cite{PerezEvolvingFuzzy09}. In \cite{Guadarrama2008}, a fuzzy rule-based car controller for Car Racing Competition was built and tuned with co-evolutionary genetic algorithms. Indeed, two fuzzy controllers were designed: the first one to compute the acceleration using the velocity and distance and the second one to get the turning angle. Their results had been compared with cooperative and competitive approaches to tuning parameters.
+
+***
+
  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Antonio - habría que estructurar esta sección, por ejemplo:
