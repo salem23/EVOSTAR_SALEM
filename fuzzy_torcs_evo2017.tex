@@ -261,7 +261,7 @@ Table \ref{t1} presents a complete list of available sensors with a description 
 
 Every TORCS driver bot is controlled by means of a set of actuators: the steering wheel `Steer', the accelerator `accel', the brake pedal and the gearbox. In addition, a meta-action is available to request a restart of the race to the server. Table \ref{tab2} details the available actions/actuators and their representation.
 
-\begin{table}[t!]
+\begin{table}[ht!]
 	
 	\begin{tabular}{|p{3cm}|p{3 cm}|p{6 cm}|}
 		\hline
@@ -347,7 +347,7 @@ Gas(speed-Target_{speed})=-1+\frac{2}{1+e^{speed-Target_{speed}}}
 
 \textit{Gas} function refers to acceleration, \textit{speed} is the current speed of the car.
 
-This fuzzy controller has three input values and one output: the target speed (see Figure \ref{AD}).
+This fuzzy controller has three input values and one output: the target speed (see Figure \ref{fig:AD}).
 
 \begin{figure}
 	\begin{center}
@@ -385,10 +385,10 @@ This fuzzy controller has three input values and one output: the target speed (s
 		%\includegraphics [width=10cm,height=4cm]{figures/c2/sif}
 	\end{center}
 	\caption{Fuzzy controller of target speed.}     % width is 8.4 cm.
-	\label{AD}
+	\label{fig:AD}
 \end{figure}
 %
-The automatic driver (AD) presented in that figure is a Mamdani-based fuzzy system \cite{iancu2012} with trapezoidal Membership Functions (MF) for input variables,  because it avoids sudden changes in input values.
+The controller presented in that figure is a Mamdani-based fuzzy system \cite{iancu2012} with trapezoidal Membership Functions (MF) for input variables, because it avoids sudden changes in input values.
 
 It considers three values among the 19 track sensors (see Figure \ref{fig34}):
 
@@ -415,8 +415,8 @@ The set of sensors was chosen considering those used in previous works \cite{tor
 Each input variable is represented by three membership functions: Low, Medium and High. The description of fuzzy inputs and output are represented in Table \ref{tab:flouevar}.
 	
 	\begin{table}
-		\label{tab:flouevar}
 		\caption{Fuzzy variables description.}
+		\label{tab:flouevar}
 		\begin{tabular}{ |p{1.5cm}|p{2cm}|p{2cm}|p{2 cm}|p{1 cm}|p{1.5 cm}|p{1.5 cm}|}
 			\hline
 			{ \color{red} Variable }&
@@ -471,6 +471,9 @@ The output value is encoded by seven singletons TS1 to TS7, being respectively: 
 
 In addition to the speed sub-controller, another fuzzy approach has been applied to control the steering, estimating and determining the target position of the car. 
 
+The architecture of this sub-controller is similar to the one shown in Figure \ref{fig:AD}, but with the steering as output. The set of sensors considered are the same as in the speed case, described in Table \ref{tab:flouevar}.
+% Antonio - He supuesto esto. ¿Es cierto, Mohammed? :D
+
 Then, if the car is in a straight line, it will set as target position half width of the race track (central position of the lane).	
 Whereas, if the car is near a right curve, it will approach the path leading to the right, with a space between the car and the border of the track to avoid the loss of control. The same approach is considered if the car is near a left curve.
 	
@@ -488,10 +491,10 @@ The base of rules has been defined again modelling the behaviour of a human driv
 		\item IF Front is Low AND M10 is Medium AND M5 is Low THEN steer is S4
 		\end{itemize}	
 
-The values for S1 to S4 are respectively: [0, 0.25, 0.5, 1]
-when M10=track[7] we will take negative values of the steer (sterr=-steer)
-%Mohzammed--- habia un error en las reglas, he metido los mismos que las del speed
-% Antonio - TODO: poner los valores en orden
+The values for S1 to S4 are respectively: 0, 0.25, 0.5, and 1.
+When M10=Track[7] we will take negative values of the steer (sterr=-steer).
+% Antonio - Si M10 = Track[7] entonces la curva será a la derecha, ¿no? ¿Entonces el giro será negativo o positivo?
+% ¿No ocurriría lo mismo si M5 = Track[8]?
 
 Once the controllers have been described, they will be tested and compared with the standard one y several races. The obtained results are presented in the following section.
 
@@ -502,12 +505,8 @@ Once the controllers have been described, they will be tested and compared with 
 \section{Simulation Results}
 \label{sec:results}
 
-In this section we present all the experiments that we performed in order to measure the performance of our AD controller.
+In this section we present all the experiments that we performed in order to measure the performance of our controller, called \textit{AD (Automatic Driver)}.
 We first, describe the methodology we have used and next, we present the experimental results of the implementation of the fuzzy driver, including opponents and using special criteria in each case.
-
-%We have established a set of tests to measure the performance of the controller AD. 
-%salem -automatic driver , ya le he metido
-% Antonio - ¿Qué significa AD? No se ha dicho antes.
 
 We have compared the proposed controller with the simple driver included in TORCS, so we have run every controller in several races in different tracks.
 % Antonio - describir un poco mejor los tests siguiendo también el comentario de JJ 
@@ -526,8 +525,7 @@ In our case, we chose five circuits:
 \item A dirt road track: which increases the difficulty due to the lower grip of the dirty asphalt. \textit{Dirt1} has a good variety of curves, which also add an extra difficulty.
 \item An oval track: \textit{E-Track5} seems to be the most interesting, as it has curves in both directions.
 \end{itemize}
-% Mohammed lo es,  Antonio 
-% Antonio - he escrito la justificación de las pistas según he creido que se hizo. A ver si es así, Mohammed. ;D
+
 Table \ref{Tabtrack} presents the properties and description of each selected track.
 
 \begin{table}
@@ -581,10 +579,9 @@ Table \ref{Tabtrack} presents the properties and description of each selected tr
 		\hline
 	\end{tabular} 
 
-% Antonio - Ok, I have commented this before. Check it out.
 \end{table}
 
-The aim of this selection is to test the value of the controller in a wide set of situations, in order to check its potential as a global controller.
+The aim of this selection is to test the value of AD in a wide set of situations, in order to check its potential as a global controller.
 
 
 % ----------------------------------------------
@@ -604,20 +601,25 @@ The car considered is \textit{car1-tbr1} of SCR 1 Server, which is a NASCAR car 
 
 \subsubsection{Controllers settings}
 
-In order to test the different sub-controller features in a separated way
-to see which one has the most influence on the success or failure of
-the controller, we have tested them In order to validate the proposed fuzzy controllers, we have considered the following bots in the experiments.
+We have tested the different sub-controller features in a separated way, in order to see which one has the highest influence on the success or failure of
+AD. Thus, we have considered the following bots in the experiments:
 
-% salem , tienes razon
-% Or something like that. You have to justify everything. It's not a
-% description of what you've done, it's a justification - JJ
 \begin{itemize}
-\item AD1: Fuzzy target speed controller 
-\item AD2: Fuzzy steer and speed controller 
-\item AD5: Fuzzy target speed controller that takes the opponent into
-  account 
-\item SD: Simple driver 
+\item AD1: Fuzzy speed controller. 
+\item AD2: Fuzzy speed and steering controller.
+\item AD5: Fuzzy speed controller that takes the opponent into account.
+% Antonio - Es una tontería, pero ¿por qué se llama '5'?
+% ¿Esto de considerar el oponente en qué consiste? Habría que explicarlo. 
+% ¿Es algo nuevo de este artículo?
+\item SD: Simple driver.
 \end{itemize}
+
+Since the speed controller is similar to previous approaches, it was expected to work properly. Hence, we have checked the basic version of our controller AD1 and compared it with modified/improved versions, such as AD2 and AD5.
+As stated before, SD has been taken as a baseline for comparisons.
+
+% Antonio - Mohammed, revisa esto a ver si es verdad. ;)
+% Estoy con JJ en cuanto a que habría que haber probado todas las variantes (steering sólo, steering + oponente y speed + steering + oponente). ¿Hay alguna explicación para no haberlos incluido que podamos poner?
+
 % salem,  I validate the speed  controller and steer-speed one in alone race to  check the strength of the steer sub-controller  
 % Some reviewer could say why don't you take the opponent into
 % account with steering only or with target only, and also check only
@@ -625,22 +627,18 @@ the controller, we have tested them In order to validate the proposed fuzzy cont
 % whole range of possibilities, and there are 6; you have considered
 % only 3. - JJ
 
-% Antonio - No sé qué quieres decir con 05 tracks. ADemás la tabla a la que te refieres es la de la descripción de pistas, no la de resultados.
-
 % ----------------------------------------------
 
-\subsection{Results of 20 laps practice race}
-% Antonio - hay que introducir la sección... We firstly test our controllers in an easier scenario/race... and so on.
+\subsection{Results of 20 laps practise race}
 
-We firstly test our controllers in an easier scenario/race, we considered a 20 laps practice race in the five tracks to check the behaviour of the proposed controllers. We considered 20 as it is the maximum number of laps a car can perform without doing a pit stop, because our controller is not prepared to plan and manage this event. 
-% salem - I choose 20 laps because we have to test them in a long race and 20  is enough , no in any case, I can change it
-% Why 20? What did you want to prove with this? You should add a
-% Because... and then at the end of the section actually check that
-% that's true. -- JJ
+We firstly test our controllers in the simplest case, a practise race without rivals. 
+% Antonio - esto lo he supuesto, pero no sé si 'practise races' son como digo: sin rivales
+We considered a 20 laps in the five tracks, aiming to check if the controllers are able to perform well in these `warm up' races.
+We considered 20 as it is the maximum number of laps a car can perform without doing a pit stop, because our controller is not prepared to plan and manage this event. 
 	
-\begin{table}  
+\begin{table}
 	
-	\caption{Results for 20 laps}
+	\caption{Results for 20 laps in practise races.}
 	\label{resultat1}
 
 	\begin{tabular}{ |p{3cm}|p{2cm}|p{2cm}|p{2 cm}|p{2 cm}|}
@@ -666,7 +664,7 @@ We firstly test our controllers in an easier scenario/race, we considered a 20 l
 		Lastlap	Time  & 01:05:17 & 01:31:36 & 01:02:55 & 30:07
 		\\
 		\hline 
-		Best lap & 14 & 02 & 18 & 8 
+		Best lap & 14 & 2 & 18 & 8 
 		\\
 		\hline
 		Damage & 0 & 0 & 0 & 0 
@@ -697,7 +695,7 @@ We firstly test our controllers in an easier scenario/race, we considered a 20 l
 		Lastlap	Time  & 01:13:08  & 02:33:43 & 02:23:12 & 01:02:91 
 		\\
 		\hline 
-		Best lap & 14 & 07 & 01 & 5 
+		Best lap & 14 & 7 & 1 & 5 
 		\\
 		\hline
 		Damage &  0 & 7438 & 905 & 9274 
@@ -727,7 +725,7 @@ We firstly test our controllers in an easier scenario/race, we considered a 20 l
 		Lastlap	Time  & 03:03:66 & 02:47:26 & 09:55:62 & 02:21:23
 		\\
 		\hline 
-		Best lap & 20 & 04 & 01 & 04 
+		Best lap & 20 & 4 & 1 & 4 
 		\\
 		\hline
 		Damage & 0 & 468 & 2269 & 0 
@@ -737,7 +735,6 @@ We firstly test our controllers in an easier scenario/race, we considered a 20 l
 		\\
 		\hline
 	\multicolumn{5}{c}{\textbf{E-Road}}\\	
-		\hline
 		\hline
 		{ \color{blue}\textbf{20 laps} }&
 		{ \color{red}\textbf{SD}}&  
@@ -759,7 +756,7 @@ We firstly test our controllers in an easier scenario/race, we considered a 20 l
 		Lastlap	Time  & 02:45:08 & 03:00:20 & 04:51:53 & 01:27:38 
 		\\
 		\hline 
-		Best lap & 3 & 3 & 17 & 03
+		Best lap & 3 & 3 & 17 & 3
 		\\
 		\hline
 		Damage & 0 & 6056 & 7309 & 2239 
@@ -769,6 +766,7 @@ We firstly test our controllers in an easier scenario/race, we considered a 20 l
 		\\
 		\hline
 \multicolumn{5}{c}{\textbf{CG-Speedway Number1}}\\	
+		\hline
 		{ \color{blue}\textbf{20 laps} }&
 		{ \color{red}\textbf{SD}}&  
 		{ \color{red} \textbf{AD1} } &
@@ -789,7 +787,7 @@ We firstly test our controllers in an easier scenario/race, we considered a 20 l
 		Lastlap	Time  & 01:25:01 & 01:12:99& 01:29:65 & 01:46:47 
 		\\
 		\hline 
-		Best lap & 12 & 20 & 02 & 02  
+		Best lap & 12 & 20 & 2 & 2  
 		\\
 		\hline
 		Damage & 0 & 0 & 0 &  114 
@@ -802,58 +800,65 @@ We firstly test our controllers in an easier scenario/race, we considered a 20 l
 	\label{Result1r}
 \end{table}
 
+% Antonio - Algunas cosas a revisar:
+% - Hay velocidades mínimas negativas
+% - ¿Qué valor es el de Fuel?¿Es un tiempo?
+
 The table \ref{Result1r} shows that among the four drivers, the
 minimum time has been achieved by the AD5 controller in each of the
-five tracks. This was due to the steering unit of the controller. 
-% salem - Late braking  and maintaining a maximal speed -with the steer controller- will allow us to follow optimal pathes and earn race time.
-% what
-                                % does that mean and how do you know that?
-The
-target position allows the car to adjust safely the required steering
-angle  with the maximum speed so the controller AD5 gave the best
-time. 
+five tracks. This was due to the steering unit of the controller, which allows late braking, and thus, getting and maintaining a maximal speed (as it can be seen on the third  row of every table), along with following optimal paths to earn race time.
+
+The target position 
+% Antonio - ¿'target position' de qué?¿del coche?¿de los rivales?¿hay rivales en estas carreras?
+allows the car to safely adjust the required steering angle with the maximum speed so the controller AD5 gave the best time. 
+% Antonio - Pero AD5 no tiene steering control, ¿no? O no se dijo en la descripción de los conrtroladores AD1, AD2 y AD5.
 
 However, taking a smaller target angle required a greater distance to
-cover by car by taking a less efficient trajectory. In addition, the
+cover by car which follows a less efficient trajectory. In addition, the
 number of times the car was off the road on Dirt1 and Forza was higher
 for AD5 and, accordingly, the time that the car has passed out of the
 track was potentially higher than the other controllers. 	
 Thus, bigger damage happened after the collision with the outer walls
-of the track when the car is off the track. The simple SD driver
+of the track when the car goes out. The simple SD driver
 finished the race without damage, while AD5 was able to complete all
-the tracks safely except the Dirt1 and Forza circuit where the damage
+the tracks safely except the Dirt1 and Forza circuits, where the damage
 is a little high for the AD1 driver (fig.\ref{resultat1}). For the
-fuel consumption, it  depends on  shocks rate and category of tracks. 
+fuel consumption, it  depends on shocks rate and category of tracks. 
+% Antonio  ¿Qué son 'shocks rate'?
+
+AD2 gets quite bad results, even in the comparison with the simple driver...
+% Antonio - TODO: comentar esto, ¿por qué pasará? :_(
+
+The novel controllers seem to be robust in the sense that they obtain their best marks from their first laps, as a difference to the SD, which usually requires a higher amount of laps to improve its times.
+
+% ----------------------------------------------
 
 \subsection{Time trial race}
-Now, we set the race stopping criterion to 300s, so each controller is run in a time trial race where the race is stopped after 300s and the current distances are compared.
-Results are in Table \ref{resulta9} where it could be seen that the the AD5  controller has given good results in th e oval and road tracks but in the Dirty one was a disaster, it suffers from damage and the TORCS  simulator had to stop it.
-This is due to the lack of grip in this kind of tracks and the damages are caused by the shocks with the track border due to a dysfunction
- of the steer module.
-% Mohammed, Done well I think so
- % YOu have to comment the
 
+In the second experiment, the race stopping criterion is set to 300s, so, after that time, the simulation stops. Once the race has ended, the distances covered by each controller are checked.
 
+The results are shown in Table \ref{resulta9} where it could be seen that the the AD5 controller has yielded the best results in the oval and road tracks. However, in the Dirty one, it was a disaster, since it was extremely damaged and TORCS simulator had to stop it.
+This happened to the lack of grip in this kind of tracks and the damages which were caused by the crashes/collisions with the track border. The reason might be a dysfunction of the steer module.
+% Antonio - ¿te refieres a un error inesperado o a que no está bien diselado el controlador?
 
-                                % results. !!!! - JJ
 \begin{table} 
 	
-	\caption{Results of the controllers in 5 minute time trial race}
+	\caption{Results of the controllers in 300 seconds time trial race}
 	\label{resulta9}
-	\begin{tabular}{ ||p{3cm}||p{3cm}||p{3cm}||p{3 cm}||}	
+	\begin{tabular}{ |p{3cm}|p{3cm}|p{3cm}|p{3 cm}|}	
 		\multicolumn{4}{c}{\textbf{E-Track5}}\\	
 		
 		\hline
 		{ \color{blue}\textbf{} }&
-		{ \color{red}\textbf{Best Time} }&
-		{ \color{red} \textbf{Distance } } &
+		{ \color{red}\textbf{Best Time Lap} }&
+		{ \color{red} \textbf{Distance} } &
 		{ \color{red} \textbf{Top speed} }
 		\\
 		\hline
-		AD1 &01:11:98  &4540,844&  155
+		AD1 &01:11:98  &4540.844&  155
 		\\
 		\hline
-		AD2 & 02:15:26 &8803,161& 155
+		AD2 & 02:15:26 &8803.161& 155
 		\\
 		\hline 
 		AD5 & 29:30&32600&199 
@@ -862,45 +867,45 @@ This is due to the lack of grip in this kind of tracks and the damages are cause
 		\multicolumn{4}{c}{\textbf{Dirt1}}\\			
 		\hline
 		{ \color{blue}\textbf{} }&
-		{ \color{red}\textbf{Best Time} }&
-		{ \color{red} \textbf{Distance } } &
+		{ \color{red}\textbf{Best Time Lap} }&
+		{ \color{red} \textbf{Distance} } &
 		{ \color{red} \textbf{Top speed} }
 		\\
 		\hline
-		AD1 & 04:49:12 & 7825,032&126  
+		AD1 & 04:49:12 & 7825.032&126  
 		\\
 		\hline
-		AD2 & 03:45:02 &5202,99& 134
+		AD2 & 03:45:02 &5202.99& 134
 		\\
 		\hline 
-		AD5 & 01:36:14 &4620,25& 153 
+		AD5 & 01:36:14 &4620.25& 153 
 		\\
 		\hline 
 		\multicolumn{4}{c}{\textbf{Forza}}\\		\hline
 		{ \color{blue}\textbf{} }&
-		{ \color{red}\textbf{Best Time} }&
-		{ \color{red} \textbf{Distance(m) } } &
-		{ \color{red} \textbf{Top speed(m/s)} }
+		{ \color{red}\textbf{Best Time Lap} }&
+		{ \color{red} \textbf{Distance} } &
+		{ \color{red} \textbf{Top speed} }
 		\\
 		\hline
-		AD1 & 02:49:12  &17352,3  &  247
+		AD1 & 02:49:12  & 17352.30  &  247
 		\\
 		\hline
-		AD2 & 02:49:12  & 17354,12 & 239
+		AD2 & 02:49:12  & 17354.12 & 239
 		\\
 		\hline 
-		AD5 & 57:66 & 17355,2 & 203 
+		AD5 & 57:66 & 17355.20 & 203 
 		\\
 		\hline 
 	\multicolumn{4}{c}{\textbf{E-Road}}\\	
 		\hline
 		{ \color{blue}\textbf{} }&
-		{ \color{red}\textbf{Best Time} }&
-		{ \color{red} \textbf{Distance } } &
+		{ \color{red}\textbf{Best Time Lap} }&
+		{ \color{red} \textbf{Distance} } &
 		{ \color{red} \textbf{Top speed} }
 		\\
 		\hline
-		AD1 & 03:62:33 & 11586,2 &  160
+		AD1 & 03:62:33 & 11586.2 &  160
 		\\
 		\hline
 		AD2 & 02:41:41  & 11588 & 208 
@@ -912,18 +917,18 @@ This is due to the lack of grip in this kind of tracks and the damages are cause
 			\multicolumn{4}{c}{\textbf{CG-Speedway Number1}}\\
 		\hline
 		{ \color{blue}\textbf{} }&
-		{ \color{red}\textbf{Best Time} }&
-		{ \color{red} \textbf{Distance } } &
+		{ \color{red}\textbf{Best Time Lap} }&
+		{ \color{red} \textbf{Distance} } &
 		{ \color{red} \textbf{Top speed} }
 		\\
 		\hline
 		AD1 & 01:15:19 & 23136 &  195
 		\\
 		\hline
-		AD2 & 01:15:80 & 17352,2 & 193 
+		AD2 & 01:15:80 & 17352.2 & 193 
 		\\
 		\hline 
-		AD5 & 44:67& 28921,6 &206 
+		AD5 & 44:67& 28921.6 &206 
 		\\
 		\hline 
 		
@@ -934,15 +939,16 @@ This is due to the lack of grip in this kind of tracks and the damages are cause
 
 \subsection{Real race}
 
-Our main goal is to test the performance of AD5 in a race, and answer the following questions: Could we have a perfect driving in a race with AD5 only with the track borders sensors? Can we win the race with AD5?
+Finally, a real race test has been conducted. Our main goal is to test the performance of AD5 in a race, and answer the following questions: Could we have a perfect driving in a race with AD5 only with the track borders sensors? Can we win the race with AD5?
 
-In this context we tested "AD5" in 5 tracks against berniw, bt, damned, inferno and tita teams which are integrated TORCS controllers with different strategies and slighter modifications. Also , bt controller comes with advance machine learning \cite{oponnents2010}. 
-%Mohammed ,  hecho
+In this context we tested AD5 in 5 tracks against \textit{berniw, bt, damned, inferno} and \textit{tita} teams which are integrated TORCS controllers with different strategies and slightly modifications. Moreover, \textit{bt} controller comes with advanced machine learning methods \cite{oponnents2010}. 
 
 % Antonio - ¿Quienes son esos controladores? ¿de alguna competiticón? Poner citas y explicarlos brevemente (hacer una lista itemize) y poner un párrafo de cada uno. ;)
+% Antonio - creo que habría que explicar brevemente cada uno de ellos. ;D
 
-After the launch of the race AD5 against the 10 cars of each team  for 20 laps in each track we obtained the following results (see table \ref{resultat31})
-\begin{table}
+After the launch of the race, AD5 against the 10 cars of each team for 20 laps in each track we obtained the results presented in Table \ref{resultat31}.
+
+\begin{table}[ht!]
 	\caption{Results of AD5 in a real race}
 	\label{resultat31}
 	\begin{tabular}{ |p{3cm}|p{2cm}|p{2cm}|p{2 cm}|p{2 cm}|p{2 cm}|}
@@ -1003,17 +1009,16 @@ After the launch of the race AD5 against the 10 cars of each team  for 20 laps i
 	
 \end{table}
 
-From Table \ref {resultat31}, we noticed that our controller has won a race only in some types of tracks such as "E-track5" category "Oval track".
+% Antonio - faltan los resultados de 3 pistas. Sólo están Forza y E-Track5
 
-When our controller is in parallel with his opponent, and the distance between them is smaller, and they are in a smaller width track,  there is a possibility of  damage.
+From Table \ref {resultat31}, we noticed that our controller has won a race only in some types of tracks such as E-Track5 (category `Oval track').
 
-According to damage results, despite our controller can win the race on the E-track5 but it had a higher crash rates in the some cases. We observed also that in the majority of cases our car is very slow compared to the other cars in each team. 
+When our controller is in parallel with his opponent, and the distance between them is smaller, and they are in a smaller width track, there is a possibility of damage.
+
+According to damage results, despite our controller can win the race on the E-track5, it had a higher crash rates in several cases. We observed also that in the majority of cases our car is very slow compared to the other cars in each team. 
 
 The obtained results are due to the optimal trajectory in curves and braking as late as possible.
-In E-track5, the controller has win the race because the used track has different curves so the car can follow an optimal path given by the steer module furthermore, the target speed sub-controller allowed to go as faster as possible.  However, in the Forza track which is characterized by a small width and less curves, the drawbacks of the proposed controller had clearly affected the results.
-%Mohammed - done
-% Antonio - Esto habría que justificarlo mejor. Es muy breve. ;)
-
+In E-track5, the controller has win the race because the used track has different curves so the car can follow an optimal path given by the steer module. Furthermore, the target speed sub-controller allowed to go as faster as possible. However, in the Forza track which is characterised by a small width and less curves, the drawbacks of the proposed controller had clearly affected the results.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%  CONCLUSIONS  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
