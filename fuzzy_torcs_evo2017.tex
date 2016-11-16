@@ -154,8 +154,8 @@ Among them, Artificial Neural Networks (ANN) have been one of the most prolific 
 
 Human data can also be used for training ANNs, or for example, to model a human-like controller \cite{MunozHumanLike10}. Although several scripts can be used to avoid noise, the problem to create a human-like driver is difficult, and again, their performance in circuits not known will be reduced, so a learning approach should be applied.
 
-%TORCS + EA
-These models can be improved using meta-optimization techniques, such as Evolutionary Algorithms (EAs). These have been applied to `refine' the parameters \cite{ButzCMAES09} considered in the different methods (being them hand-coded or not), or to improve the structure/architecture of the models \cite{Cardamone_Online_NN,evol,neurone}. Thus, this can optimize the controllers' behavioural modules, and yield bots that might even win competitions \cite{ButzCMAES09,torcs2012}.
+%EA (con y sin TORCS)
+These models can be improved using meta-optimization techniques, such as Evolutionary Algorithms (EAs). These have been applied to `refine' the parameters \cite{ButzCMAES09} considered in the different methods (being them hand-coded or not), or to improve the structure/architecture of the models \cite{Cardamone_Online_NN,evol,neurone}. Thus, this can optimize the controllers' behavioural modules, and yield bots that might even win competitions \cite{ButzCMAES09,torcs2012}. EAs can also been used online during the game, to adapt a controller to the player skills \cite{TanOnline08}. Other approaches try to generate the source code of the controller from scratch using Genetic Programming \cite{AgapitosGP07}, although in the same evaluation time may behave worse than ANN controllers, higher population sizes may outperform the latter.
 
 %FUZZY
 Another prolific technique has been Fuzzy Logic (FL), which has been widely used since the year 2008. For instance, Fujii et al. in \cite{Fujii2008} examined the performance of fuzzy rule-based systems for high-level decision making in a controller, along with the effect and influence of sensory information.
