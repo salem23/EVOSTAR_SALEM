@@ -116,7 +116,7 @@ is a hard task, because the agent has to control several actions such
 as the steer, gear and brake/acceleration using the data related to
 the car and its environment (detected by means of sensors). 
 
-Hence, Computational Intelligence (CI) methods are interesting to be applied to the problem of implementing a car controller in TORCS. Among these techniques, Fuzzy logic \cite{abraham2001} with its adaptation and ability of imitating the human behaviour, is an interesting tool to design these drivers. It could be integrated in any controller module (steering, gear change, acceleration and brake, stuck) to give a human-like `appeal' to the bot driver \cite{CarRacing_Pelta09,Guadarrama2008}.  
+Hence, Computational Intelligence (CI) methods are interesting to be applied to the problem of implementing a car controller in TORCS \cite{Quadflieg_LearningTrack,CardamoneImitation09,MunozHumanLike10,Cardamone_Online_NN}. Among these techniques, Fuzzy logic \cite{abraham2001} with its adaptation and ability of imitating the human behaviour, is an interesting tool to design these drivers. It could be integrated in any controller module (steering, gear change, acceleration and brake, stuck) to give a human-like `appeal' to the bot driver \cite{CarRacing_Pelta09,torcs2012}.  
 
 In each simulation tick, the autonomous driver must make a decision,
 for instance, to direct the car (steer) on the track and select a
@@ -126,11 +126,11 @@ avoiding the car slips and goes out of the track. The overall idea is
 to move the car towards the farthest track border to avoid prematurely
 breaking. 
 
-This complex problem could be solved by means of fuzzy logic, due to
+This complex problem could be solved by means of Fuzzy Logic, due to
 its adaptive control and ability to deal with noise (in sensors
 \cite{manualTORCS}) and uncertainty (non-deterministic opponents'
-decisions in the race). Indeed, several researchers have taken advantage of this technique to design TORCS controllers, for example \cite{Guadarrama2008,CarRacing_Pelta09}. 
-% Antonio - TODO: poner más citas de controladores difusos
+decisions in the race). Indeed, several researchers have taken advantage of this technique to design TORCS controllers, for example \cite{CarRacing_Pelta09,PerezEvolvingFuzzy09,torcs2012}. 
+% Antonio - TODO: poner más citas de controladores difusos en TORCS
 All the existing works used a specific fuzzy module with a concrete objective inside the controller's operation, such as computing the optimal acceleration, turning angle, or speed at every moment.
 
 However, this work presents a novel fuzzy-based controller, which implements two modular sub-controllers, each of them devoted to infer a specific target, namely: maximum speed and optimal steering for the car at every simulation tick.
@@ -142,51 +142,37 @@ The proposed fuzzy controller (and its sub-controllers) is detailed in Section \
 with other controllers are given in the same section. Finally, the conclusions and future lines of work are included in Section \ref{sec:conclusions}.
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  STATE OF THE ART  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  STATE OF THE ART  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Background and State of the Art}
 \label{sec:soa}
 
-% Antonio - TODO: by Antonio and Fergu (Work in progess)
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  TORCS 
-In the last years, several researchers have focused on driving a racing car using computational intelligence techniques \cite{evol},\cite{torcs2012}, \cite{neurone}.  %and especially fuzzy logic where \cite{CarRacing_Pelta09} tried to design a fuzzy controller for the the target speed while the other car actions were obtained by simple functions while in\cite{ho2008}, a  previous fuzzy controller was enhanced using context-dependent fuzzy set, the obtained controller was compared to existing driving techniques showing better performance. %PABLO: estos papers han sido comentado ya en la sección fuzzy (ho2008 lo he re-leido yo :/)
-
+In the last years, several researchers have focused on driving a racing car using computational intelligence techniques. 
+%
+%
 %TORCS + NN
-Among them, Artificial Neural Networks (ANN) have been one of the most prolific techniques applied successfully to this problem. For instance, using supervised methods it is possible to create controllers by the imitation of an existing bot \cite{CardamoneImitation09}. However, their performance decreases if they drive on circuits not previously used for training. 
+Among them, Artificial Neural Networks (ANN) have been one of the most prolific techniques successfully applied to this problem. For instance, using supervised methods it is possible to create controllers by the imitation of an existing bot \cite{CardamoneImitation09}. However, their performance decreases if they drive on circuits not previously used for training. On those cases, some authors have proposed automatic on-line (during the game) learning approaches, such as Quadflieg et al. \cite{Quadflieg_LearningTrack}, who implemented a recognition system based in a simple classifier to identify the part of the track where the car is; or Cardamone et al. \cite{Cardamone_Online_NN}, that proposed a neuroevolutionary method to adapt a controller to a new (unknown) track.
 
-Human data can also be used for training these networks, or for example, to model a human-like controller \cite{MunozHumanLike10}. Although several scripts can be used to avoid noise, the problem to create a human-like driver is difficult, and again, their performance in circuits not known will be reduced.
+Human data can also be used for training ANNs, or for example, to model a human-like controller \cite{MunozHumanLike10}. Although several scripts can be used to avoid noise, the problem to create a human-like driver is difficult, and again, their performance in circuits not known will be reduced, so a learning approach should be applied.
 
 %TORCS + EA
-These models can be improved using meta-optimisation techniques, such as Evolutionary Algorithms (EAs). These have been applied to `refine' the parameters \cite{ButzCMAES09} considered in the different methods (being them hand-coded or not); optimising then controllers' behavioural modules, and yielding bots that can even win competitions [REFs].
+These models can be improved using meta-optimisation techniques, such as Evolutionary Algorithms (EAs). These have been applied to `refine' the parameters \cite{ButzCMAES09} considered in the different methods (being them hand-coded or not), or to improve the structure/architecture of the models \cite{Cardamone_Online_NN,evol,neurone}. Thus, this can optimise the controllers' behavioural modules, and yield bots that might even win competitions \cite{ButzCMAES09,torcs2012}.
 
 %FUZZY
 Another prolific technique has been Fuzzy Logic (FL), which has been widely used since the year 2008. For instance, Fujii et al. in \cite{Fujii2008} examined the performance of fuzzy rule-based systems for high-level decision making in a controller, along with the effect and influence of sensory information.
 In \cite{CarRacing_Pelta09}, a fuzzy controller was designed to obtain the target position for the car, whereas the steering was computed using a crisp formula. This work and its improvement \cite{torcs2012} have some common points with our proposal, as the controller is pretty similar, however in this work two different specialised fuzzy modules have been implemented instead of just one.
 
-Some approaches are based on context-dependant hybrid fuzzy-sets, avoiding training and dealing with input variables \cite{ThangCIG08,ThangG08}. Authors claim that using Machine Learning techniques and fuzzy approaches may reduce the  training time. %PABLO: ojo, no usa TORCS
+Some approaches are based on context-dependant hybrid fuzzy-sets, avoiding training and dealing with input variables \cite{ThangCIG08,ThangG08}. These authors claim that using Machine Learning techniques and fuzzy approaches may reduce the  training time. Although their approaches were applied to a different simulation environment, not to TORCS.
 
 %FUZZY + EAs
-Genetic algorithms have been also used to optimise the fuzzy set parameters, although the maximum values of the sets may not be achieved \cite{PerezEvolvingFuzzy09}. In \cite{Guadarrama2008}, a fuzzy rule-based car controller for Car Racing Competition was built and tuned with co-evolutionary genetic algorithms. Indeed, two fuzzy controllers were designed: the first one to compute the acceleration using the velocity and distance and the second one to get the turning angle. Their results had been compared with cooperative and competitive approaches to tuning parameters.
+EAs have been also used to optimise the fuzzy set parameters, although the maximum values of the sets may not be achieved following this approach \cite{PerezEvolvingFuzzy09}. In that work, the authors obtain improved fuzzy models to infer the acceleration and turning angle, but they are not specialised as the proposed here.
 
-***
+In \cite{Guadarrama2008}, a fuzzy rule-based car controller for Car Racing Competition was built and tuned with co-evolutionary genetic algorithms. Indeed, two fuzzy controllers were designed: the first one to compute the acceleration using the velocity and distance and the second one to get the turning angle. But their approach was applied to a simpler simulator than TORCS.
 
- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Antonio - habría que estructurar esta sección, por ejemplo:
-%
-% - controladores de coches en general (de todo tipo)
-% - controladores dentro de TORCS (de todo tipo)
-% - controladores de coches que usen Fuzzy
-% - esta propuesta y las diferencias con el resto. Contribución al estado del %
-%   arte.
-%
-% Además, en cada bloque, habría que señalar las diferencias con este trabajo y por qué lo que se presenta aquí es mejor.
+In this paper, we go a step further in the state of the art of TORCS fuzzy controllers, proposing a bot with modular or specialised fuzzy sub-modules for inferring on-line the target speed and the optimal steering at every point of the race. 
 
 
-%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%  PROBLEM DESCRIPTION  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Problem Description: TORCS}
 \label{sec:torcs}
 
@@ -289,7 +275,7 @@ Every TORCS driver bot is controlled by means of a set of actuators: the steerin
 		Clutch & [-1,+1]	& Double\\
 		\hline
 	\end{tabular}
-	\caption{TORCS Actuators \cite{torcs_Onieva2011}}
+	\caption{TORCS Actuators \cite{torcs2012}}
 	\label{tab2}
 \end{table}
 
@@ -313,7 +299,7 @@ The basic architecture of a controller consists of five simple modules (see Figu
 % Antonio - hay que mejorar esta figura, tiene poca calidad, con algunos píxeles coloreados aleatoriamente, la flecha entre 'target speed' y 'pedal control' torcida y pone 'envirenment' en lugar de 'environment'. ;)
 	
 TORCS comes with a simple example driver often used to validate new
-designed controllers \cite{torcs_Onieva2011,torcs2}. It presents very basic
+designed controllers \cite{CarRacing_Pelta09,torcs2}. It presents very basic
 functions for controlling the race car to give developers an idea of
 what the controller should look like. It includes simple functions to
 control the speed, steering angle and speed without dealing with
@@ -661,8 +647,8 @@ We considered 20 as it is the maximum number of laps a car can perform without d
 \begin{table}
 	
 	\caption{Results for 20 laps in practise races.}
-	\label{resultat1}
-
+%	\label{resultat1}
+{\scriptsize
 	\begin{tabular}{ |p{3cm}|p{2cm}|p{2cm}|p{2 cm}|p{2 cm}|}
 		
 	\multicolumn{5}{c}{\textbf{E-Track5}}\\
@@ -819,6 +805,7 @@ We considered 20 as it is the maximum number of laps a car can perform without d
 		\\
 		\hline
 	\end{tabular} 
+}
 	\label{Result1r}
 \end{table}
 % Mohammed , minspeed is negative due to braking
@@ -848,7 +835,7 @@ Thus, bigger damage happened after the collision with the outer walls
 of the track when the car goes out. The simple SD driver
 finished the race without damage, while AD5 was able to complete all
 the tracks safely except the Dirt1 and Forza circuits, where the damage
-is a little high for the AD1 driver (fig.\ref{resultat1}). For the
+is a little high for the AD1 driver (Table \ref{Result1r}). For the
 fuel consumption, it  depends on shocks rate and category of tracks. 
 % Mohammed shocks with the track border which causes damages
 % Antonio  ¿Qué son 'shocks rate'?
@@ -873,6 +860,7 @@ This happened to the lack of grip in this kind of tracks and the damages which w
 	
 	\caption{Results of the controllers in 300 seconds time trial race}
 	\label{resulta9}
+{\scriptsize
 	\begin{tabular}{ |p{3cm}|p{3cm}|p{3cm}|p{3 cm}|}	
 		\multicolumn{4}{c}{\textbf{E-Track5}}\\	
 		
@@ -961,6 +949,7 @@ This happened to the lack of grip in this kind of tracks and the damages which w
 		\hline 
 		
 	\end{tabular}
+}
 \end{table}
 
 % ----------------------------------------------
@@ -980,6 +969,7 @@ After the launch of the race, AD5 against the 10 cars of each team for 20 laps i
 \begin{table}[ht!]
 	\caption{Results of AD5 in a real race}
 	\label{resultat31}
+{\scriptsize
 	\begin{tabular}{ |p{3cm}|p{2cm}|p{2cm}|p{2 cm}|p{2 cm}|p{2 cm}|}
 		\hline
 		{ \color{blue}\textbf{E-Track5} }&
@@ -1035,7 +1025,7 @@ After the launch of the race, AD5 against the 10 cars of each team for 20 laps i
 		\hline 
 		
 	\end{tabular} 
-	
+}
 \end{table}
 % Mohammed, he quitado los otros por el espacio y porque los con el dirty no son buenos y nuestro cont no termina la carrera
 % Antonio - faltan los resultados de 3 pistas. Sólo están Forza y E-Track5
@@ -1054,6 +1044,8 @@ In E-track5, the controller has win the race because the used track has differen
 %
 \section{Conclusions and Future Work} 
 \label{sec:conclusions}
+
+% Antonio - TODO: mejorar conclusiones.
  
 A fuzzy driver was designed in this work to drive a racing car in TORCS using two sub-fuzzy controllers to compute the steer and the target speed respectively,
 The aim of the proposed controller is to direct the car to the farthest side of the track in curves so to keep the target speed as high as possible. \\ 
@@ -1068,9 +1060,9 @@ The designed driver was evaluated in a time trial race to validate the sub contr
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section*{Acknowledgements}
-
-Omitted for Blind reviews.
+%\section*{Acknowledgements}
+%
+%Omitted for Blind reviews.
 
 %This work has been supported in part by projects 
 %EPHEMECH (TIN2014-56494-C4-3-P, Spanish Ministerio de Economía y Competitividad), 
