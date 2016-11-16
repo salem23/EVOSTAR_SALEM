@@ -102,7 +102,7 @@ presents several advantages for academic purposes, such as
 	\item  It features a sophisticated physics engine  that
           includes aerodynamics,
 	fuel consumption, traction, as well as a 3D graphics
-	engine for the visualisation of the races.
+	engine for the visualization of the races.
 	\item  It was not conceived as a free alternative to commercial
 	racing games, but it was specifically devised to make it
 	as easy as possible to develop and test your own controller. 
@@ -136,9 +136,9 @@ All the existing works used a specific fuzzy module with a concrete objective in
 However, this work presents a novel fuzzy-based controller, which implements two modular sub-controllers, each of them devoted to infer a specific target, namely: maximum speed and optimal steering for the car at every simulation tick.
 They consider the track sensors, to find the farthest border; and the opponents' position in the race, for collision avoidance and overtaking. 
 
-The rest of this paper is organised as follows:
+The rest of this paper is organized as follows:
 The next section presents the state of the art and related works, and comments their differences with regard to this study, along with its contribution to advance in this research line. TORCS simulator is described in Section \ref{sec:torcs}.
-The proposed fuzzy controller (and its sub-controllers) is detailed in Section \ref{sec:fuzzy_controller}, whereas it is tested in `real' (simulated) races in Section \ref{sec:results}. Obtained results are analysed and compared 
+The proposed fuzzy controller (and its sub-controllers) is detailed in Section \ref{sec:fuzzy_controller}, whereas it is tested in `real' (simulated) races in Section \ref{sec:results}. Obtained results are analyzed and compared 
 with other controllers are given in the same section. Finally, the conclusions and future lines of work are included in Section \ref{sec:conclusions}.
 
 
@@ -155,20 +155,20 @@ Among them, Artificial Neural Networks (ANN) have been one of the most prolific 
 Human data can also be used for training ANNs, or for example, to model a human-like controller \cite{MunozHumanLike10}. Although several scripts can be used to avoid noise, the problem to create a human-like driver is difficult, and again, their performance in circuits not known will be reduced, so a learning approach should be applied.
 
 %TORCS + EA
-These models can be improved using meta-optimisation techniques, such as Evolutionary Algorithms (EAs). These have been applied to `refine' the parameters \cite{ButzCMAES09} considered in the different methods (being them hand-coded or not), or to improve the structure/architecture of the models \cite{Cardamone_Online_NN,evol,neurone}. Thus, this can optimise the controllers' behavioural modules, and yield bots that might even win competitions \cite{ButzCMAES09,torcs2012}.
+These models can be improved using meta-optimization techniques, such as Evolutionary Algorithms (EAs). These have been applied to `refine' the parameters \cite{ButzCMAES09} considered in the different methods (being them hand-coded or not), or to improve the structure/architecture of the models \cite{Cardamone_Online_NN,evol,neurone}. Thus, this can optimize the controllers' behavioural modules, and yield bots that might even win competitions \cite{ButzCMAES09,torcs2012}.
 
 %FUZZY
 Another prolific technique has been Fuzzy Logic (FL), which has been widely used since the year 2008. For instance, Fujii et al. in \cite{Fujii2008} examined the performance of fuzzy rule-based systems for high-level decision making in a controller, along with the effect and influence of sensory information.
-In \cite{CarRacing_Pelta09}, a fuzzy controller was designed to obtain the target position for the car, whereas the steering was computed using a crisp formula. This work and its improvement \cite{torcs2012} have some common points with our proposal, as the controller is pretty similar, however in this work two different specialised fuzzy modules have been implemented instead of just one.
+In \cite{CarRacing_Pelta09}, a fuzzy controller was designed to obtain the target position for the car, whereas the steering was computed using a crisp formula. This work and its improvement \cite{torcs2012} have some common points with our proposal, as the controller is pretty similar, however in this work two different specialized fuzzy modules have been implemented instead of just one.
 
 Some approaches are based on context-dependant hybrid fuzzy-sets, avoiding training and dealing with input variables \cite{ThangCIG08,ThangG08}. These authors claim that using Machine Learning techniques and fuzzy approaches may reduce the  training time. Although their approaches were applied to a different simulation environment, not to TORCS.
 
 %FUZZY + EAs
-EAs have been also used to optimise the fuzzy set parameters, although the maximum values of the sets may not be achieved following this approach \cite{PerezEvolvingFuzzy09}. In that work, the authors obtain improved fuzzy models to infer the acceleration and turning angle, but they are not specialised as the proposed here.
+EAs have been also used to optimize the fuzzy set parameters, although the maximum values of the sets may not be achieved following this approach \cite{PerezEvolvingFuzzy09}. In that work, the authors obtain improved fuzzy models to infer the acceleration and turning angle, but they are not specialized as the proposed here.
 
 In \cite{Guadarrama2008}, a fuzzy rule-based car controller for Car Racing Competition was built and tuned with co-evolutionary genetic algorithms. Indeed, two fuzzy controllers were designed: the first one to compute the acceleration using the velocity and distance and the second one to get the turning angle. But their approach was applied to a simpler simulator than TORCS.
 
-In this paper, we go a step further in the state of the art of TORCS fuzzy controllers, proposing a bot with modular or specialised fuzzy sub-modules for inferring on-line the target speed and the optimal steering at every point of the race. 
+In this paper, we go a step further in the state of the art of TORCS fuzzy controllers, proposing a bot with modular or specialized fuzzy sub-modules for inferring on-line the target speed and the optimal steering at every point of the race. 
 
 
 
@@ -1037,7 +1037,7 @@ When our controller is in parallel with his opponent, and the distance between t
 According to damage results, despite our controller can win the race on the E-track5, it had a higher crash rates in several cases. We observed also that in the majority of cases our car is very slow compared to the other cars in each team. 
 
 The obtained results are due to the optimal trajectory in curves and braking as late as possible.
-In E-track5, the controller has win the race because the used track has different curves so the car can follow an optimal path given by the steer module. Furthermore, the target speed sub-controller allowed to go as faster as possible. However, in the Forza track which is characterised by a small width and less curves, the drawbacks of the proposed controller had clearly affected the results.
+In E-track5, the controller has win the race because the used track has different curves so the car can follow an optimal path given by the steer module. Furthermore, the target speed sub-controller allowed to go as faster as possible. However, in the Forza track which is characterized by a small width and less curves, the drawbacks of the proposed controller had clearly affected the results.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%  CONCLUSIONS  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
