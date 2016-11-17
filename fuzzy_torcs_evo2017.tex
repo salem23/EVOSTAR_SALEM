@@ -489,6 +489,7 @@ The base of rules has been defined again modelling the behaviour of a human driv
 
 The values for S1 to S4 are respectively: 0, 0.25, 0.5, and 1.
 When M10=Track[7] we will take negative values of the steer (sterr=-steer).
+% Mohammed in curves, M10 is greater then M5
 % Antonio - ¿No ocurriría lo mismo si M5 = Track[8]?
 
 Once the controllers have been described, they will be tested and compared with the standard one y several races. The obtained results are presented in the following section.
@@ -599,6 +600,7 @@ AD. Thus, we have considered the following bots in the experiments:
 \item AD-SP: Fuzzy speed controller. 
 \item AD-SPSC: Fuzzy speed and steering controller.
 \item AD-SSOP: Fuzzy speed and steering controller that takes the opponent into account. Thus, it considers the sensors that give the distance from the opponents to the car.
+% Mohammed en este caso, si el sensor del opponente que esta en el 10° nos daba un valor differente de 0m , M10 = opponenttrack  (sensor give distance to the botder while opponent give distance to each opponent of the 36  around the car )
 % Antonio - ¿cómo se incluyen estos sensores?¿hay nuevas reglas?¿se cambian las que hay?¿afectan a la velocidad o al steering?
 \item SD: Simple driver.
 \end{itemize}
@@ -792,6 +794,7 @@ minimum time has been achieved by the AD-SSOP controller in each of the
 five tracks. This was due to the steering unit of the controller, which allows late braking, and thus, getting and maintaining a maximal speed (as it can be seen on the third  row of every table), along with following optimal paths to earn race time.
 
 The target position allows the car to safely adjust the required steering angle with the maximum speed so the controller AD-SSOP gave the best time.
+%Mohammed -!!!!!
 % Antonio - ¿Por qué AD-SSOP (AD5) obtiene mejores resultados que AD-SPSC (AD2), si no hay rivales y AD-SPSC también tienen Steering Control?
 
 However, taking a smaller target angle required a greater distance to
@@ -799,7 +802,8 @@ cover by the car which follows a less efficient trajectory. In addition, the
 number of times the car was off the road on Dirt1 and Forza was higher
 for AD-SSOP and thus, this controller gets a higher damage due to the collision with the outer walls of the track. 
 
-The simple SD driver finished the race without damage, while AD-SSOP was able to complete all the tracks safely except the Dirt1 and Forza circuits, where the damage is also a little high for the AD-SP driver. 
+The simple SD driver finished the race without damage, while AD-SSOP was able to complete E-Track5 and Forza tracks safely and with damage for the others. The damage was also a little high for the AD-SP driver. 
+%Mohammed - correcto
 % Antonio - Pero el Damage en Forza para AD-SSOP (AD5) es 0. ¿Está bien?
 
 Regarding the Fuel consumption, it  depends on shocks rate and category of tracks. 
@@ -808,7 +812,9 @@ Regarding the Fuel consumption, it  depends on shocks rate and category of track
 % Antonio - ¿El Fuel consumido depende de los choques con el borde de la pista?
 
 AD-SPSC gets quite bad results, even in the comparison with the simple driver...
+% Mohammed - he verificado los experimentos, los del AD-SPSC son resultados del control del steer solamente, Normalmente, no se comparan los dos en una carrera sin oppponentes . Que hago? les quito?
 % Antonio - TODO: comentar esto, ¿por qué pasará? :_(
+
 % Mohammed, ¿por qué crees que AD-SPSC, que tiene control de velocidad y de steering obtiene malos resultados? Si no hay rivales, ¿no debería se tan bueno como AD-SSOP?¿Por qué AD-SSOP es mucho mejor si no hay rivales???
 
 The novel controllers seem to be robust in the sense that they obtain their best marks from their first laps, as a difference to the SD, which usually requires a higher amount of laps to improve its times.
@@ -927,7 +933,8 @@ AD-SPSC also showed problems in the same circuit so this lead us to reinforce th
 
 \subsection{Real race}
 
-Finally, a real race test has been conducted. Our main goal is to test the performance of our best controller, AD-SSOP, in a race, and answer the following questions: Could we have a perfect driving in a race with AD-SSOP only with the track borders sensors? 
+Finally, a real race test has been conducted. Our main goal is to test the performance of our best controller, AD-SSOP, in a race, and answer the following questions: Could we have a perfect driving in a race with AD-SSOP only with the track borders and opponent's sensors? 
+%Mohammed - claro
 % Antonio - También usará los sensores de los oponentes, ¿no? Si no ¿para qué usar AD-SSOP?
 Can we win the race with AD-SSOP?
 
