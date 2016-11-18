@@ -70,7 +70,7 @@ The proposed fuzzy driver is evaluated in practise and timed races
 giving good results across a wide variety of racing tracks, mainly
 those that have that have many turning points.  
 
-\keywords{Videogames, Fuzzy Controller, TORCS, Steering control, Speed computation}
+%\keywords{Videogames, Fuzzy Controller, TORCS, Steering control, Speed computation}
 \end{abstract}
 
 %
@@ -136,10 +136,10 @@ All the existing works used a specific fuzzy module with a concrete objective in
 However, this work presents a novel fuzzy-based controller, which implements two modular sub-controllers, each of them devoted to infer a specific target, namely: maximum speed and optimal steering for the car at every simulation tick.
 They consider the track sensors, to find the farthest border; and the opponents' position in the race, for collision avoidance and overtaking. 
 
-The rest of this paper is organized as follows:
-The next section presents the state of the art and related works, and comments their differences with regard to this study, along with its contribution to advance in this research line. TORCS simulator is described in Section \ref{sec:torcs}.
-The proposed fuzzy controller (and its sub-controllers) is detailed in Section \ref{sec:fuzzy_controller}, whereas it is tested in `real' (simulated) races in Section \ref{sec:results}. Obtained results are analyzed and compared 
-with other controllers are given in the same section. Finally, the conclusions and future lines of work are included in Section \ref{sec:conclusions}.
+%The rest of this paper is organized as follows:
+%The next section presents the state of the art and related works, and comments their differences with regard to this study, along with its contribution to advance in this research line. TORCS simulator is described in Section \ref{sec:torcs}.
+%The proposed fuzzy controller (and its sub-controllers) is detailed in Section \ref{sec:fuzzy_controller}, whereas it is tested in `real' (simulated) races in Section \ref{sec:results}. Obtained results are analyzed and compared 
+%with other controllers are given in the same section. Finally, the conclusions and future lines of work are included in Section \ref{sec:conclusions}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  STATE OF THE ART  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -954,7 +954,7 @@ After the launch of every race, AD-SSOP against the 10 cars of each team for 20 
 		\\
 		\hline 
 		\hline
-		{ \color{blue}\textbf{Dir1} }&
+		{ \color{blue}\textbf{Dirt1} }&
 		{ \color{red}\textbf{Against berniw team }}&  
 		{ \color{red} \textbf{Against bt team} } &
 		{ \color{red} \textbf{Against damned team} } &
@@ -1044,19 +1044,14 @@ After the launch of every race, AD-SSOP against the 10 cars of each team for 20 
 	\end{tabular} 
 }
 \end{table}
-% Mohammed, he quitado los otros por el espacio y porque los con el dirty no son buenos y nuestro cont no termina la carrera
-% Antonio - faltan los resultados de 3 pistas. Sólo están Forza y E-Track5
-% Antonio - creo que habría que poner los otros resultados, aunque sean malos. 
-% Es un poco raro omitir cosas por ser malas. ;)
-% Se puede no poner Dirt1 si el controlador no termina la carrera.
 
 From Table \ref {resultat31}, we noticed that our controller has won the race in E-Track5 (oval track), and also got good positions against all the teams but inferno. This lead us to think that it is quite good for this type of circuit, due to the optimal trajectory in curves computed by means of the steering sub-controller, which also allows braking as late as possible.
-Furthermore, the target speed sub-controller allowed to go as faster as possible.
+Furthermore, the target speed sub-controller allowed to go as faster as possible. In E-Road and CG-SpeedWay Number1 the results are also very competitive, except against the teams inferno and tita.
 
 The obtained damage happens because when our controller is in parallel with its opponent, close to it in a narrow track they shock between them.
-According to damage results, despite our controller can win the race on the E-track5, it had a higher crash rates in several cases. We observed also that in the majority of cases our car is very slow compared to the other cars in each team. 
+According to damage results, despite our controller can win the race on the E-track5 and CG-SpeedWay Number1, it had a higher crash rates in several cases. We observed also that in the majority of cases our car is very slow compared to the other cars in each team. 
 
-For instance, in the Forza track which is characterized by a small width and less curves, the drawbacks of the proposed controller had clearly affected the results.
+In the Forza track which is characterized by a small width and less curves and in the Dirt1 which has the difficulty of a lower grip, the drawbacks of the proposed controller had clearly affected the results.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%  CONCLUSIONS  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
