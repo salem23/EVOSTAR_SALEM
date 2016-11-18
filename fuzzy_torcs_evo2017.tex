@@ -80,7 +80,7 @@ those that have that have many turning points.
 \label{sec:intro}
  
 The Open Racing Car Simulator (TORCS) \cite{WebTORCS} is a
-three-dimensional racing video game created by Eric Espié and
+three-dimensional racing video game created by Eric Espi\'e and
 Christophe Guionneau, whose objective  is to be used as a
 framework to develop and test Artificial Intelligence (AI) models for
 autonomous drivers, named \textit{controllers} or bots. It is
@@ -106,7 +106,7 @@ presents several advantages for academic purposes, such as
 	\item  It was not conceived as a free alternative to commercial
 	racing games, but it was specifically devised to make it
 	as easy as possible to develop and test your own controller. 
-   In fact, controllers are implemented as separated software pieces with 		 
+   In fact, controllers are implemented as separated software pieces with a 		 
    modular architecture, so it is easy to develop a new one and to plug 
 	it into the game.
 \end{itemize}
@@ -150,7 +150,7 @@ In the last years, several researchers have focused on driving a racing car usin
 %
 %
 %TORCS + NN
-Among them, Artificial Neural Networks (ANN) have been one of the most prolific techniques successfully applied to this problem. For instance, using supervised methods it is possible to create controllers by the imitation of an existing bot \cite{CardamoneImitation09}. However, their performance decreases if they drive on circuits not previously used for training. On those cases, some authors have proposed automatic on-line (during the game) learning approaches, such as Quadflieg et al. \cite{Quadflieg_LearningTrack}, who implemented a recognition system based in a simple classifier to identify the part of the track where the car is; or Cardamone et al. \cite{Cardamone_Online_NN}, that proposed a neuroevolutionary method to adapt a controller to a new (unknown) track.
+Among them, Artificial Neural Networks (ANN) have been one of the most prolific techniques successfully applied to this problem. For instance, using supervised methods it is possible to create controllers by the imitation of an existing bot \cite{CardamoneImitation09}. However, their performance decreases if they drive on circuits not previously used for training. In those cases, some authors have proposed automatic on-line (during the game) learning approaches, such as Quadflieg et al. \cite{Quadflieg_LearningTrack}, who implemented a recognition system based on a simple classifier to identify the part of the track where the car is; or Cardamone et al. \cite{Cardamone_Online_NN}, that proposed a neuroevolutionary method to adapt a controller to a new (unknown) track.
 
 Human data can also be used for training ANNs, or for example, to model a human-like controller \cite{MunozHumanLike10}. Although several scripts can be used to avoid noise, the problem to create a human-like driver is difficult, and again, their performance in circuits not known will be reduced, so a learning approach should be applied.
 
@@ -159,7 +159,7 @@ These models can be improved using meta-optimization techniques, such as Evoluti
 
 %FUZZY
 Another prolific technique has been Fuzzy Logic (FL), which has been widely used since the year 2008. For instance, Fujii et al. in \cite{Fujii2008} examined the performance of fuzzy rule-based systems for high-level decision making in a controller, along with the effect and influence of sensory information.
-In \cite{CarRacing_Pelta09}, a fuzzy controller was designed to obtain the target position for the car, whereas the steering was computed using a crisp formula. This work and its improvement \cite{torcs2012} have some common points with our proposal, as the controller is pretty similar, however in this work two different specialized fuzzy modules have been implemented instead of just one.
+In \cite{CarRacing_Pelta09}, a fuzzy controller was designed to obtain the target position for the car, whereas the steering was computed using a crisp formula. This work and its improvement \cite{torcs2012} have some common points with our proposal, as the controller is pretty similar, however, in this work two different specialized fuzzy modules have been implemented instead of just one.
 
 Some approaches are based on context-dependant hybrid fuzzy-sets, avoiding training and dealing with input variables \cite{ThangG08}. These authors claim that using Machine Learning techniques and fuzzy approaches may reduce the  training time. Although their approaches were applied to a different simulation environment, not to TORCS.
 
@@ -186,7 +186,7 @@ The main features of the architecture of TORCS are \cite{manualTORCS}:
 	\item The TORCS software makes a physical separation between the driver code and the simulator itself. Hence, it defines an abstract layer that gives complete freedom of choice of the programming language used to implement the bots, and just gives access to some information.
 \end{itemize}
 
-There are several competitions which use TORCS as base. During a competition, the bot perceives the race environment by means of a number of sensors, that provide information such as the status of the car, the status of the race, opponents positions and track borders \cite{manualTORCS,torcs2}.
+There are several competitions which use TORCS as a base. During a competition, the bot perceives the race environment by means of a number of sensors, that provide information such as the status of the car, the status of the race, opponents' positions and track borders \cite{manualTORCS,torcs2}.
 Table \ref{t1} presents a complete list of available sensors with a description of each one.
 
 \begin{table}[ht!]
@@ -319,7 +319,7 @@ see later on.
 The proposed controller has the same modular architecture as the simple driver, and has some common functions of this approach. 
 However, the target speed and steering angle are computed by means of two modular and specialised fuzzy controllers, which consider five position sensors.
 
-In the following sections each sub-controller is described.
+In the following sections, each sub-controller is described.
 
 %-----------------------------------------------
 
@@ -1046,7 +1046,7 @@ After the launch of every race, AD-SSOP against the 10 cars of each team for 20 
 \end{table}
 
 From Table \ref {resultat31}, we noticed that our controller has won the race in E-Track5 (oval track), and also got good positions against all the teams but inferno. This lead us to think that it is quite good for this type of circuit, due to the optimal trajectory in curves computed by means of the steering sub-controller, which also allows braking as late as possible.
-Furthermore, the target speed sub-controller allowed to go as faster as possible. In E-Road and CG-SpeedWay Number1 the results are also very competitive, except against the teams inferno and tita.
+Furthermore, the target speed sub-controller allowed to go as fast as possible. In E-Road and CG-SpeedWay Number1 the results are also very competitive, except against the teams {\em inferno} and {\em tita}.
 
 The obtained damage happens because when our controller is in parallel with its opponent, close to it in a narrow track they shock between them.
 According to damage results, despite our controller can win the race on the E-track5 and CG-SpeedWay Number1, it had a higher crash rates in several cases. We observed also that in the majority of cases our car is very slow compared to the other cars in each team. 
@@ -1061,16 +1061,16 @@ In the Forza track which is characterized by a small width and less curves and i
 
 In this work, a novel fuzzy driver for TORCS has been presented. It is based on two fuzzy sub-controllers, able to compute the target speed and the steering respectively. The aim of the proposed controller is to direct the car to the farthest side of the track in curves so to keep the target speed as high as possible. 
 
-This approach differs from others of the state of the art due to the combination of both sub-controllers, which is a novel variation.
+This approach differs from others in the state of the art due to the combination of both sub-controllers, which is a novel variation.
 
-The designed controller has been evaluated in five circuits with different shapes and conditions and considering three different scenarios: a practise race, a time trial race, and a real race against though opponents belonging to TORCS teams. Three different combinations of the fuzzy modules have been tested, namely one with the target speed computation (AD-SP), one with just steerig control (AD-SC), and one with both of them plus the consideration of the opponents (AD-SSOP), when there exist.
+The designed controller has been evaluated in five circuits with different shapes and conditions and considering three different scenarios: a practise race, a time trial race, and a real race against tough opponents belonging to TORCS teams. Three different combinations of the fuzzy modules have been tested, namely one with the target speed computation (AD-SP), one with just steering control (AD-SC), and one with both of them plus the consideration of the opponents (AD-SSOP), when there exist.
 
 The obtained results have been very good in practise and time limit races, mainly for AD-SSOP. It has also behaved very well in the real races in one of the circuits (an oval one), ranked in the first positions. It has happened because the optimal trajectory computation conducted by the steering sub-controller, which allows late braking.
 
 However, this approach tends to receive too much damage, due to the crash with rivals or with the borders of the tracks, mainly when the road is not in optimal conditions, e.g. it is dirty.
 This is the main point of improvement that we will address in the close future.
 
-In addition, in future work we also aim to improve the controller to design a smarter racing car driver. This could be enhanced by tuning its parameters using an evolution algorithm or/and combine it with a learning tool (neural networks) to recognize the track parts and plan in advance.
+In addition, in future work we also aim to improve the controller to design a smarter racing car driver. This could be enhanced by tuning its parameters using an evolutionary algorithm or/and combine it with a learning tool (neural networks) to recognize the track parts and plan in advance.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
