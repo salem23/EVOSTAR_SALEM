@@ -1,0 +1,116 @@
+\begin{thebibliography}{10}
+\providecommand{\url}[1]{\texttt{#1}}
+\providecommand{\urlprefix}{URL }
+
+\bibitem{abraham2001}
+Abraham, A.: Neuro fuzzy systems: State-of-the-art modeling techniques.
+  Artificial Intelligence  (2001)
+
+\bibitem{AgapitosGP07}
+Agapitos, A., Togelius, J., Lucas, S.M.: Evolving controllers for simulated car
+  racing using object oriented genetic programming. In: Lipson, H. (ed.)
+  Genetic and Evolutionary Computation Conference, {GECCO} 2007, Proceedings,
+  London, England, UK, July 7-11, 2007. pp. 1543--1550. {ACM} (2007)
+
+\bibitem{ButzCMAES09}
+Butz, M.V., L{\"{o}}nneker, T.D.: Optimized sensory-motor couplings plus
+  strategy extensions for the {TORCS} car racing challenge. In: Lanzi, P.L.
+  (ed.) Proceedings of the 2009 {IEEE} Symposium on Computational Intelligence
+  and Games, {CIG} 2009, Milano, Italy, 7-10 September, 2009. pp. 317--324.
+  {IEEE} (2009)
+
+\bibitem{CardamoneImitation09}
+Cardamone, L., Loiacono, D., Lanzi, P.L.: Learning drivers for {TORCS} through
+  imitation using supervised methods. In: Lanzi, P.L. (ed.) Proceedings of the
+  2009 {IEEE} Symposium on Computational Intelligence and Games, {CIG} 2009,
+  Milano, Italy, 7-10 September, 2009. pp. 148--155. {IEEE} (2009)
+
+\bibitem{Cardamone_Online_NN}
+Cardamone, L., Loiacono, D., Lanzi, P.L.: On-line neuroevolution applied to the
+  open racing car simulator. In: Proceedings of the Eleventh Conference on
+  Congress on Evolutionary Computation. pp. 2622--2629. CEC'09, IEEE Press,
+  Piscataway, NJ, USA (2009)
+
+\bibitem{Fujii2008}
+Fujii, S., Nakashima, T., Ishibuchi, H.: A study on constructing fuzzy systems
+  for high-level decision making in a car racing game. In: IEEE World Congress
+  on Computational Intelligence. IEEE (June 2008)
+
+\bibitem{Guadarrama2008}
+Guadarrama.S, .Vazquez, R.: Tuning a fuzzy racing car by coevolution. In:
+  Genetic and Evolving Systems, GEFS 2008. IEEE (March 2008)
+
+\bibitem{iancu2012}
+Iancu, I.: A Mamdani Type Fuzzy Logic Controller, pp. 325--352. InTech (2012)
+
+\bibitem{PerezEvolvingFuzzy09}
+Liébana, D.P., Recio, G., S{\'{a}}ez, Y., Isasi, P.: Evolving a fuzzy
+  controller for a car racing competition. In: Lanzi, P.L. (ed.) Proceedings of
+  the 2009 {IEEE} Symposium on Computational Intelligence and Games, {CIG}
+  2009, Milano, Italy, 7-10 September, 2009. pp. 263--270. {IEEE} (2009)
+
+\bibitem{torcs2}
+Loiacono, D., Cardamone, L., Lanzi, P.: Software manual of the car racing
+  competition. TORCS news  (2009), \url{http://cig.dei.polimi.it/wpcontent/
+  uploads/2008/04/manual v03.pdf.}
+
+\bibitem{manualTORCS}
+Loiacono, D., Cardamone, L., Lanzi, P.: Simulated car racing championship
+  competition. software manual. TORCS news  (2013)
+
+\bibitem{oponnents2010}
+Loiacono, D., Lanzi, P.L., Togelius, J., Onieva, E., Pelta, D.A., Butz, M..,
+  Lonneker, T.D., Cardamone, L., Perez, D., Saez, Y., Preuss, M., Quadflieg,
+  J.: The 2009 simulated car racing championship. IEEE Trans. Comput. Intell.
+  AI Games  2(2),  131--147 (2010)
+
+\bibitem{Torcs3}
+Loiacono, D., Cardamone, L., B, M., Lanzi, P.L.: The 2011 simulated car racing
+  championship @ cig-2011. TORCS news  (2011),
+  \url{http://cig.dei.polimi.it/wpcontent/}
+
+\bibitem{MunozHumanLike10}
+Mu{\~{n}}oz, J., Guti{\'{e}}rrez, G., Sanchis, A.: A human-like {TORCS}
+  controller for the simulated car racing championship. In: Yannakakis, G.N.,
+  Togelius, J. (eds.) Proceedings of the 2010 {IEEE} Conference on
+  Computational Intelligence and Games, {CIG} 2010, Copenhagen, Denmark, 18-21
+  August, 2010. pp. 473--480. {IEEE} (2010)
+
+\bibitem{torcs2012}
+Onieva, E., Pelta, D., Godoy, J., Milanés, V., Rastelli, J.: An evolutionary
+  tuned driving system for virtual car racing games: The autopia driver.
+  International Journal of Intelligent Systems  27,  217--241 (2012)
+
+\bibitem{CarRacing_Pelta09}
+Onieva, E., Pelta, D.A., Alonso, J., Milanés, V., Pérez, J.: A modular
+  parametric architecture for the torcs racing engine. In: Proceedings of the
+  5th IEEE Symposium on Computational Intelligence and Games (CIG'09). pp.
+  256--262. IEEE Press, Piscataway, NJ, USA (2009)
+
+\bibitem{Quadflieg_LearningTrack}
+Quadflieg, J., Preuss, M., Kramer, O., Rudolph, G.: Learning the track and
+  planning ahead in a car racing controller. In: Proceedings of the 6th IEEE
+  Symposium on Computational Intelligence and Games (CIG'10). pp. 395--402.
+  IEEE Press (2010)
+
+\bibitem{evol}
+SeongKim, T., Na, J.C., Kim, K.J.: Optimization of an autonomous car controller
+  using a self-adaptive evolutionary strategy. International Journal of
+  Advanced Robotic Systems  (2012)
+
+\bibitem{WebTORCS}
+Sourceforge: Web torcs. Web (Nov 2016), http://torcs.sourceforge.net/
+
+\bibitem{TanOnline08}
+Tan, C.H., Ang, J.H., Tan, K.C., Tay, A.: Online adaptive controller for
+  simulated car racing. In: Proceedings of the {IEEE} Congress on Evolutionary
+  Computation, {CEC} 2008, June 1-6, 2008, Hong Kong, China. pp. 2239--2245.
+  {IEEE} (2008)
+
+\bibitem{ThangG08}
+Thang, H.D., Garibaldi, J.M.: A novel fuzzy inferencing methodology for
+  simulated car racing. In: {FUZZ-IEEE} 2008, {IEEE} International Conference
+  on Fuzzy Systems, Hong Kong, China, 1-6 June, 2008, Proceedings. pp.
+  1907--1914. {IEEE} (2008)
+
+\end{thebibliography}
