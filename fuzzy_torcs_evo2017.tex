@@ -5,10 +5,24 @@
 \usepackage[dvips]{epsfig}
 \usepackage{verbatim}
 \usepackage{tikz}
+\usetikzlibrary{external}
 \usetikzlibrary{shapes,arrows}
 \usetikzlibrary{calc,patterns,snakes,decorations.pathmorphing,decorations.markings}
 \usetikzlibrary{positioning}
+\tikzexternalize[mode=list and make]
 
+\tikzset{
+    png export/.style={
+        % First we call ImageMagick; change settings to requirements
+        external/system call/.add={}{; convert -density 300 -transparent white "\image.pdf" "\image.png"},
+        % Now we force the PNG figure to be used instead of the PDF
+        /pgf/images/external info,
+        /pgf/images/include external/.code={
+            \includegraphics[width=\pgfexternalwidth,height=\pgfexternalheight]{##1.png}
+        },
+      }
+  }
+  
 \newcommand{\keywords}[1]{\par\addvspace\baselineskip
 \noindent\keywordname\enspace\ignorespaces#1}
 
@@ -348,7 +362,7 @@ This fuzzy controller has three input values and one output: the target speed (s
 
 \begin{figure}
 	\begin{center}
-		
+\tikzset{png export}		
 		\begin{tikzpicture}[box/.style={draw, fill=white!20,rounded corners,align=center,minimum height=3em, minimum width=5em},thick,->,>= latex]
 		
 		\node[box] (a0) {Fuzzy controller};
