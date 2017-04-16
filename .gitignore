@@ -50,3 +50,7 @@ Temporary Items
 *.aux
 *.log
 *.pdf
+*.bbl
+*.blg
+
+*~
