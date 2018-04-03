@@ -53,3 +53,5 @@ Temporary Items
 *.bbl
 *.blg
 *.dvi
+*~
+

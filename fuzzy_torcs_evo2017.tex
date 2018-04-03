@@ -23,9 +23,28 @@
 \usepackage[dvips]{epsfig}
 \usepackage{verbatim}
 \usepackage{tikz}
+\usetikzlibrary{external}
 \usetikzlibrary{shapes,arrows}
 \usetikzlibrary{calc,patterns,snakes,decorations.pathmorphing,decorations.markings}
 \usetikzlibrary{positioning}
+
+\tikzexternalize[mode=list and make]
+
+\tikzset{
+    png export/.style={
+        % First we call ImageMagick; change settings to requirements
+        external/system call/.add={}{; convert -density 300 -transparent white "\image.pdf" "\image.png"},
+        % Now we force the PNG figure to be used instead of the PDF
+        /pgf/images/external info,
+        /pgf/images/include external/.code={
+            \includegraphics[width=\pgfexternalwidth,height=\pgfexternalheight]{##1.png}
+        },
+      }
+  }
+  
+\newcommand{\keywords}[1]{\par\addvspace\baselineskip
+\noindent\keywordname\enspace\ignorespaces#1}
+
 
 \providecommand{\tabularnewline}{\\}
 
@@ -45,9 +64,7 @@
 	\noindent\keywordname\enspace\ignorespaces#1}
 
 \begin{document}
-	
-	\mainmatter  % start of an individual contribution
-	
+		
 	% first the title is needed
 	\title{Driving in TORCS using modular fuzzy controllers}
 	
